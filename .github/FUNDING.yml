@@ -1,0 +1,31 @@
+# These are supported funding model platforms
+
+github: # Replace with up to 4 GitHub Sponsors-enabled usernames e.g., '[user1, user2]'
+    - your-github-username # Replace with your GitHub Username or ThinkAlike Org Username
+    #- user2
+    #- user3
+    #- user4
+
+patreon: # Replace with a single Patreon username
+    thinkalike_project # Replace with your Patreon username or ThinkAlike Project Patreon
+
+open_collective: # Replace with a single Open Collective username
+    thinkalike # Replace with your Open Collective username or ThinkAlike Open Collective
+
+ko_fi: # Replace with a single Ko-fi username
+    thinkalike_project # Replace with your Ko-fi username or ThinkAlike Ko-fi
+
+# Optional platforms (uncomment and replace with your username/project name if you use them):
+# tidelift: # Replace with a single Tidelift platform-name/package-name e.g., npm/babel
+# community_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry
+# liberapay: # Replace with a single Liberapay username
+# issuehunt: # Replace with a single IssueHunt username
+# lfx_crowdfunding: # Replace with a single LFX Crowdfunding project-name e.g., cloud-foundry
+# polar: # Replace with a single Polar username
+# buy_me_a_coffee: # Replace with a single Buy Me a Coffee username
+# thanks_dev: # Replace with a single Thanks.dev username
+
+# Custom: Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']
+# custom:
+#     - https://your-custom-donation-link-1.com
+#     - https://your-custom-donation-link-2.com
