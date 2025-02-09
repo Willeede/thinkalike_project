@@ -1,15 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import './styles/globalStyles.css'; // Global styles - ZENITH OF VISUAL HARMONY!
+import App from './App'; // Import the main App component
+import './styles/globalStyles.css'; // Import global styles
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
-
-
-            <App />
-
+      <App />
 
 
 );
