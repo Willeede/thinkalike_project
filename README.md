@@ -35,3 +35,14 @@ We invite developers, designers, researchers, and ethical technology enthusiasts
 ---
 
 **#UIValidation #EthicalAI #DataTransparency #OpenSource #React #JavaScript #GitHub**
+
+---
+
+**Contact Us - Join the UI Validation Revolution!**
+
+For inquiries, collaboration proposals, or to join the ThinkAlike community, please reach out to us:
+
+*   **Eos Lumina:** [Eos.Lumina@proton.me](mailto:Eos.Lumina@proton.me) - Lead Design Architect
+*   **ThinkAlike Project:** [ThinkAlikeAI@proton.me](mailto:ThinkAlikeAI@proton.me) - General Inquiries & Collaboration
+
+---
