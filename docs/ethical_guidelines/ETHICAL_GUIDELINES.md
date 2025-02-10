@@ -1,4 +1,3 @@
-# docs/ethical_guidelines/ETHICAL_GUIDELINES.md - Ethical Guidelines - The Moral Compass of ThinkAlike
 
 # ThinkAlike Project - Ethical Guidelines
 
