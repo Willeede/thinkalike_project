@@ -1,6 +1,5 @@
 # docs/testing/TESTING_FRAMEWORK.md - Testing Framework - Sharpening the Revolutionary Tools
 
-
 # ThinkAlike Project - Testing Framework Documentation
 
 **Version 1.0 - Draft - Work in Progress**
@@ -63,12 +62,12 @@ To achieve our testing philosophy, we employ a comprehensive suite of testing ty
 [Placeholder Section - Detailed Testing Metrics and Reporting Information Coming Soon]
 
 *   **Key Testing Metrics:**
-    *   Test Pass Rate
-    *   Code Coverage
-    *   Bug Detection Rate
-    *   Performance Metrics
-    *   Accessibility Score
-    *   Ethical Compliance Metrics
+    *   **Test Pass Rate:** Percentage of automated tests that pass consistently.
+    *   **Code Coverage:** Percentage of codebase covered by automated tests.
+    *   **Bug Detection Rate:** Number of bugs detected during testing vs. in production.
+    *   **Performance Metrics:** API response times, UI rendering times, load test results.
+    *   **Accessibility Score:** Accessibility audit scores based on WCAG guidelines.
+    *   **Ethical Compliance Metrics:** Metrics to quantify ethical compliance (e.g., bias detection scores, data privacy scores - to be defined).
 
 *   **Test Dashboards and Reports:**
     *   [Placeholder - Test Dashboards and Reports Details Coming Soon]
