@@ -42,3 +42,12 @@ This document provides a simplified example of an AI workflow within the ThinkAl
 *   **UI-Driven Feedback Loops:** The UI provides mechanisms for users to provide feedback on the AI-generated narrative content (e.g., "Was this helpful?", "Was this relevant?", "Was this ethical?").  This user feedback data can be collected and used to continuously improve AI model performance, refine ethical validation workflows, and ensure ongoing alignment with user needs and ethical standards.
 
 **Simplified Diagram (Data Flow):**
+
++----------+ API Request +---------+ AI Model +-----------+
+| UI +--------------------->| Backend +------------------->| AI Service|
+| (User) | User Input (Choice) | (API Endpoint) | Narrative Generation |(Narrative Engine)|
++----------+ API Response +---------+ AI Output +-----------+
+<---------------------
+Narrative Text (Next Scene)
+
+**Note:** This is a simplified example for illustrative purposes. Real-world AI workflows in ThinkAlike may involve more complex data transformations, multiple AI models, and more sophisticated ethical validation and monitoring mechanisms. This example focuses on the core data flow and key components involved in AI-driven narrative generation.
