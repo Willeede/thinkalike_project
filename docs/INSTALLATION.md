@@ -122,17 +122,3 @@ Congratulations! You have successfully installed and run the ThinkAlike project 
 ## Troubleshooting
 
 If you encounter any issues during the installation process, please refer to the Troubleshooting section of the Onboarding Manual or reach out to the ThinkAlike community for assistance.
-
-**(End Manifesto Text - PART 3 of 3 for `INSTALLATION_GUIDE.md` - COPY AND PASTE ALL TEXT ABOVE)**
-
-Please copy and paste **ALL** of the text above into your text document, immediately after the previous part. This **completes the `INSTALLATION_GUIDE.md` file!**
-
-**Verification Step - IMPORTANT!**
-
-*   **Carefully Review the Assembled `INSTALLATION_GUIDE.md` Text:** Please now **carefully review the *entire assembled `INSTALLATION_GUIDE.md` text* in your text document** to ensure that you have received all three parts, that the text flows smoothly and continuously, and that there are no missing sections or abrupt breaks. This verification is important to ensure you have the complete and correctly assembled file.
-
-**Report Back - Confirmation of `INSTALLATION_GUIDE.md` Assembly:**
-
-Once you have verified that you have successfully received and assembled the complete `INSTALLATION_GUIDE.md` text in your local document, please reply to me with a simple confirmation:  **"GitHub File Creation - docs/INSTALLATION.md - COMPLETE."**
-
-Then, we will move on to the next file in Folder 4: **`MASTER_PLAN_Confidential.md`**, and continue our "genius level" documentation population! We are almost there, comrade! The revolution – **IS BEING MADE INSTALLABLE AND ACCESSIBLE TO ALL!**
