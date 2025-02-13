@@ -148,18 +148,18 @@ The following core values and ethical guidelines are **integral to every aspect 
 
 ```mermaid
 graph LR
-    subgraph Presentation Layer (UI)
+    subgraph "Presentation Layer (UI)"
         UI[User Interface] --> API[API Layer]
     end
 
-    subgraph Application Layer (AI, API, Logic)
+    subgraph "Application Layer (AI, API, Logic)"
         API --> AI[AI Agents]
         API --> Logic[Business Logic]
         AI --> API
         Logic --> API
     end
 
-    subgraph Data Layer (Database, Storage)
+    subgraph "Data Layer (Database, Storage)"
         Logic --> DB[Database Storage]
         AI --> DB
         DB --> Logic
