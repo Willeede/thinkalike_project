@@ -1,5 +1,3 @@
-# docs/CODE_OF_CONDUCT.md - Code of Conduct - Forging a Respectful and Inclusive Community
-
 # ThinkAlike Project - Code of Conduct - Building a Respectful and Inclusive Community
 
 **Version 1.0 - Draft - Work in Progress**
