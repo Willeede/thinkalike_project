@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory, request
 
 app = Flask(__name__)
 
@@ -25,7 +25,6 @@ def receive_feedback():
     print("Received feedback:", feedback_data) # Placeholder - print to console for now
     return jsonify({"message": "Feedback received (Placeholder) - We value your input!"}), 201 # 201 Created status
 
-
 @app.route('/api/data', methods=['GET'])
 def get_sample_data():
     """
@@ -41,6 +40,18 @@ def get_sample_data():
     return jsonify(sample_data)
 
 # --- End Placeholder API Endpoints ---
+
+# --- New Routes to Serve Onboarding Manual and Index Page ---
+
+@app.route('/manual')
+def serve_onboarding_manual():
+    return send_from_directory('../docs/onboarding/selfdeploy', 'ThinkAlike_Onboarding_Manual_Public.html')
+
+@app.route('/ebook')
+def serve_index_page():
+    return send_from_directory('../docs/onboarding/selfdeploy', 'index.html')
+
+# --- End New Routes ---
 
 
 if __name__ == '__main__':
