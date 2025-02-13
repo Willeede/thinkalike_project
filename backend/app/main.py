@@ -1,58 +1,36 @@
-from flask import Flask, jsonify, send_from_directory, request
+import React from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import DataTraceability from './components/DataTraceability'; // Import DataTraceability component
+import dataFlow from './data/DataTraceabilityExampleData'; // Import example DataFlow data
 
-app = Flask(__name__)
+function App() {
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li><Link to="/manual">Onboarding Manual</Link></li>
+            <li><Link to="/ebook">Index Page</Link></li>
+          </ul>
+        </nav>
 
-# --- Placeholder API Endpoints (To be expanded) ---
+        <Route path="/manual" exact component={() => { 
+          window.location.href = "/ThinkAlike_Onboarding_Manual_Public.html"; 
+          return null;
+        }}/>
+        <Route path="/ebook" exact component={() => { 
+          window.location.href = "/index.html"; 
+          return null;
+        }}/>
 
-@app.route('/')
-def home():
-    """
-    Placeholder home route for the backend API.
-    Currently returns a simple welcome message.
-    Will be expanded to serve as API documentation or entry point later.
-    """
-    return jsonify({"message": "Welcome to the ThinkAlike Backend API! - (Placeholder)"})
+        <div>
+          <h1>UI Validation Revolution - DataTraceability ETHICAL DATA VALIDATION SHOWCASE</h1>
+          {/* DataTraceability Component Instance - ETHICAL DATA VALIDATION SHOWCASE - ZENITH OF EXCELLENCE EDITION! */}
+          <DataTraceability dataFlow={dataFlow} />
+        </div>
+      </div>
+    </Router>
+  );
+}
 
-@app.route('/api/feedback', methods=['POST'])
-def receive_feedback():
-    """
-    Placeholder API endpoint for receiving user feedback.
-    Currently just acknowledges feedback receipt.
-    Will be expanded to handle actual feedback processing and storage later.
-    """
-    feedback_data = request.get_json() # Get JSON data from the request
-    # In a real implementation, you would process and store this feedback data
-    print("Received feedback:", feedback_data) # Placeholder - print to console for now
-    return jsonify({"message": "Feedback received (Placeholder) - We value your input!"}), 201 # 201 Created status
-
-@app.route('/api/data', methods=['GET'])
-def get_sample_data():
-    """
-    Placeholder API endpoint for serving sample data.
-    Currently returns a hardcoded sample dataset.
-    Will be expanded to fetch data from database or AI services later.
-    """
-    sample_data = [
-        {"id": 1, "name": "User 1", "value": "Data Point A"},
-        {"id": 2, "name": "User 2", "value": "Data Point B"},
-        {"id": 3, "name": "User 3", "value": "Data Point C"}
-    ]
-    return jsonify(sample_data)
-
-# --- End Placeholder API Endpoints ---
-
-# --- New Routes to Serve Onboarding Manual and Index Page ---
-
-@app.route('/manual')
-def serve_onboarding_manual():
-    return send_from_directory('../docs/onboarding/selfdeploy', 'ThinkAlike_Onboarding_Manual_Public.html')
-
-@app.route('/ebook')
-def serve_index_page():
-    return send_from_directory('../docs/onboarding/selfdeploy', 'index.html')
-
-# --- End New Routes ---
-
-
-if __name__ == '__main__':
-    app.run(debug=True) # Run the Flask app in debug mode (for development)
+export default App;
