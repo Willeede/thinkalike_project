@@ -3,7 +3,7 @@
 
 Connecting Like-Minded Individuals.
 
-**(Your Guide to Contributing to an Ethical and Human-Centered Digital Future)**
+**-Your Guide to Contributing to an Ethical and Human-Centered Digital Future-**
 
 ## Introduction: Join the Enlightenment 2.0 Movement
 
