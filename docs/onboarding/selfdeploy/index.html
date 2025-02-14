@@ -10,9 +10,11 @@
         #sidebar { height: 100vh; overflow-y: auto; }
         #content { padding-left: 20px; }
         .nav-link { cursor: pointer; }
-        .section-content { margin-bottom: 20px; }
+        .section-content { display: none; margin-bottom: 20px; } /* Added display: none; here */
         #language-selector { position: absolute; top: 10px; right: 10px; } /* Language selector position */
     </style>
+    <!-- Load FULL jQuery from CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
@@ -20,16 +22,15 @@
     <div class="row">
         <nav id="sidebar" class="col-md-3 col-lg-2 bg-light border-right">
             <div class="sidebar-sticky px-3">
-                
+
                 <div id="language-selector" class="mb-3">
                     <select class="form-control form-control-sm" id="languageSelect">
                         <option value="en">English</option>
                         <option value="es">Spanish</option>
                         <option value="fr">French</option>
                         <option value="de">German</option>
-                        </select>
+                    </select>
                 </div>
-
 
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link active" data-section="preamble">Preamble</a></li>
@@ -45,7 +46,7 @@
                     <li class="nav-item"><a class="nav-link" data-section="section10">Section 10: Tasks</a></li>
                     <li class="nav-item"><a class="nav-link" data-section="appendices">Appendices</a></li>
                     <li class="nav-item"><a class="nav-link" data-section="conclusion">Conclusion</a></li>
-                     <li class="nav-item"><a class="nav-link" data-section="manifesto">Manifesto</a></li> 
+                    <li class="nav-item"><a class="nav-link" data-section="manifesto">Manifesto</a></li>
                 </ul>
             </div>
         </nav>
@@ -63,138 +64,139 @@
             <div id="section9" class="section-content"></div>
             <div id="section10" class="section-content"></div>
             <div id="appendices" class="section-content"></div>
-             <div id="conclusion" class="section-content"></div>
-             <div id="manifesto" class="section-content"></div>
+            <div id="conclusion" class="section-content"></div>
+            <div id="manifesto" class="section-content"></div>
         </main>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="marked.min.js"></script> 
+<script src="marked.min.js"></script>  <!-- Ensure marked.min.js is in the same folder as index.html -->
 <script>
     $(document).ready(function() {
         const markdownFilePath = 'ONBOARDING_GUIDE.md';
-        const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY'; // **REPLACE WITH YOUR ACTUAL GOOGLE TRANSLATE API KEY**
+        const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY'; // **REPLACE WITH YOUR ACTUAL GOOGLE TRANSLATE API KEY if you want translation to work**
         const languageSelect = $('#languageSelect');
-
 
         const sectionIds = ['preamble', 'section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7', 'section8', 'section9', 'section10', 'appendices', 'conclusion', 'manifesto'];
         const sections = {};
         let currentSection = 'preamble';
 
+        fetch(markdownFilePath) // Using fetch API instead of $.get
+            .then(response => response.text())
+            .then(markdownData => {
+                const lines = markdownData.split('\n');
 
-        $.get(markdownFilePath, function(markdownData) {
+                for (const line of lines) {
+                    if (line.startsWith('# ')) {
+                        currentSection = 'preamble'; // Level 1 heading is always "preamble"
+                        sections[currentSection] = sections[currentSection] || [];
+                    } else if (line.startsWith('## 1. ')) {
+                        currentSection = 'section1'; // Level 2 heading starting with "1. " is "section1"
+                        sections[currentSection] = sections[currentSection] || [];
+                    } else if (line.startsWith('## 2. ')) {
+                        currentSection = 'section2'; // Level 2 heading starting with "2. " is "section2"
+                        sections[currentSection] = sections[currentSection] || [];
+                    } else if (line.startsWith('## 3. ')) {
+                        currentSection = 'section3'; // Level 2 heading starting with "3. " is "section3"
+                        sections[currentSection] = sections[currentSection] || [];
+                    }
+                    else if (line.startsWith('## 4. ')) { currentSection = 'section4'; sections[currentSection] = sections[currentSection] || []; }
+                    else if (line.startsWith('## 5. ')) { currentSection = 'section5'; sections[currentSection] = sections[currentSection] || []; }
+                    else if (line.startsWith('## 6. ')) { currentSection = 'section6'; sections[currentSection] = sections[currentSection] || []; }
+                    else if (line.startsWith('## 7. ')) { currentSection = 'section7'; sections[currentSection] = sections[currentSection] || []; }
+                    else if (line.startsWith('## 8. ')) { currentSection = 'section8'; sections[currentSection] = sections[currentSection] || []; }
+                    else if (line.startsWith('## 9. ')) { currentSection = 'section9'; sections[currentSection] = sections[currentSection] || []; }
+                    else if (line.startsWith('## 10. ')) { currentSection = 'section10'; sections[currentSection] = sections[currentSection] || []; }
+                    else if (line.startsWith('## APPENDICES')) { currentSection = 'appendices'; sections[currentSection] = sections[currentSection] || []; }
+                    else if (line.startsWith('## CONCLUSION')) { currentSection = 'conclusion'; sections[currentSection] = sections[currentSection] || []; }
+                    else if (line.startsWith('## MANIFESTO')) { currentSection = 'manifesto'; sections[currentSection] = sections[currentSection] || []; }
 
 
-            const lines = markdownData.split('\n');
-            for (const line of lines) {
-                 if (line.startsWith('# ')) {
-                    const sectionName = line.substring(2).toLowerCase().replace(/ /g, ''); // Create section ID from heading
-                    currentSection = sectionName;
-                    sections[currentSection] = sections[currentSection] || []; // Initialize if new section
-                } else if (line.startsWith('## ')) { //added for level 2 heading
-                     const sectionName = line.substring(3).toLowerCase().replace(/ /g, ''); // Create section ID from heading
-                    currentSection = sectionName;
-                    sections[currentSection] = sections[currentSection] || []; // Initialize if new section
+                    if (currentSection) {
+                        sections[currentSection].push(line); // Append line to current section
+                    }
                 }
-                 else if (line.startsWith('### ')) { //added for level 3 heading
-                     const sectionName = line.substring(4).toLowerCase().replace(/ /g, ''); // Create section ID from heading
-                    currentSection = sectionName;
-                    sections[currentSection] = sections[currentSection] || []; // Initialize if new section
+
+                function renderSection(sectionId, markdownContent) {
+                    if (!markdownContent) {
+                        console.warn("renderSection: markdownContent is falsy for sectionId:", sectionId);
+                        return; // Exit if markdownContent is falsy
+                    }
+                    const htmlContent = markdownContent.join('\n');
+                    $(`#${sectionId}`).html(marked.parse(htmlContent));
                 }
-                 else if (line.startsWith('#### ')) { //added for level 4 heading
-                     const sectionName = line.substring(5).toLowerCase().replace(/ /g, ''); // Create section ID from heading
-                    currentSection = sectionName;
-                    sections[currentSection] = sections[currentSection] || []; // Initialize if new section
-                }
 
-                if (currentSection) {
-                    sections[currentSection].push(line); // Append line to current section
-                }
-            }
-
-
-            function renderSection(sectionId, markdownContent) {
-                const htmlContent = markdownContent.join('\n');
-                $(`#${sectionId}`).html(marked.parse(htmlContent));
-            }
-
-
-            function translateManual(targetLanguage) {
-                sectionIds.forEach(sectionId => {
-                    let textToTranslate = sections[sectionId].join('\n'); // Get markdown content as string
-                    if (textToTranslate) {
-                        $.ajax({
-                            url: 'https://translation.googleapis.com/language/translate/v2',
-                            method: 'POST',
-                            data: {
-                                key: apiKey,
-                                q: textToTranslate,
-                                target: targetLanguage,
-                                format: 'text'
-                            },
-                            success: function(response) {
-                                if (response.data && response.data.translations && response.data.translations[0]) {
-                                    const translatedText = response.data.translations[0].translatedText;
-                                    renderSection(sectionId, translatedText.split('\n')); // Re-render translated content
-                                } else {
-                                    alert('Translation failed for section: ' + sectionId);
+                function translateManual(targetLanguage) {
+                    sectionIds.forEach(sectionId => {
+                        let textToTranslate = sections[sectionId].join('\n'); // Get markdown content as string
+                        if (textToTranslate) {
+                            $.ajax({
+                                url: 'https://translation.googleapis.com/language/translate/v2',
+                                method: 'POST',
+                                data: {
+                                    key: apiKey,
+                                    q: textToTranslate,
+                                    target: targetLanguage,
+                                    format: 'text'
+                                },
+                                success: function(response) {
+                                    if (response.data && response.data.translations && response.data.translations[0]) {
+                                        const translatedText = response.data.translations[0].translatedText;
+                                        renderSection(sectionId, translatedText.split('\n')); // Re-render translated content
+                                    } else {
+                                        alert('Translation failed for section: ' + sectionId);
+                                    }
+                                },
+                                error: function(error) {
+                                    alert('Error during translation for section ' + sectionId + ': ' + error.statusText);
                                 }
-                            },
-                            error: function(error) {
-                                alert('Error during translation for section ' + sectionId + ': ' + error.statusText);
-                            }
+                            });
+                        }
+                    });
+                }
+
+                renderSection('preamble', sections['preamble']);
+
+
+                $('.nav-link').click(function(e) {
+                    e.preventDefault();
+                    $('.nav-link').removeClass('active');
+                    $(this).addClass('active');
+
+                    const sectionId = $(this).data('section');
+                    $('.section-content').hide();
+                    $(`#${sectionId}`).show();
+
+                    if (sections[sectionId]) {
+                        renderSection(sectionId, sections[sectionId]);
+                    } else if (sectionId === 'manifesto') {
+                        renderSection(sectionId, sections['manifesto']);
+                    }
+                    else {
+                        $(`#${sectionId}`).html('<p>Section content loading...</p>');
+                    }
+                });
+
+                languageSelect.change(function() {
+                    const targetLanguage = $(this).val();
+                    if (targetLanguage !== 'en') {
+                        translateManual(targetLanguage);
+                    } else {
+                        // Re-render original English content if English is selected again
+                        sectionIds.forEach(sectionId => {
+                            renderSection(sectionId, sections[sectionId]);
                         });
                     }
                 });
-            }
 
-
-            renderSection('preamble', sections['preamble']);
-            renderSection('manifesto', sections['manifesto']);
-
-
-            $('.nav-link').click(function(e) {
-                e.preventDefault();
-                $('.nav-link').removeClass('active');
-                $(this).addClass('active');
-
-                const sectionId = $(this).data('section');
                 $('.section-content').hide();
-                $(`#${sectionId}`).show();
+                $('#preamble').show();
 
-                if (sections[sectionId]) {
-                    renderSection(sectionId, sections[sectionId]);
-                } else if (sectionId === 'manifesto') {
-                    renderSection('manifesto', sections['manifesto']);
-                }
-                 else {
-                    $(`#${sectionId}`).html('<p>Section content loading...</p>');
-                }
+            })
+            .catch(error => { // Catch any errors during fetch
+                console.error("Error fetching markdown file:", error);
             });
-
-
-            languageSelect.change(function() {
-                const targetLanguage = $(this).val();
-                if (targetLanguage !== 'en') {
-                    translateManual(targetLanguage);
-                } else {
-                     // Re-render original English content if English is selected again
-                    sectionIds.forEach(sectionId => {
-                        renderSection(sectionId, sections[sectionId]);
-                    });
-                }
-            });
-
-
-            $('.section-content').hide();
-            $('#preamble').show();
-
-        }, 'text');
     });
 </script>
-
-</body>
-</html>
