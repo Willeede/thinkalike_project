@@ -1,0 +1,27 @@
+name: Generate Structure Map
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  generate-structure-map:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install tree
+        run: sudo apt-get install tree
+
+      - name: Generate structure map
+        run: tree -L 3 -I ".git|node_modules|venv|__pycache__" > structure_map.txt
+
+      - name: Upload structure map
+        uses: actions/upload-artifact@v2
+        with:
+          name: structure-map
+          path: structure_map.txt
