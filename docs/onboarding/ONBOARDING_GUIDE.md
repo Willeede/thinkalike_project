@@ -1,7 +1,7 @@
 
 # WELCOME TO THINKALIKE: Onboarding Manual 
 
-Connecting Like-Minded Individuals Through Ethical AI.
+Connecting Like-Minded Individuals.
 
 **(Your Guide to Contributing to an Ethical and Human-Centered Digital Future)**
 
