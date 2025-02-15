@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from typing import List
 
 from backend.app.services import agent_service  # Import your agent_service
-from backend.app.models import Agent, Task, Document  # Import your Pydantic models
+# from backend.app.models import Agent, Task, Document  # Import your Pydantic models - COMMENTED OUT for placeholder models
 
 router = APIRouter()
 
@@ -42,17 +42,20 @@ async def get_document(agent_id: str, task_id: str, document_id: str):
 
 # Placeholder Pydantic Models (if you haven't defined them in backend/app/models/ yet)
 # You should ideally define these in backend/app/models/ and import them.
-class Agent(BaseModel): # noqa: F821
+class Agent(BaseModel):  # noqa: F821
     agent_id: str
     name: str
 
-class Task(BaseModel): # noqa: F821
+
+class Task(BaseModel):  # noqa: F821
     task_id: str
     description: str
 
-class Document(BaseModel): # noqa: F821
+
+class Document(BaseModel):  # noqa: F821
     document_id: str
     filename: str
     content: str
 
-from pydantic import BaseModel # Import BaseModel here, after the placeholder classes (to avoid forward reference issues if you uncomment the placeholders)
+
+from pydantic import BaseModel  # Import BaseModel here, after the placeholder classes
