@@ -77,6 +77,6 @@ We invite developers, designers, researchers, and ethical technology enthusiasts
 
 For inquiries, collaboration proposals, or to join the ThinkAlike community, please reach out to us:
 
-*   **_Eos Lumina∴_ [Eos.Lumina@proton.me](mailto:Eos.Lumina@proton.me) - Lead Design Architect
+*   _Eos Lumina∴_ [Eos.Lumina@proton.me](mailto:Eos.Lumina@proton.me) - Lead Design Architect
 *   **ThinkAlike Project:** [ThinkAlikeAI@proton.me](mailto:ThinkAlikeAI@proton.me) - General Inquiries & Collaboration
 
