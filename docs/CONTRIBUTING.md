@@ -1,6 +1,5 @@
-# docs/CONTRIBUTING.md - Contribution Guidelines - Forge the Revolution Together
 
-# ThinkAlike Project - Contribution Guidelines - Code the Revolution!
+# ThinkAlike Project - Contribution Guidelines 
 
 **Version 1.0 - Draft - Work in Progress**
 
