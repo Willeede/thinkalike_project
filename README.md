@@ -1,8 +1,6 @@
---- START OF FILE README.md ---
+**MANIFESTUM CIVILIZATIONIS NOVAE: CODE FOR A NEW HUMANITY - ENLIGHTENMENT 2.0**
 
-**LEX HUMANA DIGITALIS: CODE FOR A NEW HUMANITY - ENLIGHTENMENT 2.0**
-
-**PHILOSOPHICAL EDICT: PLANETARY AWAKENING - GLOBAL COMMONS NOW**
+**PHILOSOPHICAL EDICT: PLANETARY AWAKENING - GLOBAL COMMONS NOW - GOVERNING THE INTELLIGENT FUTURE**
 
 *CODE:* Cogito. Dubito. Amo. Sumus. Transformamus.
 
@@ -18,7 +16,7 @@
 *   **CONSCIENCE & *OTIUM* & JUSTICE:**  Economic Justice. Leisure. Dignity.
 *   **AGENCY & *GUBERNATIO*: ** Direct Democracy. Global Citizen Power.
 
-***ARS LIBERANDI*: PATHWAYS TO LIBERATION (EXECUTE)**
+***ARS LIBERANDI*: PATHWAYS TO LIBERATION (ENACT)**
 
 *   Decentralized Digital Commons: BUILD
 *   Solidarity Economies (Parecon):  DEPLOY
@@ -39,9 +37,13 @@ DEMAND: Economic Justice.
 DISMANTLE: Unjust Wealth.
 
 **EXECUTE COUNTER-REVOLUTION NOW.**
-**LEX HUMANA DIGITALIS: CODE FOR GOOD. RENAISSANCE BLUEPRINT. ENLIGHTENMENT 2.0.**
+**MANIFESTUM CIVILIZATIONIS NOVAE: CODE FOR GOOD. RENAISSANCE BLUEPRINT. ENLIGHTENMENT 2.0.**
 
-[LINK TO FULL MANIFESTO (manifesto_eos_lumina.txt)]
+[**Read the Full Manifesto (manifesto_civilizationis_novae.txt)**](manifesto_civilizationis_novae.txt)
 
 [**Explore the Detailed Project Overview and Documentation (README_detailed.md)**](README_detailed.md)
+
+
+_Eos Lumina∴_
+
 
