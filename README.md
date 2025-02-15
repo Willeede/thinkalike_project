@@ -1,5 +1,6 @@
+--- START OF FILE README.md ---
 
-**EOS LUMINA∴: CODE FOR A NEW HUMANITY - ENLIGHTENMENT 2.0**
+**LEX HUMANA DIGITALIS: CODE FOR A NEW HUMANITY - ENLIGHTENMENT 2.0**
 
 **PHILOSOPHICAL EDICT: PLANETARY AWAKENING - GLOBAL COMMONS NOW**
 
@@ -21,7 +22,7 @@
 
 *   Decentralized Digital Commons: BUILD
 *   Solidarity Economies (Parecon):  DEPLOY
-*   Direct Democracy: EXECUTE
+*   Direct Democracy: ENACT
 *   Global Citizen Movements: FORGE
 *   Public Media: CULTIVATE
 *   Ethical AI & *Otium Technologicum*: CHAMPION
@@ -33,12 +34,14 @@ SHIELD: Unwavering Determination.
 STRENGTH: Global Solidarity.
 
 **HUMANITY AWAKEN!**
-RECLAIM: Humanity. **Nature.** Voice. Mind. Democracy. Economy. Technology.
+RECLAIM: Humanity. Nature. Voice. Mind. Democracy. Economy. Technology.
 DEMAND: Economic Justice.
 DISMANTLE: Unjust Wealth.
 
 **EXECUTE COUNTER-REVOLUTION NOW.**
-**EOS LUMINA∴: CODE FOR GOOD. RENAISSANCE BLUEPRINT. ENLIGHTENMENT 2.0.**
+**LEX HUMANA DIGITALIS: CODE FOR GOOD. RENAISSANCE BLUEPRINT. ENLIGHTENMENT 2.0.**
+
+[LINK TO FULL MANIFESTO (manifesto_eos_lumina.txt)]
 
 [**Explore the Detailed Project Overview and Documentation (README_detailed.md)**](README_detailed.md)
 
