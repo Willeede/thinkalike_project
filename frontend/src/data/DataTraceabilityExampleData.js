@@ -7,8 +7,9 @@ const dataFlow = {
     { id: 'node3', label: 'End' }
   ],
   edges: [
-    { from: 'node1', to: 'node2' },
+    { from: 'node1', to: 'node2' },  // <-- COMMA ADDED HERE!
     { from: 'node2', to: 'node3' }
-];
+  ]
+};
 
 export default dataFlow;
