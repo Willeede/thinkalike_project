@@ -10,7 +10,7 @@
         #sidebar { height: 100vh; overflow-y: auto; }
         #content { padding-left: 20px; }
         .nav-link { cursor: pointer; }
-        .section-content { display: none; margin-bottom: 20px; } /* Added display: none; here */
+        .section-content { display: none; margin-bottom: 20px; }
         #language-selector { position: absolute; top: 10px; right: 10px; } /* Language selector position */
     </style>
     <!-- Load FULL jQuery from CDN -->
@@ -52,7 +52,7 @@
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" id="content">
-            <div id="preamble" class="section-content"></div>
+            <div id="preamble" class="section-content" style="display: block;"></div>  <-- ADDED style="display: block;" here
             <div id="section1" class="section-content"></div>
             <div id="section2" class="section-content"></div>
             <div id="section3" class="section-content"></div>
