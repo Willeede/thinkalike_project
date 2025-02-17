@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>ThinkAlike Onboarding Guide</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <style>
         body { font-family: sans-serif; }
         #sidebar { height: 100vh; overflow-y: auto; }
@@ -19,6 +19,7 @@
 
 <div class="container-fluid">
     <div class="row">
+        <!-- Sidebar with navigation -->
         <nav id="sidebar" class="col-md-3 col-lg-2 bg-light border-right">
             <div class="sidebar-sticky px-3">
                 <div id="language-selector" class="mb-3">
@@ -47,8 +48,31 @@
                 </ul>
             </div>
         </nav>
+
+        <!-- Main content sections -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" id="content">
-            <div id="preamble" class="section-content"></div>
+            <!-- Preamble with an example table of contents in the body -->
+            <div id="preamble" class="section-content">
+                <h1>Welcome to ThinkAlike</h1>
+                <h2>Table of Contents</h2>
+                <ul>
+                    <li><a href="#" data-section="section1">Project Overview: Building Actionable Utopia</a></li>
+                    <li><a href="#" data-section="section2">Core Values and Ethical Framework</a></li>
+                    <li><a href="#" data-section="section10">Get Started: Setting Up Your Development Environment</a></li>
+                    <li><a href="#" data-section="section3">ThinkAlike Architecture: Transparency by Design</a></li>
+                    <li><a href="#" data-section="section4">Exploring the UI Component Library</a></li>
+                    <li><a href="#" data-section="section5">Data Handling and Security</a></li>
+                    <li><a href="#" data-section="section6">Ethical AI Model Implementation</a></li>
+                    <li><a href="#" data-section="section7">Testing and Validation Framework</a></li>
+                    <li><a href="#" data-section="section8">Contribution Guidelines</a></li>
+                    <li><a href="#" data-section="section9">Collaboration and Communication</a></li>
+                    <li><a href="#" data-section="section9">Key Project Resources and Documentation</a></li>
+                    <li><a href="#" data-section="section10">Actionable Tasks</a></li>
+                    <li><a href="#" data-section="conclusion">Conclusion: Build the Revolution with Us!</a></li>
+                </ul>
+            </div>
+
+            <!-- Other sections initially empty; will be populated by Markdown content -->
             <div id="section1" class="section-content"></div>
             <div id="section2" class="section-content"></div>
             <div id="section3" class="section-content"></div>
@@ -66,121 +90,142 @@
     </div>
 </div>
 
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked@4.0.0/marked.min.js"></script>
 <script>
-    $(document).ready(function() {
-        const markdownFilePath = './ONBOARDING_GUIDE.md';
-        const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY'; // Replace with your actual key
-        const languageSelect = $('#languageSelect');
-        const sectionIds = ['preamble', 'section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7', 'section8', 'section9', 'section10', 'appendices', 'conclusion', 'manifesto'];
-        const sections = {};
+$(document).ready(function() {
+    const markdownFilePath = './ONBOARDING_GUIDE.md'; 
+    const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY'; // Replace with your actual key
+    const languageSelect = $('#languageSelect');
+    const sectionIds = [
+        'preamble', 'section1', 'section2', 'section3', 'section4', 
+        'section5', 'section6', 'section7', 'section8', 'section9', 
+        'section10', 'appendices', 'conclusion', 'manifesto'
+    ];
+    const sections = {};
 
-        fetch(markdownFilePath)
-            .then(response => {
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                return response.text();
-            })
-            .then(markdownData => {
-                const lines = markdownData.split('\n');
-                let currentSection = null;
+    // Fetch and parse the markdown
+    fetch(markdownFilePath)
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.text();
+        })
+        .then(markdownData => {
+            const lines = markdownData.split('\n');
+            let currentSection = null;
 
-                for (const line of lines) {
-                    if (line.startsWith('# ')) {
-                        currentSection = 'preamble';
-                    } else if (line.startsWith('## ')) {
-                        const sectionTitle = line.replace('## ', '').trim();
-                        if (sectionTitle.match(/^\d+\./)) {
-                            const sectionNum = sectionTitle.split('.')[0];
-                            currentSection = `section${sectionNum}`;
-                        } else if (sectionTitle === 'APPENDICES') {
-                            currentSection = 'appendices';
-                        } else if (sectionTitle === 'CONCLUSION') {
-                            currentSection = 'conclusion';
-                        } else if (sectionTitle === 'MANIFESTO') {
-                            currentSection = 'manifesto';
-                        }
-                    }
-                    if (currentSection) {
-                        sections[currentSection] = sections[currentSection] || [];
-                        sections[currentSection].push(line);
+            // Break the markdown data into sections based on heading lines
+            for (const line of lines) {
+                // Example: if a line starts with # = preamble, if ## 1. = section1, etc.
+                if (line.startsWith('# ')) {
+                    currentSection = 'preamble';
+                } else if (line.startsWith('## ')) {
+                    // Extract numeric part, e.g., "## 1. Something" => "1."
+                    const sectionTitle = line.replace('## ', '').trim();
+                    if (sectionTitle.match(/^\d+\./)) {
+                        const sectionNum = sectionTitle.split('.')[0];
+                        currentSection = `section${sectionNum}`;
+                    } else if (sectionTitle === 'APPENDICES') {
+                        currentSection = 'appendices';
+                    } else if (sectionTitle === 'CONCLUSION') {
+                        currentSection = 'conclusion';
+                    } else if (sectionTitle === 'MANIFESTO') {
+                        currentSection = 'manifesto';
                     }
                 }
 
-                function renderSection(sectionId, markdownContent) {
-                    if (!markdownContent) {
-                        $(`#${sectionId}`).html('<p>No content available.</p>');
-                        return;
-                    }
-                    const htmlContent = markdownContent.join('\n');
-                    $(`#${sectionId}`).html(marked.parse(htmlContent));
+                if (currentSection) {
+                    sections[currentSection] = sections[currentSection] || [];
+                    sections[currentSection].push(line);
                 }
+            }
 
-                function translateManual(targetLanguage) {
-                    sectionIds.forEach(sectionId => {
-                        const textToTranslate = sections[sectionId]?.join('\n');
-                        if (textToTranslate) {
-                            $.ajax({
-                                url: 'https://translation.googleapis.com/language/translate/v2',
-                                method: 'POST',
-                                data: {
-                                    key: apiKey,
-                                    q: textToTranslate,
-                                    target: targetLanguage,
-                                    format: 'text'
-                                },
-                                success: function(response) {
-                                    if (response.data?.translations?.[0]) {
-                                        const translatedText = response.data.translations[0].translatedText;
-                                        renderSection(sectionId, translatedText.split('\n'));
-                                    } else {
-                                        $(`#${sectionId}`).html('<p>Translation failed.</p>');
-                                    }
-                                },
-                                error: function(error) {
-                                    $(`#${sectionId}`).html('<p>Translation error.</p>');
+            // Render a section
+            function renderSection(sectionId, markdownContent) {
+                if (!markdownContent || markdownContent.length === 0) {
+                    $(`#${sectionId}`).html('<p>No content available.</p>');
+                    return;
+                }
+                const htmlContent = markdownContent.join('\n');
+                $(`#${sectionId}`).html(marked.parse(htmlContent));
+            }
+
+            // Translate a section using the Google Translate API
+            function translateManual(targetLanguage) {
+                sectionIds.forEach(sectionId => {
+                    const textToTranslate = sections[sectionId]?.join('\n');
+                    if (textToTranslate) {
+                        $.ajax({
+                            url: 'https://translation.googleapis.com/language/translate/v2',
+                            method: 'POST',
+                            data: {
+                                key: apiKey,
+                                q: textToTranslate,
+                                target: targetLanguage,
+                                format: 'text'
+                            },
+                            success: function(response) {
+                                if (response.data?.translations?.[0]) {
+                                    const translatedText = response.data.translations[0].translatedText;
+                                    renderSection(sectionId, translatedText.split('\n'));
+                                } else {
+                                    $(`#${sectionId}`).html('<p>Translation failed.</p>');
                                 }
-                            });
-                        }
-                    });
-                }
-
-                renderSection('preamble', sections['preamble']);
-
-                $('.nav-link').click(function(e) {
-                    e.preventDefault();
-                    $('.nav-link').removeClass('active');
-                    $(this).addClass('active');
-                    const sectionId = $(this).data('section');
-                    $('.section-content').hide();
-                    $(`#${sectionId}`).show();
-                    if (sections[sectionId]) {
-                        renderSection(sectionId, sections[sectionId]);
-                    } else {
-                        $(`#${sectionId}`).html('<p>No content available.</p>');
-                    }
-                });
-
-                languageSelect.change(function() {
-                    const targetLanguage = $(this).val();
-                    if (targetLanguage !== 'en') {
-                        translateManual(targetLanguage);
-                    } else {
-                        sectionIds.forEach(sectionId => {
-                            renderSection(sectionId, sections[sectionId]);
+                            },
+                            error: function(error) {
+                                $(`#${sectionId}`).html('<p>Translation error.</p>');
+                            }
                         });
                     }
                 });
+            }
 
+            // Render the default 'preamble'
+            renderSection('preamble', sections['preamble']);
+
+            // Toggle sections when any data-section link is clicked (sidebar or body)
+            $(document).on('click', '[data-section]', function(e) {
+                e.preventDefault();
+                $('[data-section]').removeClass('active');
+                $(this).addClass('active');
+
+                const sectionId = $(this).data('section');
                 $('.section-content').hide();
-                $('#preamble').show();
-            })
-            .catch(error => {
-                console.error("Error fetching markdown file:", error);
-                $('#content').html('<p>Error loading content. Please try again later.</p>');
+                $(`#${sectionId}`).show();
+
+                // Ensure the chosen section is rendered
+                if (sections[sectionId]) {
+                    renderSection(sectionId, sections[sectionId]);
+                } else {
+                    $(`#${sectionId}`).html('<p>No content available.</p>');
+                }
             });
-    });
+
+            // Handle language changes
+            languageSelect.change(function() {
+                const targetLanguage = $(this).val();
+                if (targetLanguage !== 'en') {
+                    translateManual(targetLanguage);
+                } else {
+                    // If user switches back to English, re-render all original text
+                    sectionIds.forEach(sectionId => {
+                        renderSection(sectionId, sections[sectionId]);
+                    });
+                }
+            });
+
+            // Hide all sections except preamble at the start
+            $('.section-content').hide();
+            $('#preamble').show();
+
+        })
+        .catch(error => {
+            console.error("Error fetching markdown file:", error);
+            $('#content').html('<p>Error loading content. Please try again later.</p>');
+        });
+});
 </script>
 </body>
 </html>
