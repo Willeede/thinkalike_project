@@ -1,17 +1,16 @@
 import React from 'react';
 import DataTraceability from './components/DataTraceability'; // Import DataTraceability component
-import dataFlow from './data/DataTraceabilityExampleData'; // Import example DataFlow data
+import dataFlow from './data/DataTraceabilityExampleData'; // Import *empty* data
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        
-          UI Validation Revolution - DataTraceability ETHICAL DATA VALIDATION SHOWCASE
-        
+        {/* Replace this with your desired title */}
+        <h1>My Application Homepage</h1> 
       </header>
       <section className="content">
-        {/* DataTraceability Component Instance - ETHICAL DATA VALIDATION SHOWCASE - ZENITH OF EXCELLENCE EDITION! */}
+        {/* DataTraceability Component with *empty* data */}
         <DataTraceability dataFlow={dataFlow} />
       </section>
     </div>
