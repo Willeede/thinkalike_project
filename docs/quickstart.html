@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkAlike Quick Start Guide</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .back-link { margin-top: 20px; display: block; }
+        pre { background-color: #f8f9fa; padding: 10px; border: 1px solid #dee2e6; overflow-x: auto; } /* Style for code blocks */
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>ThinkAlike Quickstart Guide</h1>
+
+        <p>This guide provides the fastest way to get a local development environment set up for the ThinkAlike project.</p>
+
+        <h2>Prerequisites:</h2>
+        <ul>
+            <li>You'll need <a href="https://nodejs.org/">Node.js</a> (version 16 or higher) and npm installed on your system (for frontend development). We recommend using the LTS (Long-Term Support) version.</li>
+            <li>You'll need <a href="https://www.python.org/downloads/">Python 3.9+</a> installed on your system (for backend development).</li>
+            <li>You'll need a <a href="https://github.com/">GitHub</a> account.</li>
+            <li>You'll need Git installed on your system. (<a href="https://git-scm.com/downloads">Download Git</a>)</li>
+        </ul>
+
+        <h2>1. Clone the Repository:</h2>
+        <p>Open your terminal (or command prompt) and run the following commands:</p>
+        <pre>
+git clone https://github.com/Willeede/thinkalike_project.git
+cd thinkalike_project
+        </pre>
+
+        <h2>2. Install Dependencies:</h2>
+          <ul>
+            <li>
+                <strong>Frontend:</strong>
+                <pre>
+cd frontend
+npm install
+                </pre>
+            </li>
+            <li>
+                <strong>Backend:</strong>
+                <pre>
+cd backend
+pip install -r requirements.txt
+                </pre>
+            </li>
+          </ul>
+
+        <h2>3. Run the Project (Development Mode):</h2>
+        <ul>
+          <li>
+            <strong>Frontend:</strong>
+            <pre>
+cd frontend
+npm start
+            </pre>
+            <p>This will start the frontend development server. Open your browser and go to <a href="http://localhost:3000">http://localhost:3000</a> to view the application. You should see the initial ThinkAlike homepage.</p>
+          </li>
+          <li>
+            <strong>Backend:</strong>
+            <pre>
+cd backend/app
+uvicorn main:app --reload --port 8000
+            </pre>
+            <p>This will start the backend development server. You can access the API documentation (provided by FastAPI) by going to <a href="http://localhost:8000/docs">http://localhost:8000/docs</a>.</p>
+          </li>
+        </ul>
+
+<h2>4. Making a Change and Contributing</h2>
+
+<p>To contribute to ThinkAlike, please follow these guidelines:</p>
+<ul>
+<li>
+<p><strong>Create a new branch:</strong> Use the following command to create a new branch based on the type of task and also, including the issue number.</p>
+    <ul>
+        <li>Bug fixes:  <code>git checkout -b fix/#[issue number]-[short-description-of-fix]</code> (Example: <code>git checkout -b fix/#123-navigation-link</code>)</li>
+        <li>New features: <code>git checkout -b feature/#[issue-number]-[short-feature-description]</code> (Example: <code>git checkout -b feature/#45-add-login-form</code>)</li>
+        <li>UI Testing:  <code>git checkout -b ui-test/#[issue-number]-[short-test-description]</code> (Example: <code>git checkout -b ui-test/#67-data-table-accessibility</code>)</li>
+        <li>Code Style Changes: <code>git checkout -b style/#[issue-number]-[short-description-of-changes]</code></li>
+        <li>Documentation: <code>git checkout -b docs/#[issue-number]-[short-description-of-changes]</code></li>
+    </ul>
+</li>
+<li>
+<p><strong>Make your changes,</strong> always following the project guidelines (UI, Code, Data, AI) that you can find in the project documentation.</p>
+</li>
+<li>
+<p><strong>Test your workflows</strong> using UI testing components.</p>
+</li>
+<li>
+<p>If needed, <strong>make changes</strong> in the UI testing parameters or components, and generate a new test cycle.</p>
+</li>
+<li>
+<p><strong>Commit your changes:</strong> Use clear and descriptive commit messages.</p>
+</li>
+<li>
+<p><strong>Push your branch:</strong> <code>git push origin [your-branch-name]</code></p>
+</li>
+<li>
+<p><strong>Create a pull request:</strong> Go to the ThinkAlike repository on GitHub and create a pull request from your branch to the <code>main</code> branch.  Provide a clear description of your changes and the results of your testing.</p>
+</li>
+</ul>
+
+        <h2>5. Finding Your First Task:</h2>
+        <ul>
+            <li>Check the <a href="https://github.com/Willeede/thinkalike_project/issues">Issues tab</a> on our GitHub repository for a list of open tasks.</li>
+            <li>Start with tasks labeled "good first issue" or "help wanted".</li>
+        </ul>
+    <h2>6. Code Style Guide:</h2>
+     <ul>
+       <li>All implementations must follow a reusable approach, with clear and understandable code implementation and UI design patterns.</li>
+        <li>Make sure that your code is well documented and also, that it follows our UI testing framework.</li>
+    </ul>
+    <h2>7. Testing Guide:</h2>
+     <ul>
+       <li>Create a new branch for every test.</li>
+       <li>  Implement the tests using the UI workflow parameters, and use that data to generate the documentation about what is being tested and what are the results.</li>
+       <li>All testing should also be validated by user data (where applicable).</li>
+      </ul>
+
+        <h2>Next Steps:</h2>
+        <ul>
+            <li><strong>Explore the codebase:</strong> Familiarize yourself with the project structure and the existing code.</li>
+            <li><strong>Read the full documentation:</strong> Refer to the <code>docs/</code> folder for more in-depth information.</li>
+            <li><strong>Ask questions!</strong>  If you're unsure about anything, don't hesitate to ask for help.</li>
+        </ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
