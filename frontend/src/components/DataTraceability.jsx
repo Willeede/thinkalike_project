@@ -1,9 +1,9 @@
 import React from 'react';
-import './DataTraceability.css'; // Import CSS for styling
+import ForceGraph2D from 'react-force-graph-2d';
+import './DataTraceability.css';
 
 function DataTraceability({ dataFlow }) {
 
-  // Check if dataFlow is provided and has nodes and edges
   if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
     return (
       <div className="data-traceability">
@@ -12,37 +12,45 @@ function DataTraceability({ dataFlow }) {
     );
   }
 
+  // Color mapping for node groups (based on style_guide.md)
+  const nodeColors = {
+    1: '#FFC300', // Amber/Honey Yellow (Neutral)
+    2: '#FF5733', // Deep Orange (Active)
+    3: '#800000', // Deep Ruby (Connection) -  Use for a specific "connected" node
+  };
+
   return (
     <div className="data-traceability">
       <h2>Data Traceability</h2>
-      {/* Placeholder for the Node/Edge Graph Visualization */}
       <div className="data-traceability-graph">
-        {/* TODO: Implement graph rendering here using a library like react-force-graph */}
+        <ForceGraph2D
+          graphData={dataFlow}
+          nodeLabel="label"
+          nodeAutoColorBy="group" // We'll use this to *control* the color
+          linkDirectionalArrowLength={3.5}
+          linkDirectionalArrowRelPos={1}
+
+          // Custom node rendering
+          nodeCanvasObject={(node, ctx, globalScale) => {
+            const label = node.label;
+            const fontSize = 12 / globalScale; // Adjust font size based on zoom
+            ctx.font = `${fontSize}px Montserrat`; // Use Montserrat
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = nodeColors[node.group] || '#CCCCCC'; // Get color from mapping, default to light gray
+
+            // Draw a circle
+            const nodeSize = 8 / globalScale;   //Base size
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
+            ctx.fill();
+
+            // Draw the label
+            ctx.fillStyle = 'white'; // White text (for good contrast)
+            ctx.fillText(label, node.x, node.y + fontSize * 1.5); // Position label below the node
+          }}
+        />
       </div>
-
-      {/*  Optional: Display nodes and edges as lists (for debugging)
-      <h3>Nodes</h3>
-      <ul>
-        {dataFlow.nodes.map((node) => (
-          <li key={node.id}>
-            <strong>ID:</strong> {node.id} | <strong>Label:</strong> {node.label}
-          </li>
-        ))}
-      </ul>
-
-      <h3>Edges</h3>
-      <ul>
-        {dataFlow.edges.map((edge, index) => (
-          <li key={index}>
-            <strong>From:</strong> {edge.from} → <strong>To:</strong> {edge.to}
-          </li>
-        ))}
-      </ul>
-      */}
-
-      {/*  Remove this in the final version - only for debugging
-      <pre>{JSON.stringify(dataFlow, null, 2)}</pre>
-      */}
     </div>
   );
 }
