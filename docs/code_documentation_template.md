@@ -26,5 +26,5 @@ List test cases and workflows for that specific code implementation with clear p
 Provide examples of JSON formatted data outputs, including UI testing data and ethical compliance reports.
 *   Data parameters for UI data visualization
 *   Data parameters for code performance.
-*  Data parameters for ethical compliance.
+*   Data parameters for ethical compliance.
 *   Data parameters for Al performance and implementation guidelines.
