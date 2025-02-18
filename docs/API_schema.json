@@ -1,0 +1,30 @@
+{
+    "description": "This JSON file provides a template to generate API documentation, with parameters for testing and data validation using UI feedback components",
+  "endpoint": "/users",
+  "method": "GET",
+  "description": "Retrieves a list of all users in the ThinkAlike system",
+  "parameters": [
+    {
+      "name": "page",
+      "type": "integer",
+      "description": "The page number for pagination",
+      "required": false
+    },
+      {
+      "name": "pageSize",
+      "type": "integer",
+       "description": "The numbers of results per page",
+       "required": false
+      }
+  ],
+  "requestBody": null,
+  "responses": {
+      "200": {
+        "description": "Successful response",
+        "schema": {
+          "type": "array",
+           "items": {
+              "type": "object",
+              "properties": {
+                "user_id": { "type": "integer" },
+                "username": { "type": "string" },
