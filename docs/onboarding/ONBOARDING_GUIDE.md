@@ -31,7 +31,7 @@ Our MVP aims to demonstrate that:
 
 * **Technology enhances user freedom:** Technology empowers users to make informed choices and control their digital experience.  
 * **Data is a tool for empowerment:** Data is used transparently to provide valuable insights and to enhance user agency, not to manipulate or control users.  
-* **UI validates ethical implementation:** The UI serves as a "validation framework component" to better align code implementation with real user experience, and to ensure ethical data handling practices.
+* **UI validates ethical implementation:** The UI serves as a "validation framework component” to better align code implementation with real user experience, and to ensure ethical data handling practices.
 
 ## Core Values
 
@@ -76,7 +76,9 @@ ThinkAlike follows a modular architecture, with distinct components for the fron
 
 * **AI Models:** AI models are used for personalization, matching, and other intelligent features. (Details on specific models will be added later.)
 
-```mermaid
+```html
+<pre>
+<code class="language-mermaid">
 graph LR
     subgraph "Presentation Layer (UI)"
         UI[User Interface]
@@ -105,9 +107,12 @@ graph LR
     style Logic fill:#FF5733,stroke:#333333,stroke-width:2px
     style DB fill:#800000,stroke:#333333,stroke-width:2px
     style AI fill:#001F3F,stroke:#333333,stroke-width:2px
+</code>
+</pre>
 ```
 
-Diagram Description: The ThinkAlike architecture consists of three main layers: Presentation, Application, and Data. The Presentation Layer (UI) interacts with the Application Layer via API requests. The Application Layer contains the API, Business Logic, and AI Agents. The Business Logic and AI Agents interact with the Data Layer (Database) to store and retrieve data. Processed data and AI results are sent back to the UI through the API.
+**Diagram Description:**  
+The ThinkAlike architecture consists of three main layers: Presentation, Application, and Data. The Presentation Layer (UI) interacts with the Application Layer via API requests. The Application Layer contains the API, Business Logic, and AI Agents. The Business Logic and AI Agents interact with the Data Layer (Database) to store and retrieve data. Processed data and AI results are sent back to the UI through the API.
 
 ### UI Components
 
@@ -115,7 +120,7 @@ The ThinkAlike UI is designed to be clean, modern, and intuitive. Key design pri
 
 * **Nodes Map:** A visual metaphor of interconnected nodes to represent data relationships.  
 * **AI Agent Indicator:** A distinctive visual element representing the AI's activity.  
-* **Data Transparency:** Clear and accessible displays of data usage and AI decision-making.
+* **Data Transparency:** Clear and accessible displays of data usage and AI decision-making.  
 
 For detailed information on the visual style, refer to the `style_guide.md` file.
 
@@ -155,25 +160,24 @@ Testing is an integral part of the ThinkAlike development process. We use a vari
 
 We welcome contributions from everyone! Here's how to get involved:
 
-1. **Set up your development environment:** Follow the detailed instructions in the Quickstart Guide.  
-2. **Explore Open Issues:** Check out the Issues tab on our GitHub repository for a list of open tasks. Look for issues labeled "good first issue" or "help wanted".  
-3. **Introduce Yourself:** Say hello on our communication channels (see below) and let us know your interests and skills.  
-4. **Fork the Repository:** Create your own fork of the ThinkAlike repository on GitHub.  
-5. **Create a Feature Branch:** For each contribution, create a new branch from the main branch.  
-6. **Make Your Changes:** Implement your contribution, following coding style guidelines and best practices.  
-7. **Commit Your Changes:** Commit your changes with clear and descriptive commit messages.  
-8. **Push to Your Fork:** Push your branch to your forked repository.  
-9. **Create a Pull Request (PR):** Submit a Pull Request from your branch to the main branch of the main ThinkAlike repository.  
-10. **Code Review and Collaboration:** Project maintainers and community members will review your PR, provide feedback, and collaborate with you to get your contribution merged.
+1. **Set up your development environment**: Follow the detailed instructions in the Quickstart Guide.  
+2. **Explore Open Issues**: Check out the Issues tab on our GitHub repository for a list of open tasks. Look for issues labeled "good first issue" or "help wanted".  
+3. **Introduce Yourself**: Say hello on our communication channels (see below) and let us know your interests and skills.  
+4. **Fork the Repository**: Create your own fork of the ThinkAlike repository on GitHub.  
+5. **Create a Feature Branch**: For each contribution, create a new branch from the main branch.  
+6. **Make Your Changes**: Implement your contribution, following coding style guidelines and best practices.  
+7. **Commit Your Changes**: Commit your changes with clear and descriptive commit messages.  
+8. **Push to Your Fork**: Push your branch to your forked repository.  
+9. **Create a Pull Request (PR)**: Submit a Pull Request from your branch to the main branch of the main ThinkAlike repository.  
+10. **Code Review and Collaboration**: Project maintainers and community members will review your PR, provide feedback, and collaborate with you to get your contribution merged.
 
 ## Collaboration and Communication
 
 ThinkAlike thrives on community collaboration. We use the following channels for communication and coordination:
 
-* **GitHub:** Our central hub for code collaboration, issue tracking, project management, and documentation. [ThinkAlike GitHub Repository](#)  
-* **Communication Channels:** [Insert link to Discord/Slack/etc. here] – For real-time discussions, questions, announcements, and community building.  
-
-(Will: You need to provide the actual link.)
+* **GitHub**: Our central hub for code collaboration, issue tracking, project management, and documentation. [ThinkAlike GitHub Repository](#)  
+* **Communication Channels**: [Insert link to Discord/Slack/etc. here] – For real-time discussions, questions, announcements, and community building.  
+  (Will: You need to provide the actual link.)
 
 We encourage open communication, constructive feedback, and a collaborative spirit within the ThinkAlike community.
 
@@ -181,15 +185,15 @@ We encourage open communication, constructive feedback, and a collaborative spir
 
 Here are essential resources to help you navigate and contribute to ThinkAlike:
 
-* **Quickstart Guide:** `quickstart.md` – Step-by-step instructions for setting up your development environment.  
-* **ThinkAlike Manifesto:** [Link to Manifesto if available] – Outlines the project's vision and principles.  
-* **Architectural Design Specifications:** [Link to Architecture Docs if available] – Detailed documentation of the platform's architecture.  
-* **UI Component Library Documentation:** [Link to UI Component Docs if available] – Documentation for reusable UI components.  
-* **API Documentation (OpenAPI/Swagger):** [Link to API Docs if available] – Documentation for API endpoints and data schemas.  
-* **Data Validation Workflows Documentation:** [Link to Data Validation Docs if available] – Documentation on data handling and validation processes.  
-* **Testing Framework Documentation:** [Link to Testing Docs if available] – Documentation for testing methodologies and frameworks.  
-* **Ethical Guidelines Documentation:** [Link to Ethical Guidelines if available] – Detailed explanation of ThinkAlike's ethical framework.  
-* **Style Guide:** `style_guide.md` – Defines the visual style and branding guidelines.
+* **Quickstart Guide**: `quickstart.md` – Step-by-step instructions for setting up your development environment.  
+* **ThinkAlike Manifesto**: [Link to Manifesto if available] – Outlines the project's vision and principles.  
+* **Architectural Design Specifications**: [Link to Architecture Docs if available] – Detailed documentation of the platform's architecture.  
+* **UI Component Library Documentation**: [Link to UI Component Docs if available] – Documentation for reusable UI components.  
+* **API Documentation (OpenAPI/Swagger)**: [Link to API Docs if available] – Documentation for API endpoints and data schemas.  
+* **Data Validation Workflows Documentation**: [Link to Data Validation Docs if available] – Documentation on data handling and validation processes.  
+* **Testing Framework Documentation**: [Link to Testing Docs if available] – Documentation for testing methodologies and frameworks.  
+* **Ethical Guidelines Documentation**: [Link to Ethical Guidelines if available] – Detailed explanation of ThinkAlike's ethical framework.  
+* **Style Guide**: `style_guide.md` – Defines the visual style and branding guidelines.
 
 Remember to replace the bracketed placeholders above with the actual links to your documentation files once they exist.
 
@@ -197,15 +201,15 @@ Remember to replace the bracketed placeholders above with the actual links to yo
 
 Ready to start contributing? Here are some actionable tasks to get you going:
 
-1. **Read the ThinkAlike Manifesto and Core Values.**  
-2. **Introduce Yourself on Communication Channels.**  
-3. **Set Up Your Local Development Environment** by following the Quickstart file.  
-4. **Explore the GitHub Repository.**  
+1. **Read the ThinkAlike Manifesto and Core Values**  
+2. **Introduce Yourself on Communication Channels**  
+3. **Set Up Your Local Development Environment** by following the Quickstart file  
+4. **Explore the GitHub Repository**  
 5. **Pick a “Good First Issue.”**  
-6. **Explore Existing Code and UI Components.**  
-7. **Review Project Documentation.**  
-8. **Start with Documentation or Testing.**  
-9. **Reach Out with Questions.**  
+6. **Explore Existing Code and UI Components**  
+7. **Review Project Documentation**  
+8. **Start with Documentation or Testing**  
+9. **Reach Out with Questions**  
 10. **Start Contributing!**
 
 ## Conclusion: Build the Revolution with Us!
