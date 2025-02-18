@@ -45,6 +45,9 @@ h1, h2, h3 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
 }
+
+
+
 Imagery
 Use authentic, diverse, and high-quality images that reflect real human connections.
 Avoid generic stock photography.
