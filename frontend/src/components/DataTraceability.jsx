@@ -1,10 +1,26 @@
 import React from 'react';
+import './DataTraceability.css'; // Import CSS for styling
 
 function DataTraceability({ dataFlow }) {
+
+  // Check if dataFlow is provided and has nodes and edges
+  if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
+    return (
+      <div className="data-traceability">
+        <p>No data flow to display.</p>
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <div className="data-traceability">
       <h2>Data Traceability</h2>
-      {/* Render nodes */}
+      {/* Placeholder for the Node/Edge Graph Visualization */}
+      <div className="data-traceability-graph">
+        {/* TODO: Implement graph rendering here using a library like react-force-graph */}
+      </div>
+
+      {/*  Optional: Display nodes and edges as lists (for debugging)
       <h3>Nodes</h3>
       <ul>
         {dataFlow.nodes.map((node) => (
@@ -13,7 +29,7 @@ function DataTraceability({ dataFlow }) {
           </li>
         ))}
       </ul>
-      {/* Render edges */}
+
       <h3>Edges</h3>
       <ul>
         {dataFlow.edges.map((edge, index) => (
@@ -22,8 +38,11 @@ function DataTraceability({ dataFlow }) {
           </li>
         ))}
       </ul>
-      {/* If desired, show the entire dataFlow object as a JSON string */}
+      */}
+
+      {/*  Remove this in the final version - only for debugging
       <pre>{JSON.stringify(dataFlow, null, 2)}</pre>
+      */}
     </div>
   );
 }
