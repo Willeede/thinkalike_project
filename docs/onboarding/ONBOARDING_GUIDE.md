@@ -1,4 +1,3 @@
-
 # ThinkAlike Onboarding Guide
 
 Welcome to the ThinkAlike project! This guide provides an overview of the project, its goals, and how you can contribute.
