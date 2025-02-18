@@ -1,231 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ThinkAlike Onboarding Guide</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body { font-family: sans-serif; }
-        #sidebar { height: 100vh; overflow-y: auto; }
+        #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; } /* Fixed width sidebar */
         #content { padding-left: 20px; }
         .nav-link { cursor: pointer; }
-        .section-content { display: none; margin-bottom: 20px; }
-        #language-selector { position: absolute; top: 10px; right: 10px; }
+        .section-content { display: none; margin-bottom: 20px;}
+        .active-section { display: block; } /* Class for active section */
     </style>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar with navigation -->
         <nav id="sidebar" class="col-md-3 col-lg-2 bg-light border-right">
-            <div class="sidebar-sticky px-3">
-                <div id="language-selector" class="mb-3">
-                    <select class="form-control form-control-sm" id="languageSelect">
-                        <option value="en">English</option>
-                        <option value="es">Spanish</option>
-                        <option value="fr">French</option>
-                        <option value="de">German</option>
-                    </select>
-                </div>
+            <div class="sidebar-sticky px-3 pt-3">
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link active" data-section="preamble">Preamble</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="section1">Section 1: Project Overview</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="section2">Section 2: Core Values</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="section3">Section 3: Architecture</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="section4">Section 4: UI Components</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="section5">Section 5: Data Handling</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="section6">Section 6: AI Models</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="section7">Section 7: Testing</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="section8">Section 8: Collaboration</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="section9">Section 9: Resources</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="section10">Section 10: Tasks</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="appendices">Appendices</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="conclusion">Conclusion</a></li>
-                    <li class="nav-item"><a class="nav-link" data-section="manifesto">Manifesto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="overview">Project Overview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="values">Core Values</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="architecture">Architecture</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="ui">UI Components</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="data">Data Handling</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="ai">AI Models</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="testing">Testing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="contributing">Contributing</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#" data-section="quickstart">Quickstart</a></li>
                 </ul>
             </div>
         </nav>
 
-        <!-- Main content sections -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" id="content">
-            <!-- Preamble with an example table of contents in the body -->
-            <div id="preamble" class="section-content">
-                <h1>Welcome to ThinkAlike</h1>
-                <h2>Table of Contents</h2>
-                <ul>
-                    <li><a href="#" data-section="section1">Project Overview: Building Actionable Utopia</a></li>
-                    <li><a href="#" data-section="section2">Core Values and Ethical Framework</a></li>
-                    <li><a href="#" data-section="section10">Get Started: Setting Up Your Development Environment</a></li>
-                    <li><a href="#" data-section="section3">ThinkAlike Architecture: Transparency by Design</a></li>
-                    <li><a href="#" data-section="section4">Exploring the UI Component Library</a></li>
-                    <li><a href="#" data-section="section5">Data Handling and Security</a></li>
-                    <li><a href="#" data-section="section6">Ethical AI Model Implementation</a></li>
-                    <li><a href="#" data-section="section7">Testing and Validation Framework</a></li>
-                    <li><a href="#" data-section="section8">Contribution Guidelines</a></li>
-                    <li><a href="#" data-section="section9">Collaboration and Communication</a></li>
-                    <li><a href="#" data-section="section9">Key Project Resources and Documentation</a></li>
-                    <li><a href="#" data-section="section10">Actionable Tasks</a></li>
-                    <li><a href="#" data-section="conclusion">Conclusion: Build the Revolution with Us!</a></li>
-                </ul>
-            </div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="content">
+            <div id="overview" class="section-content"></div>
+            <div id="values" class="section-content"></div>
+            <div id="architecture" class="section-content"></div>
+            <div id="ui" class="section-content"></div>
+            <div id="data" class="section-content"></div>
+            <div id="ai" class="section-content"></div>
+            <div id="testing" class="section-content"></div>
+            <div id="contributing" class="section-content"></div>
+            <div id="quickstart" class="section-content"></div>
 
-            <!-- Other sections initially empty; will be populated by Markdown content -->
-            <div id="section1" class="section-content"></div>
-            <div id="section2" class="section-content"></div>
-            <div id="section3" class="section-content"></div>
-            <div id="section4" class="section-content"></div>
-            <div id="section5" class="section-content"></div>
-            <div id="section6" class="section-content"></div>
-            <div id="section7" class="section-content"></div>
-            <div id="section8" class="section-content"></div>
-            <div id="section9" class="section-content"></div>
-            <div id="section10" class="section-content"></div>
-            <div id="appendices" class="section-content"></div>
-            <div id="conclusion" class="section-content"></div>
-            <div id="manifesto" class="section-content"></div>
         </main>
     </div>
 </div>
 
-<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked@4.0.0/marked.min.js"></script>
+<script src="marked.min.js"></script>
 <script>
-$(document).ready(function() {
-    const markdownFilePath = './ONBOARDING_GUIDE.md'; 
-    const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY'; // Replace with your actual key
-    const languageSelect = $('#languageSelect');
-    const sectionIds = [
-        'preamble', 'section1', 'section2', 'section3', 'section4', 
-        'section5', 'section6', 'section7', 'section8', 'section9', 
-        'section10', 'appendices', 'conclusion', 'manifesto'
-    ];
-    const sections = {};
+    $(document).ready(function() {
+        // Load and render sections from ONBOARDING_GUIDE.md
+        $.get('../ONBOARDING_GUIDE.md', function(data) { // Relative path from index.html
+            const sections = parseMarkdownSections(data);
 
-    // Fetch and parse the markdown
-    fetch(markdownFilePath)
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            return response.text();
-        })
-        .then(markdownData => {
-            const lines = markdownData.split('\n');
-            let currentSection = null;
-
-            // Break the markdown data into sections based on heading lines
-            for (const line of lines) {
-                // Example: if a line starts with # = preamble, if ## 1. = section1, etc.
-                if (line.startsWith('# ')) {
-                    currentSection = 'preamble';
-                } else if (line.startsWith('## ')) {
-                    // Extract numeric part, e.g., "## 1. Something" => "1."
-                    const sectionTitle = line.replace('## ', '').trim();
-                    if (sectionTitle.match(/^\d+\./)) {
-                        const sectionNum = sectionTitle.split('.')[0];
-                        currentSection = `section${sectionNum}`;
-                    } else if (sectionTitle === 'APPENDICES') {
-                        currentSection = 'appendices';
-                    } else if (sectionTitle === 'CONCLUSION') {
-                        currentSection = 'conclusion';
-                    } else if (sectionTitle === 'MANIFESTO') {
-                        currentSection = 'manifesto';
-                    }
-                }
-
-                if (currentSection) {
-                    sections[currentSection] = sections[currentSection] || [];
-                    sections[currentSection].push(line);
-                }
+            // Render each section
+            for (const sectionId in sections) {
+                renderSection(sectionId, sections[sectionId]);
             }
 
-            // Render a section
-            function renderSection(sectionId, markdownContent) {
-                if (!markdownContent || markdownContent.length === 0) {
-                    $(`#${sectionId}`).html('<p>No content available.</p>');
-                    return;
-                }
-                const htmlContent = markdownContent.join('\n');
-                $(`#${sectionId}`).html(marked.parse(htmlContent));
-            }
-
-            // Translate a section using the Google Translate API
-            function translateManual(targetLanguage) {
-                sectionIds.forEach(sectionId => {
-                    const textToTranslate = sections[sectionId]?.join('\n');
-                    if (textToTranslate) {
-                        $.ajax({
-                            url: 'https://translation.googleapis.com/language/translate/v2',
-                            method: 'POST',
-                            data: {
-                                key: apiKey,
-                                q: textToTranslate,
-                                target: targetLanguage,
-                                format: 'text'
-                            },
-                            success: function(response) {
-                                if (response.data?.translations?.[0]) {
-                                    const translatedText = response.data.translations[0].translatedText;
-                                    renderSection(sectionId, translatedText.split('\n'));
-                                } else {
-                                    $(`#${sectionId}`).html('<p>Translation failed.</p>');
-                                }
-                            },
-                            error: function(error) {
-                                $(`#${sectionId}`).html('<p>Translation error.</p>');
-                            }
-                        });
-                    }
-                });
-            }
-
-            // Render the default 'preamble'
-            renderSection('preamble', sections['preamble']);
-
-            // Toggle sections when any data-section link is clicked (sidebar or body)
-            $(document).on('click', '[data-section]', function(e) {
-                e.preventDefault();
-                $('[data-section]').removeClass('active');
-                $(this).addClass('active');
-
-                const sectionId = $(this).data('section');
-                $('.section-content').hide();
-                $(`#${sectionId}`).show();
-
-                // Ensure the chosen section is rendered
-                if (sections[sectionId]) {
-                    renderSection(sectionId, sections[sectionId]);
-                } else {
-                    $(`#${sectionId}`).html('<p>No content available.</p>');
-                }
-            });
-
-            // Handle language changes
-            languageSelect.change(function() {
-                const targetLanguage = $(this).val();
-                if (targetLanguage !== 'en') {
-                    translateManual(targetLanguage);
-                } else {
-                    // If user switches back to English, re-render all original text
-                    sectionIds.forEach(sectionId => {
-                        renderSection(sectionId, sections[sectionId]);
-                    });
-                }
-            });
-
-            // Hide all sections except preamble at the start
-            $('.section-content').hide();
-            $('#preamble').show();
-
-        })
-        .catch(error => {
-            console.error("Error fetching markdown file:", error);
-            $('#content').html('<p>Error loading content. Please try again later.</p>');
+            // Show the first section by default
+            $('#overview').show();
+            $('.nav-link[data-section="overview"]').addClass('active');
         });
-});
+           $.get('quickstart.md', function(data) { // Relative path from index.html
+
+               $('#quickstart').html(marked.parse(data));
+           });
+
+        // Sidebar navigation click handler
+        $('.nav-link').click(function(e) {
+            e.preventDefault();
+            $('.nav-link').removeClass('active');
+            $(this).addClass('active');
+
+            const sectionId = $(this).data('section');
+            $('.section-content').hide(); // Hide all sections
+            $(`#${sectionId}`).show(); // Show the selected section
+        });
+    });
+
+    function parseMarkdownSections(markdown) {
+      const sections = {};
+      const lines = markdown.split('\n');
+      let currentSection = null;
+
+      for (const line of lines) {
+        if (line.startsWith('# ')) {
+          currentSection = 'overview';
+          sections[currentSection] = sections[currentSection] || [];
+        } else if (line.startsWith('## Core Values')) {
+          currentSection = 'values';
+          sections[currentSection] = sections[currentSection] || [];
+        } else if (line.startsWith('## Architecture')) {
+          currentSection = 'architecture';
+          sections[currentSection] = sections[currentSection] || [];
+        } else if (line.startsWith('## UI Components')) {
+          currentSection = 'ui';
+          sections[currentSection] = sections[currentSection] || [];
+        } else if (line.startsWith('## Data Handling')) {
+          currentSection = 'data';
+          sections[currentSection] = sections[currentSection] || [];
+        } else if (line.startsWith('## AI Models')) {
+          currentSection = 'ai';
+          sections[currentSection] = sections[currentSection] || [];
+        } else if (line.startsWith('## Testing')) {
+          currentSection = 'testing';
+          sections[currentSection] = sections[currentSection] || [];
+        } else if (line.startsWith('## How to Contribute')) {
+          currentSection = 'contributing';
+          sections[currentSection] = sections[currentSection] || [];
+        }
+
+        if (currentSection) {
+          sections[currentSection].push(line);
+        }
+      }
+      return sections;
+    }
+
+
+    function renderSection(sectionId, markdownContent) {
+      if (!markdownContent) {
+        console.warn(`renderSection: markdownContent is falsy for sectionId: ${sectionId}`);
+        return;
+      }
+      const htmlContent = marked.parse(markdownContent.join('\n'));
+      $(`#${sectionId}`).html(htmlContent);
+    }
+
 </script>
+
 </body>
 </html>
