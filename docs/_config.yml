@@ -1,8 +1,50 @@
-# Welcome to Jekyll!
-#
-# This default YAML front matter is required for all Jekyll blogs and websites.
-# Read more: https://jekyllrb.com/docs/front-matter/
+# Site settings
+title: ThinkAlike Project Documentation Hub   # <-- UPDATE THIS: Your Documentation Hub Title (e.g., "ThinkAlike Project Documentation")
+description: Welcome to the official documentation for the ThinkAlike Project, an open-source platform dedicated to ethical technology and human connection. # <-- UPDATE THIS: Your Project Description (briefly describe ThinkAlike)
+author:
+  name: Your Name or ThinkAlike Community  # <-- UPDATE THIS: Your Name or Project/Community Name
+  email: your-email@example.com        # <-- UPDATE THIS: Your Contact Email (Optional)
 
-title: ThinkAlike Project Documentation  # Your Documentation Hub Title
-description: Welcome to the ThinkAlike Project! Explore our documentation. # Project Description
-theme: minima # A simple Jekyll theme (you can change this later)
+# Build settings
+markdown: kramdown
+theme: minima
+
+# Default permalinks
+permalink: pretty
+
+# Pagination -  You can enable pagination later if needed for blog-style documentation
+# paginate: 5
+# paginate_path: "/blog/page:num/"
+
+# Exclude from processing -  You can exclude files or folders if needed
+# exclude:
+#   - " Gemfile"
+#   - " Gemfile.lock"
+#   - " node_modules"
+#   - " vendor/bundle/"
+#   - " vendor/cache/"
+#   - " vendor/gems/"
+#   - " vendor/ruby/"
+
+# Collections - You can define collections for different types of content later (e.g., blog posts, API docs, etc.)
+# collections:
+#   posts:
+#     output: true
+#     permalink: /blog/:year/:month/:day/:title/
+
+# Defaults - You can set defaults for different types of pages/documents
+defaults:
+  - scope:
+      path: "" # empty string for all files
+      type: "pages" # default for all pages
+    values:
+      layout: "default" # Use the 'default' layout for all pages
+
+# Custom variables - You can define custom variables to use in your templates/layouts
+# For example:
+# baseurl: "/thinkalike_project" # If you are deploying to a subdirectory (not needed for GitHub Pages root)
+
+# ---
+# _yaml = YAML.load(File.read('_config.yml'))
+#  puts _yaml['variable_name']
+# ---
