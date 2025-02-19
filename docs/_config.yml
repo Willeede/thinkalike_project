@@ -1,0 +1,8 @@
+# Welcome to Jekyll!
+#
+# This default YAML front matter is required for all Jekyll blogs and websites.
+# Read more: https://jekyllrb.com/docs/front-matter/
+
+title: ThinkAlike Project Documentation  # Your Documentation Hub Title
+description: Welcome to the ThinkAlike Project! Explore our documentation. # Project Description
+theme: minima # A simple Jekyll theme (you can change this later)
