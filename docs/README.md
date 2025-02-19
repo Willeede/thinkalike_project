@@ -49,9 +49,14 @@ The full project documentation is available at [Your Render Documentation Site U
 
 ## License
 
-This project is licensed under the [Your Chosen License - e.g., MIT License] - see the [LICENSE](LICENSE) file for details.  *(You MUST choose a license and create a LICENSE file.)*
+## License
 
-## Contact (Optional)
+The code for this project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-[Provide a way for people to contact you or the project maintainers - e.g., a link to a Discord server, a Gitter channel, or GitHub Discussions.  *Do not* put your personal email address here.]
+Visual assets (images, logos, and the `style_guide.md` file) are licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License [CC BY-NC-ND](link to the license).
 
+We encourage contributions and modifications to the code, but we request that any derivative works respect the core visual style and branding of the ThinkAlike project.
+
+## Contact 
+
+ThinkAlikeAI@proton.me
