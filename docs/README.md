@@ -49,8 +49,6 @@ The full project documentation is available at [Your Render Documentation Site U
 
 ## License
 
-## License
-
 The code for this project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 Visual assets (images, logos, and the `style_guide.md` file) are licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License [CC BY-NC-ND](link to the license).
