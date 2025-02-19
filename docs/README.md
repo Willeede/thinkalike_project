@@ -1,6 +1,6 @@
 # ThinkAlike: Connect with Purpose
 
-**Tagline:** Where Relationships Begin with Shared Values (or choose a different, concise tagline)
+Connecting Like-Minded Individuals
 
 ## What is ThinkAlike?
 
