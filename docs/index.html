@@ -40,7 +40,13 @@
             color: #FF8C00; /* Neon Orange on hover */
             text-decoration: underline; /* Add underline on hover */
         }
+        #content {
+            margin-top: 20px;
+        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.0.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
 
@@ -49,26 +55,45 @@
         <p>Welcome to the ThinkAlike Project! Explore our documentation below:</p>
 
         <ul>
-            <li><a href="onboarding_guide.md" target="_blank" rel="noopener noreferrer">Onboarding Guide</a></li>
-            <li><a href="quickstart_guide.md" target="_blank" rel="noopener noreferrer">Quick Start Guide</a></li>
-            <li><a href="style_guide.md" target="_blank" rel="noopener noreferrer">Style Guide</a></li>
-            <li><a href="CODE_OF_CONDUCT.md" target="_blank" rel="noopener noreferrer">Code of Conduct</a></li>
-            <li><a href="CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contributing Guide</a></li>
-            <li><a href="INSTALLATION.md" target="_blank" rel="noopener noreferrer">Installation Guide</a></li>
-             <li><a href="ThinkAlike_Architectural_Design_Specifications.md" target="_blank" rel="noopener noreferrer">Architectural Design</a></li>
-            <li><a href="ThinkAlike_Data_Model_Schema.md" target="_blank" rel="noopener noreferrer">Data Model Schema</a></li>
-            <li><a href="ThinkAlike_Security_and_Privacy_Implementation_Plan.md" target="_blank" rel="noopener noreferrer">Security and Privacy Plan</a></li>
-            <li><a href="ThinkAlike_Testing_and_Validation_Plan.md" target="_blank" rel="noopener noreferrer">Testing and Validation Plan</a></li>
-            <li><a href="ThinkAlike_UI-UX_Style_Guide.md" target="_blank" rel="noopener noreferrer">UI-UX Style Guide</a></li>
-            <li><a href="ThinkAlike__MVP_Implementation_Guide.md" target="_blank" rel="noopener noreferrer">MVP Implementation Guide</a></li>
-            <li><a href="funding_model.md" target="_blank" rel="noopener noreferrer">Funding Model</a></li>
-            <li><a href="project_overview.md" target="_blank" rel="noopener noreferrer">Project Overview</a></li>
-             <li><a href="ai_driven_workflow.md" target="_blank" rel="noopener noreferrer">AI Driven Workflow</a></li>
-            <li><a href="code_documentation_template.md" target="_blank" rel="noopener noreferrer">Code Documentation Template</a></li>
+            <li><a href="#" data-file="onboarding_guide.md">Onboarding Guide</a></li>
+            <li><a href="#" data-file="quickstart_guide.md">Quick Start Guide</a></li>
+            <li><a href="#" data-file="style_guide.md">Style Guide</a></li>
+            <li><a href="#" data-file="CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+            <li><a href="#" data-file="CONTRIBUTING.md">Contributing Guide</a></li>
+            <li><a href="#" data-file="INSTALLATION.md">Installation Guide</a></li>
+            <li><a href="#" data-file="ThinkAlike_Architectural_Design_Specifications.md">Architectural Design</a></li>
+            <li><a href="#" data-file="ThinkAlike_Data_Model_Schema.md">Data Model Schema</a></li>
+            <li><a href="#" data-file="ThinkAlike_Security_and_Privacy_Implementation_Plan.md">Security and Privacy Plan</a></li>
+            <li><a href="#" data-file="ThinkAlike_Testing_and_Validation_Plan.md">Testing and Validation Plan</a></li>
+            <li><a href="#" data-file="ThinkAlike_UI-UX_Style_Guide.md">UI-UX Style Guide</a></li>
+            <li><a href="#" data-file="ThinkAlike__MVP_Implementation_Guide.md">MVP Implementation Guide</a></li>
+            <li><a href="#" data-file="funding_model.md">Funding Model</a></li>
+            <li><a href="#" data-file="project_overview.md">Project Overview</a></li>
+            <li><a href="#" data-file="ai_driven_workflow.md">AI Driven Workflow</a></li>
+            <li><a href="#" data-file="code_documentation_template.md">Code Documentation Template</a></li>
             <li><a href="API_schema.json" target="_blank" rel="noopener noreferrer">API Schema</a></li>
             <li><a href="https://github.com/Willeede/thinkalike_project" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
         </ul>
+
+        <div id="content">
+            <h2>Welcome to the ThinkAlike Project Documentation</h2>
+            <p>Please select a document from the list above to view its contents here.</p>
+        </div>
     </div>
 
+    <script>
+        $(document).ready(function() {
+            $('a[data-file]').click(function(e) {
+                e.preventDefault();
+                const file = $(this).data('file');
+                $.get(file, function(data) {
+                    $('#content').html(marked(data));
+                    mermaid.init();
+                }).fail(function() {
+                    $('#content').html('<p>Error loading ' + file + '. Please check the file path or server logs.</p>');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
