@@ -3,72 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ThinkAlike Project - Documentation Hub</title>
+    <title>ThinkAlike Onboarding Guide</title>
     <style>
-        body {
-            font-family: sans-serif;
-            padding: 20px;
-            background-color: #000; /* Black background */
-            color: #ccc; /* Light gray text */
-        }
-        .container {
-            max-width: 800px; /* Limit width for readability */
-            margin: 0 auto;     /* Center the content */
-        }
-        h1 {
-            color: #FFC300; /* Amber/Honey Yellow heading */
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        p {
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        ul {
-            list-style: none; /* Remove default bullet points */
-            padding: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        a {
-            color: #FF5733; /* Deep Orange links */
-            text-decoration: none; /* Remove underlines */
-            transition: color 0.2s ease-in-out; /* Smooth color transition on hover */
-        }
-        a:hover {
-            color: #FF8C00; /* Neon Orange on hover */
-            text-decoration: underline; /* Add underline on hover */
-        }
+        body { font-family: sans-serif; }
+        #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; background-color: #f8f9fa; border-right: 1px solid #dee2e6; }
+        #content { padding-left: 20px; }
+        .nav-link { cursor: pointer; padding: .5rem 1rem; color: #007bff; }
+        .nav-link:hover { background-color: #e9ecef; }
+        .nav-link.active { background-color: #007bff; color: white; }
+        .section-content { display: none; margin-bottom: 20px;}
+        .active-section { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>ThinkAlike Project - Documentation Hub</h1>
-        <p>Welcome to the ThinkAlike Project! Explore our documentation below:</p>
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebar" class="col-md-3 col-lg-2">
+            <div class="sidebar-sticky px-3 pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="overview">Project Overview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="core-values">Core Values</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="architecture">Architecture</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="ui-components">UI Components</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="data-handling">Data Handling</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="ai-models">AI Models</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="testing">Testing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="contributing">Contributing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="quickstart">Quickstart</a></li>
+                </ul>
+            </div>
+        </nav>
 
-        <ul>
-            <li><a href="onboarding_guide.md" target="_blank" rel="noopener noreferrer">Onboarding Guide</a></li>
-            <li><a href="quickstart_guide.md" target="_blank" rel="noopener noreferrer">Quick Start Guide</a></li>
-            <li><a href="style_guide.md" target="_blank" rel="noopener noreferrer">Style Guide</a></li>
-            <li><a href="CODE_OF_CONDUCT.md" target="_blank" rel="noopener noreferrer">Code of Conduct</a></li>
-            <li><a href="CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contributing Guide</a></li>
-            <li><a href="INSTALLATION.md" target="_blank" rel="noopener noreferrer">Installation Guide</a></li>
-             <li><a href="ThinkAlike_Architectural_Design_Specifications.md" target="_blank" rel="noopener noreferrer">Architectural Design</a></li>
-            <li><a href="ThinkAlike_Data_Model_Schema.md" target="_blank" rel="noopener noreferrer">Data Model Schema</a></li>
-            <li><a href="ThinkAlike_Security_and_Privacy_Implementation_Plan.md" target="_blank" rel="noopener noreferrer">Security and Privacy Plan</a></li>
-            <li><a href="ThinkAlike_Testing_and_Validation_Plan.md" target="_blank" rel="noopener noreferrer">Testing and Validation Plan</a></li>
-            <li><a href="ThinkAlike_UI-UX_Style_Guide.md" target="_blank" rel="noopener noreferrer">UI-UX Style Guide</a></li>
-            <li><a href="ThinkAlike__MVP_Implementation_Guide.md" target="_blank" rel="noopener noreferrer">MVP Implementation Guide</a></li>
-            <li><a href="funding_model.md" target="_blank" rel="noopener noreferrer">Funding Model</a></li>
-            <li><a href="project_overview.md" target="_blank" rel="noopener noreferrer">Project Overview</a></li>
-             <li><a href="ai_driven_workflow.md" target="_blank" rel="noopener noreferrer">AI Driven Workflow</a></li>
-            <li><a href="code_documentation_template.md" target="_blank" rel="noopener noreferrer">Code Documentation Template</a></li>
-            <li><a href="API_schema.json" target="_blank" rel="noopener noreferrer">API Schema</a></li>
-            <li><a href="https://github.com/Willeede/thinkalike_project" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
-        </ul>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="content">
+            <div id="overview" class="section-content" style="display: block;"></div>
+            <div id="values" class="section-content"></div>
+            <div id="architecture" class="section-content"></div>
+            <div id="ui-components" class="section-content"></div>
+            <div id="data-handling" class="section-content"></div>
+            <div id="ai-models" class="section-content"></div>
+            <div id="testing" class="section-content"></div>
+            <div id="contributing" class="section-content"></div>
+            <div id="quickstart" class="section-content"></div>
+        </main>
     </div>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Configure marked.js
+    marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true, // Enable GitHub Flavored Markdown
+        breaks: false,
+        pedantic: false,
+        sanitize: false, // IMPORTANT: Allow HTML tags in Markdown
+        smartLists: true,
+        smartypants: false
+    });
+
+    // Load ONBOARDING_GUIDE.md
+    $.get('ONBOARDING_GUIDE.md', function(data) {
+        const sections = parseMarkdownSections(data);
+
+        // Render each section
+        for (const sectionId in sections) {
+            renderSection(sectionId, sections[sectionId]);
+        }
+
+        // Show the overview section by default
+        $('#overview').show();
+        $('.nav-link[data-section="overview"]').addClass('active');
+
+        // Initialize Mermaid *after* rendering Markdown (with a delay)
+        setTimeout(function() {
+            mermaid.init();
+        }, 500); // Increased delay
+    });
+
+    // Load and render quickstart.md
+    $.get('quickstart.md', function(data) {
+        $('#quickstart').html(marked.parse(data));
+    });
+
+    // Sidebar navigation click handler
+    $('.nav-link').click(function(e) {
+        e.preventDefault();
+        $('.nav-link').removeClass('active');
+        $(this).addClass('active');
+
+        const sectionId = $(this).data('section');
+        $('.section-content').hide(); // Hide all sections
+        $(`#${sectionId}`).show(); // Show the selected section
+    });
+
+    // Function to parse Markdown into sections
+    function parseMarkdownSections(markdown) {
+        const sections = {};
+        const lines = markdown.split('\n');
+        let currentSection = null;
+
+        for (const line of lines) {
+            if (line.startsWith('# ')) {
+                currentSection = 'overview';
+                sections[currentSection] = sections[currentSection] || [];
+            } else if (line.startsWith('## ')) {
+                // Extract section ID from heading
+                currentSection = line.substring(3).trim().toLowerCase().replace(/ /g, '-');
+                sections[currentSection] = sections[currentSection] || [];
+            }
+
+            if (currentSection) {
+                sections[currentSection].push(line);
+            }
+        }
+
+        return sections;
+    }
+
+    // Function to render a section
+    function renderSection(sectionId, markdownContent) {
+      if (!markdownContent) {
+        console.warn(`renderSection: markdownContent is falsy for sectionId: ${sectionId}`);
+        return;
+      }
+      const htmlContent = marked.parse(markdownContent.join('')); // Join with empty string
+      $(`#${sectionId}`).html(htmlContent);
+    }
+});
+
+</script>
 </body>
 </html>
