@@ -119,10 +119,10 @@
             $('#overview').addClass('active-section');
             $('.nav-link[data-section="overview"]').addClass('active');
 
-            // Render Mermaid diagrams
-            setTimeout(function() {
-                mermaid.init(undefined, '.mermaid');
-            }, 1000);
+            // Render Mermaid diagrams without using eval
+            document.querySelectorAll('.mermaid').forEach((element) => {
+                mermaid.contentLoaded();
+            });
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.error('Failed to load onboarding_guide.md:', textStatus, errorThrown);
             $('#content').html('<p>Error loading onboarding_guide.md. Please check the file path or server logs.</p>');
@@ -132,7 +132,9 @@
         $.get('quickstart_guide.md', function(data) {
             const htmlContent = marked.parse(data);
             $('#quickstart').html(htmlContent);
-            mermaid.init(undefined, '#quickstart .mermaid');
+            document.querySelectorAll('#quickstart .mermaid').forEach((element) => {
+                mermaid.contentLoaded();
+            });
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.error('Failed to load quickstart_guide.md:', textStatus, errorThrown);
             $('#quickstart').html('<p>Error loading quickstart_guide.md.</p>');
