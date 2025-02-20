@@ -8,7 +8,7 @@ This document describes the data models and database schema used in the ThinkAli
 
 ## Entity-Relationship Diagram (ERD)
 
-*(Will:  Insert an image of your ERD here.  You can create this using a tool like dbdiagram.io, Lucidchart, or draw.io)*
+*(Will: Insert an image of your ERD here. You can create this using a tool like dbdiagram.io, Lucidchart, or draw.io)*
 
 ![ER Diagram Placeholder](placeholder.png)
 
@@ -30,11 +30,10 @@ This table stores basic user account information.
 
 **Example Data:**
 
-user_id	username	email	password_hash	created_at	is_active	full_name
-1	johndoe	john.doe@example.com	(hashed)	2024-03-15T10:00:00Z	true	John Doe
-2	janesmith	[email address removed]	(hashed)	2024-03-15T11:30:00Z	true	Jane Smith
-
-Export to Sheets
+| user_id | username  | email                   | password_hash | created_at              | is_active | full_name |
+|---------|-----------|-------------------------|---------------|-------------------------|-----------|-----------|
+| 1       | johndoe   | john.doe@example.com    | (hashed)      | 2024-03-15T10:00:00Z    | true      | John Doe  |
+| 2       | janesmith | [email address removed] | (hashed)      | 2024-03-15T11:30:00Z    | true      | Jane Smith|
 
 ### 2. Profiles
 
@@ -51,11 +50,10 @@ This table stores detailed user profile information.
 
 **Example Data:**
 
-profile_id	user_id	bio	birthdate	location	profile_picture_url
-1	1	Software developer and AI enthusiast.	1990-05-10	New York, USA	/images/users/1.jpg
-2	2	Passionate about ethical technology.	1995-03-15	London, UK	/images/users/2.jpg
-
-Export to Sheets
+| profile_id | user_id | bio                                  | birthdate    | location     | profile_picture_url   |
+|------------|---------|--------------------------------------|--------------|--------------|-----------------------|
+| 1          | 1       | Software developer and AI enthusiast.| 1990-05-10   | New York, USA| /images/users/1.jpg   |
+| 2          | 2       | Passionate about ethical technology. | 1995-03-15   | London, UK   | /images/users/2.jpg   |
 
 ### 3. Connections
 
@@ -71,11 +69,10 @@ This table stores relationships between users.
 
 **Example Data:**
 
-connection_id	user1_id	user2_id	status	created_at
-1	1	2	'accepted'	2024-03-15T12:00:00Z
-2	1	3	'pending'	2024-03-15T13:00:00Z
-
-Export to Sheets
+| connection_id | user1_id | user2_id | status    | created_at              |
+|---------------|----------|----------|-----------|-------------------------|
+| 1             | 1        | 2        | accepted  | 2024-03-15T12:00:00Z    |
+| 2             | 1        | 3        | pending   | 2024-03-15T13:00:00Z    |
 
 ### 4. Values_Interests (Example - Adapt to your needs)
 
@@ -83,7 +80,7 @@ This is a *simplified* example. You'll likely need a more sophisticated structur
 
 | Column Name           | Data Type      | Constraints                                   | Description                                                    | Ethical Considerations                                                     |
 | --------------------- | -------------- |-----------------------------------------------|---------------------------------------------------------------|-------------------------------------------------------------------------|
-|**value_interest_id**| `SERIAL`       |`PRIMARY KEY`                                  | Unique ID.                                                  |
+| **value_interest_id**| `SERIAL`       |`PRIMARY KEY`                                  | Unique ID.                                                  |
 | **user_id**           | `INTEGER`      | `NOT NULL`, `FOREIGN KEY` referencing `Users` | The user to whom this value/interest belongs.                   | Ensure referential integrity.                                          |
 | **category**          | `VARCHAR(50)`  | `NOT NULL`                                    | Category of the value/interest (e.g., "Technology", "Ethics"). | Limit categories to prevent overly granular data collection; allow users to define custom categories (with moderation). |
 | **value**             | `VARCHAR(100)` | `NOT NULL`                                    | The specific value or interest.                               | Avoid sensitive or potentially discriminatory values; allow user-defined values (with moderation).                    |
@@ -91,14 +88,11 @@ This is a *simplified* example. You'll likely need a more sophisticated structur
 
 **Example Data:**
 
-value_interest_id	user_id	category	value	importance
-1	1	Technology	AI Ethics	5
-2	1	Social Impact	Sustainable Development	4
-3	2	Ethics	Data Privacy	5
-
-Export to Sheets
-
-(Add more tables as needed for your AI agent interactions, groups, etc.)
+| value_interest_id | user_id | category        | value              | importance |
+|-------------------|---------|-----------------|--------------------|------------|
+| 1                 | 1       | Technology      | AI Ethics          | 5          |
+| 2                 | 1       | Social Impact   | Sustainable Development | 4          |
+| 3                 | 2       | Ethics          | Data Privacy       | 5          |
 
 ---
 
