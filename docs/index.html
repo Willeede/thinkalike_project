@@ -11,9 +11,14 @@
         .nav-link { cursor: pointer; padding: .5rem 1rem; color: #007bff; }
         .nav-link:hover { background-color: #e9ecef; }
         .nav-link.active { background-color: #007bff; color: white; }
-        .section-content { display: none; margin-bottom: 20px;}
+        .section-content { display: none; margin-bottom: 20px; }
         .active-section { display: block; }
+        pre { background-color: #f8f9fa; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px; }
+        code { font-family: 'Courier New', Courier, monospace; }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.0.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
 
@@ -22,7 +27,7 @@
         <nav id="sidebar" class="col-md-3 col-lg-2">
             <div class="sidebar-sticky px-3 pt-3">
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="overview">Project Overview</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#" data-section="overview">Project Overview</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" data-section="core-values">Core Values</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" data-section="architecture">Architecture</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" data-section="ui-components">UI Components</a></li>
@@ -36,8 +41,8 @@
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="content">
-            <div id="overview" class="section-content" style="display: block;"></div>
-            <div id="values" class="section-content"></div>
+            <div id="overview" class="section-content"></div>
+            <div id="core-values" class="section-content"></div>
             <div id="architecture" class="section-content"></div>
             <div id="ui-components" class="section-content"></div>
             <div id="data-handling" class="section-content"></div>
@@ -49,20 +54,23 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <script>
     $(document).ready(function() {
         // Configure marked.js
         marked.setOptions({
-            renderer: new marked.Renderer(),
-            gfm: true, // Enable GitHub Flavored Markdown
+            gfm: true,
+            tables: true,
             breaks: false,
             pedantic: false,
-            sanitize: false, // IMPORTANT: Allow HTML tags in Markdown
+            sanitize: false,
             smartLists: true,
             smartypants: false
+        });
+
+        // Configure mermaid.js
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'default'
         });
 
         // Load ONBOARDING_GUIDE.md
@@ -75,66 +83,16 @@
             }
 
             // Show the overview section by default
-            $('#overview').show();
+            $('#overview').addClass('active-section');
             $('.nav-link[data-section="overview"]').addClass('active');
 
-            // Initialize Mermaid *after* rendering Markdown (with a delay)
+            // Render Mermaid diagrams
             setTimeout(function() {
-                mermaid.init();
-            }, 500); // Increased delay
+                mermaid.init(undefined, '.mermaid');
+            }, 1000); // Increased delay to ensure DOM is updated
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.error('Failed to load onboarding_guide.md:', textStatus, errorThrown);
+            $('#content').html('<p>Error loading onboarding_guide.md. Please check the file path or server logs.</p>');
         });
 
-        // Load and render quickstart.md
-        $.get('quickstart_guide.md', function(data) {
-            $('#quickstart').html(marked.parse(data));
-        });
-
-        // Sidebar navigation click handler
-        $('.nav-link').click(function(e) {
-            e.preventDefault();
-            $('.nav-link').removeClass('active');
-            $(this).addClass('active');
-
-            const sectionId = $(this).data('section');
-            $('.section-content').hide(); // Hide all sections
-            $(`#${sectionId}`).show(); // Show the selected section
-        });
-
-        // Function to parse Markdown into sections
-        function parseMarkdownSections(markdown) {
-            const sections = {};
-            const lines = markdown.split('\n');
-            let currentSection = null;
-
-            for (const line of lines) {
-                if (line.startsWith('# ')) {
-                    currentSection = 'overview';
-                    sections[currentSection] = sections[currentSection] || [];
-                } else if (line.startsWith('## ')) {
-                    // Extract section ID from heading
-                    currentSection = line.substring(3).trim().toLowerCase().replace(/ /g, '-');
-                    sections[currentSection] = sections[currentSection] || [];
-                }
-
-                if (currentSection) {
-                    sections[currentSection].push(line);
-                }
-            }
-
-            return sections;
-        }
-
-        // Function to render a section
-        function renderSection(sectionId, markdownContent) {
-          if (!markdownContent) {
-            console.warn(`renderSection: markdownContent is falsy for sectionId: ${sectionId}`);
-            return;
-          }
-          const htmlContent = marked.parse(markdownContent.join('')); // Join with empty string
-          $(`#${sectionId}`).html(htmlContent);
-        }
-    });
-
-    </script>
-</body>
-</html>
+        // Load and render quickstart_guide.md
