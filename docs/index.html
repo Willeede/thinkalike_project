@@ -73,7 +73,7 @@
             theme: 'default'
         });
 
-        // Load ONBOARDING_GUIDE.md
+        // Load onboarding_guide.md
         $.get('onboarding_guide.md', function(data) {
             const sections = parseMarkdownSections(data);
 
@@ -96,3 +96,56 @@
         });
 
         // Load and render quickstart_guide.md
+        $.get('quickstart_guide.md', function(data) {
+            const htmlContent = marked.parse(data);
+            $('#quickstart').html(htmlContent);
+            mermaid.init(undefined, '#quickstart .mermaid');
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.error('Failed to load quickstart_guide.md:', textStatus, errorThrown);
+            $('#quickstart').html('<p>Error loading quickstart_guide.md.</p>');
+        });
+
+        // Sidebar navigation click handler
+        $('.nav-link').click(function(e) {
+            e.preventDefault();
+            $('.nav-link').removeClass('active');
+            $(this).addClass('active');
+
+            const sectionId = $(this).data('section');
+            $('.section-content').removeClass('active-section');
+            $(`#${sectionId}`).addClass('active-section');
+        });
+
+        // Function to parse Markdown into sections
+        function parseMarkdownSections(markdown) {
+            const sections = {};
+            const lines = markdown.split('\n');
+            let currentSection = null;
+
+            for (const line of lines) {
+                if (line.startsWith('# ')) {
+                    currentSection = 'overview';
+                } else if (line.startsWith('## ')) {
+                    currentSection = line.substring(3).trim().toLowerCase().replace(/ /g, '-');
+                }
+                if (currentSection) {
+                    sections[currentSection] = sections[currentSection] || [];
+                    sections[currentSection].push(line);
+                }
+            }
+            return sections;
+        }
+
+        // Function to render a section
+        function renderSection(sectionId, markdownContent) {
+            if (!markdownContent) {
+                console.warn(`renderSection: markdownContent is falsy for sectionId: ${sectionId}`);
+                return;
+            }
+            const htmlContent = marked.parse(markdownContent.join('\n')); // Use '\n' for line breaks
+            $(`#${sectionId}`).html(htmlContent);
+        }
+    });
+</script>
+</body>
+</html>
