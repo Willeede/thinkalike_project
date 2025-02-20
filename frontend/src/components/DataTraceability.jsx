@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react'; // Import useRef and useEffect
 import ForceGraph2D from 'react-force-graph-2d';
 import './DataTraceability.css'; // Import CSS for styling
 
@@ -13,6 +13,9 @@ function DataTraceability({ dataFlow }) {
     );
   }
 
+    const [pulsatingNode, setPulsatingNode] = useState(null);
+
+
   // Color mapping for node groups (based on style_guide.md)
   //  Expand this as you add more node types/groups
   const nodeColors = {
@@ -24,23 +27,40 @@ function DataTraceability({ dataFlow }) {
 
     const getNodeColor = (node) => {
         if (node.isAI) {
-            return '#001F3F' // Dark Blue
+          return pulsatingNode === node ?  '#FF5733' : '#001F3F'; //Dark blue, if not pulsating
         }
-        return nodeColors[node.group] || '#CCCCCC'
+        return nodeColors[node.group] || '#CCCCCC'; //color by group
     }
+
+
+    const fgRef = useRef(); // Add a ref for the force graph
+
+    useEffect(() => {
+      // Find the AI node.  Assumes there's only one!
+      const aiNode = dataFlow.nodes.find(node => node.isAI);
+      if (aiNode) {
+          setPulsatingNode(aiNode);
+        const interval = setInterval(() => {
+          setPulsatingNode(prevNode => prevNode === aiNode ? null: aiNode);
+        }, 750); // Toggle every 750ms
+
+        return () => clearInterval(interval); // Cleanup interval
+      }
+    }, [dataFlow]);
 
   return (
     <div className="data-traceability">
       <h2>Data Traceability</h2>
       <div className="data-traceability-graph">
         <ForceGraph2D
+          ref={fgRef} // Add the ref to the component
           graphData={dataFlow}
           nodeLabel="label"
           nodeAutoColorBy="group" //  Use for the *stroke* color, not the fill
           linkDirectionalArrowLength={3.5}
           linkDirectionalArrowRelPos={1}
-          linkWidth={1.5} // Make edges a bit thicker
-          linkColor={() => '#001F3F'} // Use dark blue for edges
+          linkWidth={1.5}
+          linkColor={() => '#001F3F'}
 
           // Custom node rendering
           nodeCanvasObject={(node, ctx, globalScale) => {
@@ -50,9 +70,8 @@ function DataTraceability({ dataFlow }) {
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-
             // Draw a circle
-            const nodeSize = (node.isAI ? 12 : 8) / globalScale;  // Make AI node larger
+            const nodeSize = (node.isAI ? 12 : 8) / globalScale;
             ctx.beginPath();
             ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
             ctx.fillStyle = getNodeColor(node); // Use the color mapping
@@ -62,8 +81,6 @@ function DataTraceability({ dataFlow }) {
             ctx.fillStyle = 'white';
             ctx.fillText(label, node.x, node.y + fontSize * 1.5);
           }}
-
-            // Make nodes clickable
             onNodeClick={(node) => {
                 console.log("Node clicked:", node); // Log node data to console
             }}
