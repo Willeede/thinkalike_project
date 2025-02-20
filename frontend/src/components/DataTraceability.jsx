@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react'; // Import useRef and useEffect
+import React, { useRef, useEffect, useState } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
-import './DataTraceability.css'; // Import CSS for styling
+import './DataTraceability.css';
 
 function DataTraceability({ dataFlow }) {
+  const fgRef = useRef();
+  const [animationTime, setAnimationTime] = useState(0); // State for animation
 
-  // Check if dataFlow is provided and has nodes and edges
   if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
     return (
       <div className="data-traceability">
@@ -13,78 +14,82 @@ function DataTraceability({ dataFlow }) {
     );
   }
 
-    const [pulsatingNode, setPulsatingNode] = useState(null);
-
-
-  // Color mapping for node groups (based on style_guide.md)
-  //  Expand this as you add more node types/groups
   const nodeColors = {
-    1: '#FFC300', // Amber/Honey Yellow (Neutral) - e.g., User Input
-    2: '#FF5733', // Deep Orange (Active) - e.g., API Request, Response
-    3: '#800000', // Deep Ruby (Connection) - e.g., Database
-    4: '#001F3F', // Dark Blue - e.g. AI Agent.
+    1: '#FFC300',
+    2: '#FF5733',
+    3: '#800000',
+    4: '#001F3F',
   };
 
     const getNodeColor = (node) => {
         if (node.isAI) {
-          return pulsatingNode === node ?  '#FF5733' : '#001F3F'; //Dark blue, if not pulsating
+            return  '#FF5733' //pulsating color
         }
-        return nodeColors[node.group] || '#CCCCCC'; //color by group
+        return nodeColors[node.group] || '#CCCCCC';
     }
 
+  // Animation effect using useEffect
+  useEffect(() => {
+    let animationFrameId;
 
-    const fgRef = useRef(); // Add a ref for the force graph
+    const animate = () => {
+      setAnimationTime(prevTime => prevTime + 1); // Increment time
+      fgRef.current && fgRef.current.refresh(); // Force re-render
+      animationFrameId = requestAnimationFrame(animate); // Request next frame
+    };
 
-    useEffect(() => {
-      // Find the AI node.  Assumes there's only one!
-      const aiNode = dataFlow.nodes.find(node => node.isAI);
-      if (aiNode) {
-          setPulsatingNode(aiNode);
-        const interval = setInterval(() => {
-          setPulsatingNode(prevNode => prevNode === aiNode ? null: aiNode);
-        }, 750); // Toggle every 750ms
+    animationFrameId = requestAnimationFrame(animate); // Start animation
 
-        return () => clearInterval(interval); // Cleanup interval
-      }
-    }, [dataFlow]);
+    return () => cancelAnimationFrame(animationFrameId); // Cleanup on unmount
+  }, []);
+
 
   return (
     <div className="data-traceability">
       <h2>Data Traceability</h2>
       <div className="data-traceability-graph">
         <ForceGraph2D
-          ref={fgRef} // Add the ref to the component
+          ref={fgRef} // Attach the ref
           graphData={dataFlow}
           nodeLabel="label"
-          nodeAutoColorBy="group" //  Use for the *stroke* color, not the fill
+          nodeAutoColorBy="group"
           linkDirectionalArrowLength={3.5}
           linkDirectionalArrowRelPos={1}
           linkWidth={1.5}
           linkColor={() => '#001F3F'}
 
-          // Custom node rendering
           nodeCanvasObject={(node, ctx, globalScale) => {
             const label = node.label;
             const fontSize = 12 / globalScale;
             ctx.font = `${fontSize}px Montserrat`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
+            ctx.fillStyle = 'white';
 
-            // Draw a circle
-            const nodeSize = (node.isAI ? 12 : 8) / globalScale;
+            let nodeSize = (node.isAI ? 12 : 8) / globalScale;
+
+            // Pulsating effect for AI node
+            if (node.isAI) {
+              const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5; // Oscillate between 0 and 1
+              nodeSize += pulsate * 4 / globalScale; // Increase size by up to 4 pixels
+              // color interpolation
+              const r = Math.floor((parseInt('#FF5733'.slice(1, 3), 16) * pulsate) + (parseInt('#FFC300'.slice(1, 3), 16) * (1 - pulsate)));
+              const g = Math.floor((parseInt('#FF5733'.slice(3, 5), 16) * pulsate) + (parseInt('#FFC300'.slice(3, 5), 16) * (1 - pulsate)));
+              const b = Math.floor((parseInt('#FF5733'.slice(5, 7), 16) * pulsate) + (parseInt('#FFC300'.slice(5, 7), 16) * (1 - pulsate)));
+              ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            }
+
             ctx.beginPath();
             ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
-            ctx.fillStyle = getNodeColor(node); // Use the color mapping
             ctx.fill();
 
-            // Draw the label
             ctx.fillStyle = 'white';
             ctx.fillText(label, node.x, node.y + fontSize * 1.5);
           }}
-            onNodeClick={(node) => {
-                console.log("Node clicked:", node); // Log node data to console
-            }}
 
+          onNodeClick={(node) => {
+            console.log("Node clicked:", node);
+          }}
         />
       </div>
     </div>
