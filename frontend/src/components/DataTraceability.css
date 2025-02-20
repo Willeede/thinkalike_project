@@ -1,5 +1,3 @@
-/* frontend/src/components/DataTraceability.css */
-
 .data-traceability {
     background-color: #000000; /* Black background */
     padding: 20px;
@@ -9,10 +7,6 @@
 }
 
 .data-traceability-graph {
-    /* Add styles for the graph container here */
-    /*  Example:  */
-    height: 400px; /* Set a specific height */
-    border: 1px solid #FF5733; /* Deep Orange border (for visibility) - Remove later */
+    /* Make sure the graph has a defined height! */
+    height: 500px;  /* Adjust as needed */
 }
-
-/* Add more styles here as you develop the visualization */
