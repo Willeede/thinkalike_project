@@ -79,7 +79,7 @@ graph LR
     style API fill:#ccf,stroke:#333,stroke-width:2px
     style Logic fill:#ccf,stroke:#333,stroke-width:2px
     style DB fill:#ccf,stroke:#333,stroke-width:2px
-    style AI fill:#aaf,stroke:#333,stroke-width:2px, stroke-dasharray: 5 5  <!-- AI Layer Style -->
+    style AI fill:#aaf,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5  <!-- AI Layer Style -->
     linkStyle 0,1,2,3,4,5 stroke-width:2px
     linkStyle 1,3 stroke:blue,stroke-width:3px  <!-- Highlight AI Links -->
     linkStyle 2,4 stroke:blue,stroke-width:3px  <!-- Highlight AI Links -->
