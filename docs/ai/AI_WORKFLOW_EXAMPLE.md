@@ -75,16 +75,16 @@ graph LR
     AI --> UI
     DB --> UI
 
-    style UI fill:#f9f,stroke:#333,stroke-width:2px
-    style API fill:#ccf,stroke:#333,stroke-width:2px
-    style Logic fill:#ccf,stroke:#333,stroke-width:2px
-    style DB fill:#ccf,stroke:#333,stroke-width:2px
-    style AI fill:#aaf,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
+    style UI fill:#f9f,stroke:#333,stroke-width:2px,color:#000
+    style API fill:#ccf,stroke:#333,stroke-width:2px,color:#000
+    style Logic fill:#ccf,stroke:#333,stroke-width:2px,color:#000
+    style DB fill:#ccf,stroke:#333,stroke-width:2px,color:#000
+    style AI fill:#aaf,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5,color:#000
     linkStyle 0,1,2,3,4,5 stroke-width:2px
     linkStyle 1,3 stroke:blue,stroke-width:3px
     linkStyle 2,4 stroke:blue,stroke-width:3px
 
-    classDef layerFill fill:#f9f,stroke:#333,stroke-width:2px
+    classDef layerFill fill:#f9f,stroke:#333,stroke-width:2px,color:#000
     class PresentationLayer layerFill
     class ApplicationLayer layerFill
     class DataLayer layerFill
