@@ -73,48 +73,10 @@
             theme: 'default'
         });
 
-        // Load onboarding_guide.md
-        $.get('onboarding_guide.md', function(data) {
-            const sections = parseMarkdownSections(data);
-
-            // Render each section
-            for (const sectionId in sections) {
-                renderSection(sectionId, sections[sectionId]);
-            }
-
-            // Show the overview section by default
-            $('#overview').addClass('active-section');
-            $('.nav-link[data-section="overview"]').addClass('active');
-
-            // Render Mermaid diagrams
-            setTimeout(function() {
-                mermaid.init(undefined, '.mermaid');
-            }, 1000); // Increased delay to ensure DOM is updated
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            console.error('Failed to load onboarding_guide.md:', textStatus, errorThrown);
-            $('#content').html('<p>Error loading onboarding_guide.md. Please check the file path or server logs.</p>');
-        });
-
-        // Load and render quickstart_guide.md
-        $.get('quickstart_guide.md', function(data) {
-            const htmlContent = marked.parse(data);
-            $('#quickstart').html(htmlContent);
-            mermaid.init(undefined, '#quickstart .mermaid');
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            console.error('Failed to load quickstart_guide.md:', textStatus, errorThrown);
-            $('#quickstart').html('<p>Error loading quickstart_guide.md.</p>');
-        });
-
-        // Sidebar navigation click handler
-        $('.nav-link').click(function(e) {
-            e.preventDefault();
-            $('.nav-link').removeClass('active');
-            $(this).addClass('active');
-
-            const sectionId = $(this).data('section');
-            $('.section-content').removeClass('active-section');
-            $(`#${sectionId}`).addClass('active-section');
-        });
+        // Function to sanitize section IDs
+        function sanitizeId(id) {
+            return id.replace(/[^a-zA-Z0-9-_]/g, ''); // Remove invalid characters
+        }
 
         // Function to parse Markdown into sections
         function parseMarkdownSections(markdown) {
@@ -146,10 +108,46 @@
             $(`#${sanitizeId(sectionId)}`).html(htmlContent);
         }
 
-        // Function to sanitize section IDs
-        function sanitizeId(id) {
-            return id.replace(/[^a-zA-Z0-9-_]/g, ''); // Remove invalid characters
-        }
+        // Load and render sections from onboarding_guide.md
+        $.get('onboarding_guide.md', function(data) {
+            const sections = parseMarkdownSections(data);
+            for (const sectionId in sections) {
+                renderSection(sectionId, sections[sectionId]);
+            }
+
+            // Show the overview section by default
+            $('#overview').addClass('active-section');
+            $('.nav-link[data-section="overview"]').addClass('active');
+
+            // Render Mermaid diagrams
+            setTimeout(function() {
+                mermaid.init(undefined, '.mermaid');
+            }, 1000);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.error('Failed to load onboarding_guide.md:', textStatus, errorThrown);
+            $('#content').html('<p>Error loading onboarding_guide.md. Please check the file path or server logs.</p>');
+        });
+
+        // Load and render quickstart_guide.md
+        $.get('quickstart_guide.md', function(data) {
+            const htmlContent = marked.parse(data);
+            $('#quickstart').html(htmlContent);
+            mermaid.init(undefined, '#quickstart .mermaid');
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.error('Failed to load quickstart_guide.md:', textStatus, errorThrown);
+            $('#quickstart').html('<p>Error loading quickstart_guide.md.</p>');
+        });
+
+        // Sidebar navigation click handler
+        $('.nav-link').click(function(e) {
+            e.preventDefault();
+            $('.nav-link').removeClass('active');
+            $(this).addClass('active');
+
+            const sectionId = $(this).data('section');
+            $('.section-content').removeClass('active-section');
+            $(`#${sanitizeId(sectionId)}`).addClass('active-section');
+        });
     });
 </script>
 </body>
