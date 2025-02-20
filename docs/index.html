@@ -53,88 +53,88 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <script>
-$(document).ready(function() {
-    // Configure marked.js
-    marked.setOptions({
-        renderer: new marked.Renderer(),
-        gfm: true, // Enable GitHub Flavored Markdown
-        breaks: false,
-        pedantic: false,
-        sanitize: false, // IMPORTANT: Allow HTML tags in Markdown
-        smartLists: true,
-        smartypants: false
-    });
+    $(document).ready(function() {
+        // Configure marked.js
+        marked.setOptions({
+            renderer: new marked.Renderer(),
+            gfm: true, // Enable GitHub Flavored Markdown
+            breaks: false,
+            pedantic: false,
+            sanitize: false, // IMPORTANT: Allow HTML tags in Markdown
+            smartLists: true,
+            smartypants: false
+        });
 
-    // Load ONBOARDING_GUIDE.md
-    $.get('ONBOARDING_GUIDE.md', function(data) {
-        const sections = parseMarkdownSections(data);
+        // Load ONBOARDING_GUIDE.md
+        $.get('onboarding_guide.md', function(data) { // Corrected Path
+            const sections = parseMarkdownSections(data);
 
-        // Render each section
-        for (const sectionId in sections) {
-            renderSection(sectionId, sections[sectionId]);
-        }
-
-        // Show the overview section by default
-        $('#overview').show();
-        $('.nav-link[data-section="overview"]').addClass('active');
-
-        // Initialize Mermaid *after* rendering Markdown (with a delay)
-        setTimeout(function() {
-            mermaid.init();
-        }, 500); // Increased delay
-    });
-
-    // Load and render quickstart.md
-    $.get('quickstart.md', function(data) {
-        $('#quickstart').html(marked.parse(data));
-    });
-
-    // Sidebar navigation click handler
-    $('.nav-link').click(function(e) {
-        e.preventDefault();
-        $('.nav-link').removeClass('active');
-        $(this).addClass('active');
-
-        const sectionId = $(this).data('section');
-        $('.section-content').hide(); // Hide all sections
-        $(`#${sectionId}`).show(); // Show the selected section
-    });
-
-    // Function to parse Markdown into sections
-    function parseMarkdownSections(markdown) {
-        const sections = {};
-        const lines = markdown.split('\n');
-        let currentSection = null;
-
-        for (const line of lines) {
-            if (line.startsWith('# ')) {
-                currentSection = 'overview';
-                sections[currentSection] = sections[currentSection] || [];
-            } else if (line.startsWith('## ')) {
-                // Extract section ID from heading
-                currentSection = line.substring(3).trim().toLowerCase().replace(/ /g, '-');
-                sections[currentSection] = sections[currentSection] || [];
+            // Render each section
+            for (const sectionId in sections) {
+                renderSection(sectionId, sections[sectionId]);
             }
 
-            if (currentSection) {
-                sections[currentSection].push(line);
+            // Show the overview section by default
+            $('#overview').show();
+            $('.nav-link[data-section="overview"]').addClass('active');
+
+            // Initialize Mermaid *after* rendering Markdown (with a delay)
+            setTimeout(function() {
+                mermaid.init();
+            }, 500); // Increased delay
+        });
+
+        // Load and render quickstart.md
+        $.get('quickstart_guide.md', function(data) { //Corrected Path
+            $('#quickstart').html(marked.parse(data));
+        });
+
+        // Sidebar navigation click handler
+        $('.nav-link').click(function(e) {
+            e.preventDefault();
+            $('.nav-link').removeClass('active');
+            $(this).addClass('active');
+
+            const sectionId = $(this).data('section');
+            $('.section-content').hide(); // Hide all sections
+            $(`#${sectionId}`).show(); // Show the selected section
+        });
+
+        // Function to parse Markdown into sections
+        function parseMarkdownSections(markdown) {
+            const sections = {};
+            const lines = markdown.split('\n');
+            let currentSection = null;
+
+            for (const line of lines) {
+                if (line.startsWith('# ')) {
+                    currentSection = 'overview';
+                    sections[currentSection] = sections[currentSection] || [];
+                } else if (line.startsWith('## ')) {
+                    // Extract section ID from heading
+                    currentSection = line.substring(3).trim().toLowerCase().replace(/ /g, '-');
+                    sections[currentSection] = sections[currentSection] || [];
+                }
+
+                if (currentSection) {
+                    sections[currentSection].push(line);
+                }
             }
+
+            return sections;
         }
 
-        return sections;
-    }
+        // Function to render a section
+        function renderSection(sectionId, markdownContent) {
+          if (!markdownContent) {
+            console.warn(`renderSection: markdownContent is falsy for sectionId: ${sectionId}`);
+            return;
+          }
+          const htmlContent = marked.parse(markdownContent.join('')); // Join with empty string
+          $(`#${sectionId}`).html(htmlContent);
+        }
+    });
 
-    // Function to render a section
-    function renderSection(sectionId, markdownContent) {
-      if (!markdownContent) {
-        console.warn(`renderSection: markdownContent is falsy for sectionId: ${sectionId}`);
-        return;
-      }
-      const htmlContent = marked.parse(markdownContent.join('')); // Join with empty string
-      $(`#${sectionId}`).html(htmlContent);
-    }
-});
-
-</script>
+    </script>
 </body>
 </html>
