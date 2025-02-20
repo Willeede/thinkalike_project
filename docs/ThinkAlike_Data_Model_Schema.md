@@ -1,26 +1,29 @@
 # ThinkAlike Data Model Schema
 
-This document describes the data models and database schema used in the ThinkAlike platform.
+This document describes the data models and database schema used in the ThinkAlike platform.  We are using **SQLite for development** and **PostgreSQL for production**. This document reflects the PostgreSQL schema.
 
-(This section will be populated with details about your database schema.  You'll need to define the tables, columns, data types, and relationships.  This is highly dependent on your specific application requirements.)
+## Database: PostgreSQL
 
-**Example (Illustrative - Replace with your actual schema):**
+**Note:**  The examples below use PostgreSQL syntax. For SQLite (development), some data types might need slight adjustments (e.g., `TEXT` instead of `VARCHAR`).
 
-## Users Table
+## Entity-Relationship Diagram (ERD)
 
-| Column Name | Data Type | Description                               |
-|-------------|-----------|-------------------------------------------|
-| id          | INTEGER   | Unique user ID (primary key)               |
-| username    | VARCHAR   | User's chosen username                    |
-| email       | VARCHAR   | User's email address                      |
-| password    | VARCHAR   | Hashed password                           |
-| ...         | ...       | Other user-related fields (profile data) |
+*(Will:  Insert an image of your ERD here.  You can create this using a tool like dbdiagram.io, Lucidchart, or draw.io)*
 
-## Connections Table
+![ER Diagram Placeholder](placeholder.png)  ## Tables
 
-| Column Name | Data Type | Description                               |
-|-------------|-----------|-------------------------------------------|
-| id          | INTEGER   | Unique connection ID (primary key)         |
-| user1_id    | INTEGER   | ID of the first user in the connection   |
-| user2_id    | INTEGER   | ID of the second user in the connection  |
-| ...         | ...       | Other connection-related fields          |
+### 1. Users
+
+This table stores basic user account information.
+
+| Column Name     | Data Type      | Constraints                                   | Description                                                                  | Ethical Considerations                                                                                                                                            |
+|-----------------|----------------|-----------------------------------------------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `user_id`       | `SERIAL`       | `PRIMARY KEY`                                 | Unique, auto-incrementing user ID.                                           | Used as a primary key; never exposed directly to users.                                                                                                              |
+| `username`      | `VARCHAR(30)`  | `UNIQUE`, `NOT NULL`                          | User's chosen username.                                                      | Must be unique.  Inform users about username visibility.                                                                                                       |
+| `email`         | `VARCHAR(255)` | `UNIQUE`, `NOT NULL`                          | User's email address.                                                        | Used for login and communication.  Must be unique.  Implement email verification. Store securely.                                                               |
+| `password_hash` | `VARCHAR(255)` | `NOT NULL`                                    | Hashed password (using a strong hashing algorithm like bcrypt).                | *Never* store passwords in plain text.  Use a well-vetted hashing library.                                                                                |
+| `created_at`    | `TIMESTAMP`    | `NOT NULL`, `DEFAULT CURRENT_TIMESTAMP`       | Date and time the account was created.                                        | Used for auditing and data analysis.                                                                                                                          |
+| `is_active`     | `BOOLEAN`      | `NOT NULL`, `DEFAULT TRUE`                     | Indicates whether the user account is active.                                | Used for account management (e.g., disabling accounts).                                                                                                      |
+| `full_name`     | `VARCHAR(100)` | `NOT NULL`                            | User's full name.                                            | Used for displaying the user's name.                                                                      |
+
+**Example Data:**
