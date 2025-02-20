@@ -1,24 +1,17 @@
 import React from 'react';
+import DataTraceability from './components/DataTraceability'; // Import DataTraceability
+import dataFlow from './data/DataTraceabilityExampleData'; // Import example data
+import './App.css'; // Assuming you have some global styles
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>ThinkAlike / CONNECTING LIKE MINDED INDIVIDUALS - Documentation Hub</h1> {/* Updated Homepage Title */}
+        <h1>My Application Homepage</h1> {/* Or your desired title */}
       </header>
       <section className="content">
-        <p>Welcome to the ThinkAlike Project! Explore our documentation below:</p>
-
-        <ul>
-          <li><a href="./manifesto_civilizationis_novae.md" target="_blank" rel="noopener noreferrer">Manifesto EOS LUMINA</a></li>
-          <li><a href="./README.md" target="_blank" rel="noopener noreferrer">Short Manifesto (README.md)</a></li>
-          <li><a href="./README_detailed.md" target="_blank" rel="noopener noreferrer">Detailed Project Overview</a></li>
-          <li><a href="./docs/onboarding/ONBOARDING_GUIDE.md" target="_blank" rel="noopener noreferrer">Onboarding Guide</a></li>
-          <li><a href="./docs/onboarding/QUICKSTART.md" target="_blank" rel="noopener noreferrer">Quick Start Guide</a></li>
-        </ul>
-
-        {/* You can add more homepage content or links below this line if needed */}
-
+        {/* Render the DataTraceability component, passing in the data */}
+        <DataTraceability dataFlow={dataFlow} />
       </section>
     </div>
   );
