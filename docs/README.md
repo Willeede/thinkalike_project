@@ -1,10 +1,10 @@
 # ThinkAlike: Connect with Purpose
 
-**Tagline:** Connecting Like-Minded Individuals
+** Connecting Like-Minded Individuals
 
 ## What is ThinkAlike?
 
-ThinkAlike is an open-source platform designed to foster genuine human connections through ethical technology and user empowerment.  We're building a system that goes beyond superficial online interactions, helping users discover themselves, connect with like-minded individuals, build meaningful relationships, and contribute to a better future. We leverage AI to enhance human connection, *not* to replace it, always prioritizing transparency, user agency, and ethical data handling.  ThinkAlike is more than an app; it's a movement towards a more human-centered digital world, built on the principles of "Enlightenment 2.0."
+ThinkAlike is an open-source platform designed to foster genuine human connections through ethical technology and user empowerment. We're building a system that goes beyond superficial online interactions, helping users discover themselves, connect with like-minded individuals, build meaningful relationships, and contribute to a better future. We leverage AI to enhance human connection, *not* to replace it, always prioritizing transparency, user agency, and ethical data handling. ThinkAlike is more than an app; it's a movement towards a more human-centered digital world, built on the principles of "Enlightenment 2.0."
 
 ## Key Features
 
@@ -22,16 +22,16 @@ Ready to contribute? We need your help to build the future of ethical connection
 
 To set up a local development environment and start contributing:
 
-1.  **Follow the [Quickstart Guide](docs/onboarding/quickstart.md).** This provides step-by-step instructions.
+1.  **Follow the [Quickstart Guide](docs/quickstart_guide.md).** This provides step-by-step instructions.
 
-For a more comprehensive overview of the project, including our core values, architecture, and contribution guidelines, please see the full [Onboarding Guide](docs/onboarding/ONBOARDING_GUIDE.md).
+For a more comprehensive overview of the project, including our core values, architecture, and contribution guidelines, please see the full [Onboarding Guide](docs/onboarding_guide.md).
 
 ## Technology Stack
 
 *   **Frontend:** React
 *   **Backend:** Python (FastAPI)
 *   **Database:** SQLite (for development), PostgreSQL (planned for production)
-*   **AI:** Initially a simple rule-based system for matching and data traceability visualization. Future plans include exploring more advanced models (e.g., collaborative filtering, natural language processing) for enhanced personalization and community features.
+*   **AI:** Initially a rule-based system for matching and data traceability visualization. Future plans include exploring more advanced models (e.g., collaborative filtering, natural language processing) for enhanced personalization and community features.
 *   **Documentation:** Markdown, rendered with `marked.js` and `mermaid.js`
 
 ## Contributing
@@ -47,13 +47,13 @@ We welcome contributions from everyone! Please see our [CONTRIBUTING.md](CONTRIB
 
 ## Documentation
 
-The full project documentation is available at [https://thinkalike-project.onrender.com/](https://www.google.com/url?sa=E&source=gmail&q=https://thinkalike-project.onrender.com/).
+The full project documentation is available at [https://thinkalike-project.onrender.com/](https://thinkalike-project.onrender.com/).
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Visual assets (images, logos, and the `style_guide.md` file) are licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License [CC BY-NC-ND](link to the license).
+Visual assets (images, logos, and the `style_guide.md` file) are licensed under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).  *(You'll need to provide the actual link to the CC BY-NC-ND license.)*
 
 We encourage contributions and modifications to the code, but we request that any derivative works respect the core visual style and branding of the ThinkAlike project.
 
@@ -62,4 +62,3 @@ We encourage contributions and modifications to the code, but we request that an
 Join our community on Discord: [https://discord.gg/TnAcWezH](https://www.google.com/url?sa=E&source=gmail&q=https://discord.gg/TnAcWezH)
 
 For bug reports and feature requests, please open an issue on GitHub.
-
