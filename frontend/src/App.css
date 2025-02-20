@@ -14,7 +14,7 @@
   --color-primary-neon-orange: #FF8C00;
   --color-primary-ruby: #800000;
   --color-highlight-ruby: #e60000;
-  --color-ruby-shadow: #3f0000;
+   --color-ruby-shadow: #3f0000;
   --color-secondary-dark-blue: #001F3F;
   --color-neutral-black: #000000;
   --color-neutral-dark-gray: #333333;
@@ -57,8 +57,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .data-traceability-graph {
-  /* Ensure the graph container has a defined height */
-  height: 500px; /* Adjust as needed */
+  /* Make sure the graph has a defined height! */
+  height: 500px;  /* Adjust as needed */
 }
 
 /* --- Add more component-specific styles here as needed --- */
