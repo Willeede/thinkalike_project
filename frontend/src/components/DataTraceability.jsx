@@ -4,8 +4,7 @@ import './DataTraceability.css';
 import 'react-tooltip/dist/react-tooltip.css'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
-
-function DataTraceability({ dataFlow, connectionStatus = 'disconnected' }) { // Added connectionStatus prop, default to disconnected
+function DataTraceability({ dataFlow, connectionStatus = 'disconnected' }) { // Added connectionStatus prop
   const fgRef = useRef();
   const [animationTime, setAnimationTime] = useState(0);
 
@@ -27,29 +26,22 @@ function DataTraceability({ dataFlow, connectionStatus = 'disconnected' }) { // 
     4: '#001F3F', // Dark Blue - e.g. AI Agent.
   };
 
-    // Function to get node color based on group and connection status
     const getNodeColor = (node) => {
-      if (node.isAI) {
-        if (connectionStatus === 'connected') {
-          return '#800000'; // Ruby Red for connected
-        } else if (connectionStatus === 'connecting') {
-          return '#FF5733'; // Deep Orange for connecting
-        } else {
-          return '#001F3F'; // Dark Blue for AI
+        if (node.isAI) {
+            return  '#FF5733' //pulsating color
         }
-      }
-      return nodeColors[node.group] || '#CCCCCC';
-    };
+        return nodeColors[node.group] || '#CCCCCC'; //color by group
+    }
 
-    // Function to get waveform color based on connection status
+  // Function to get waveform color based on connection status
     const getWaveformColor = () => {
         if (connectionStatus === 'connected') {
-            return '#800000'; // Ruby Red
-          } else if (connectionStatus === 'connecting') {
-            return '#FF5733'; // Deep Orange
-          } else {
-            return '#001F3F'; // Dark Blue (AI)
-          }
+        return '#800000'; // Ruby Red
+        } else if (connectionStatus === 'connecting') {
+        return '#FF5733'; // Deep Orange
+        } else {
+        return '#001F3F'; // Dark Blue (AI)
+        }
     };
 
   // Animation effect using useEffect
@@ -80,7 +72,9 @@ function DataTraceability({ dataFlow, connectionStatus = 'disconnected' }) { // 
           linkDirectionalArrowLength={3.5}
           linkDirectionalArrowRelPos={1}
           linkWidth={1.5}
-          linkColor={() => '#001F3F'} // Default link color
+          linkColor={() => '#001F3F'}
+
+          // Custom node rendering
           nodeCanvasObject={(node, ctx, globalScale) => {
             const label = node.label;
             const fontSize = 12 / globalScale;
@@ -93,45 +87,60 @@ function DataTraceability({ dataFlow, connectionStatus = 'disconnected' }) { // 
 
             // Pulsating effect for AI node
             if (node.isAI) {
-              const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5;
-              nodeSize += pulsate * 4 / globalScale;
-
-              // color interpolation
-              const r = Math.floor((parseInt('#FF5733'.slice(1, 3), 16) * pulsate) + (parseInt('#FFC300'.slice(1, 3), 16) * (1 - pulsate)));
-              const g = Math.floor((parseInt('#FF5733'.slice(3, 5), 16) * pulsate) + (parseInt('#FFC300'.slice(3, 5), 16) * (1 - pulsate)));
-              const b = Math.floor((parseInt('#FF5733'.slice(5, 7), 16) * pulsate) + (parseInt('#FFC300'.slice(5, 7), 16) * (1 - pulsate)));
-              ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+              const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5; // Oscillate between 0 and 1
+              nodeSize += pulsate * 4 / globalScale; // Increase size by up to 4 pixels
+                // color interpolation
+                const r = Math.floor((parseInt('#FF5733'.slice(1, 3), 16) * pulsate) + (parseInt('#FFC300'.slice(1, 3), 16) * (1 - pulsate)));
+                const g = Math.floor((parseInt('#FF5733'.slice(3, 5), 16) * pulsate) + (parseInt('#FFC300'.slice(3, 5), 16) * (1 - pulsate)));
+                const b = Math.floor((parseInt('#FF5733'.slice(5, 7), 16) * pulsate) + (parseInt('#FFC300'.slice(5, 7), 16) * (1 - pulsate)));
+                ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
             }
 
-            // Clipping (Important for Waveform)
+            // ** Clipping (Important for Waveform) **
             ctx.beginPath();
             ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
             ctx.fillStyle = getNodeColor(node); // Use dynamic color
             ctx.fill();
-            ctx.save();
-            ctx.clip();
+            ctx.save(); // Save the current canvas state
+            ctx.clip(); // Clip all subsequent drawing to the circle's shape
 
             // Sinusoidal Waveform (for AI node)
             if (node.isAI) {
-                const waveWidth = nodeSize * 2;
-                const waveHeight = nodeSize * 0.4;
-                const numWaves = 3;
-                const waveOffset = animationTime * 0.1;
+              const waveWidth = nodeSize * 2.2;  //  <-- Slightly wider than the circle
+              const waveHeight = nodeSize * 0.4; // Height of the waveform
+              const numWaves = 3;             // Number of waves across the circle
+              const waveOffset = animationTime * 0.1; //  Horizontal offset, based on time (for animation)
 
-                ctx.beginPath();
-                ctx.strokeStyle = getWaveformColor(); // Use dynamic color
-                ctx.lineWidth = 2 / globalScale;
-                ctx.moveTo(node.x - waveWidth / 2, node.y);
+              ctx.beginPath();
+              ctx.strokeStyle = getWaveformColor(); // Use the dynamic waveform color
+              ctx.lineWidth = 2 / globalScale;
 
-                for (let i = -waveWidth / 2; i <= waveWidth / 2; i += 1 / globalScale) {
-                    const x = node.x + i;
-                    const y = node.y + waveHeight * Math.sin((i / waveWidth) * Math.PI * numWaves + waveOffset);
-                    ctx.lineTo(x, y);
-                }
-                ctx.stroke();
+              // Start drawing the wave from the left side of the circle
+              ctx.moveTo(node.x - waveWidth / 2, node.y);
+
+              for (let i = -waveWidth / 2; i <= waveWidth / 2; i += 1 / globalScale) {
+                  // Calculate the y-coordinate of the sine wave
+                  const x = node.x + i;
+                  const y = node.y + waveHeight * Math.sin((i / waveWidth) * Math.PI * numWaves + waveOffset);
+                  ctx.lineTo(x, y);
+              }
+              ctx.stroke();
+
+              // Example: Drawing multiple waveforms (commented out by default)
+              /*
+              ctx.strokeStyle = '#003366'; // A slightly darker blue
+              ctx.lineWidth = 1.5 / globalScale;
+              ctx.beginPath();
+              ctx.moveTo(node.x - waveWidth / 2, node.y);
+              for (let i = -waveWidth / 2; i <= waveWidth / 2; i += 1 / globalScale) {
+                  const x = node.x + i;
+                  const y = node.y + (waveHeight * 0.7) * Math.sin((i / waveWidth) * Math.PI * (numWaves + 1) + waveOffset + 0.5); // Different frequency and offset
+                  ctx.lineTo(x, y);
+              }
+              ctx.stroke();
+              */
             }
-
-
+            ctx.restore(); // Restore the canvas state (removes clipping)
               if (node.isAI && connectionStatus === 'connected') {
                 const triangleSize = nodeSize * 0.7; // Adjust size as needed
                 const triangleHeight = triangleSize * Math.sqrt(3) / 2;
@@ -144,14 +153,12 @@ function DataTraceability({ dataFlow, connectionStatus = 'disconnected' }) { // 
                 ctx.fill();
             }
 
-            ctx.restore();
-
             // Draw the label
             ctx.fillStyle = 'white';
             ctx.fillText(label, node.x, node.y + fontSize * 1.5);
 
             // Add tooltip content (data-tip attribute)
-            node.__ ফোর্সGraphNode = true; // Required for react-tooltip
+            node.__forceGraphNode = true; // Required for react-tooltip
             node.dataTipContent = `${label}: ${node.value || 'No additional data'}`;
 
           }}
@@ -160,7 +167,8 @@ function DataTraceability({ dataFlow, connectionStatus = 'disconnected' }) { // 
           }}
 
         />
-        <ReactTooltip anchorSelect=".data-traceability-graph canvas" getContent={(dataTip) => dataTip} place="top"/>
+        <ReactTooltip  anchorSelect=".data-traceability-graph canvas"
+        getContent={(dataTip) => dataTip} place="top"/>
       </div>
     </div>
   );
