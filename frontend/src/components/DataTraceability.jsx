@@ -141,6 +141,8 @@ function DataTraceability({ dataFlow, connectionStatus = 'disconnected' }) { // 
               */
             }
             ctx.restore(); // Restore the canvas state (removes clipping)
+
+            //Triangle
               if (node.isAI && connectionStatus === 'connected') {
                 const triangleSize = nodeSize * 0.7; // Adjust size as needed
                 const triangleHeight = triangleSize * Math.sqrt(3) / 2;
