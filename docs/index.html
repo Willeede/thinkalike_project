@@ -36,6 +36,10 @@
                     <li class="nav-item"><a class="nav-link" href="#" data-section="testing">Testing</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" data-section="contributing">Contributing</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" data-section="quickstart">Quickstart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="faq">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="troubleshooting">Troubleshooting</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="resources">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="contact">Contact</a></li>
                 </ul>
             </div>
         </nav>
@@ -50,6 +54,10 @@
             <div id="testing" class="section-content"></div>
             <div id="contributing" class="section-content"></div>
             <div id="quickstart" class="section-content"></div>
+            <div id="faq" class="section-content"></div>
+            <div id="troubleshooting" class="section-content"></div>
+            <div id="resources" class="section-content"></div>
+            <div id="contact" class="section-content"></div>
         </main>
     </div>
 </div>
@@ -86,7 +94,7 @@
 
             for (const line of lines) {
                 if (line.startsWith('# ')) {
-                    currentSection = 'overview';
+                    currentSection = sanitizeId(line.substring(2).trim().toLowerCase().replace(/ /g, '-'));
                 } else if (line.startsWith('## ')) {
                     currentSection = sanitizeId(line.substring(3).trim().toLowerCase().replace(/ /g, '-'));
                 }
@@ -120,9 +128,7 @@
             $('.nav-link[data-section="overview"]').addClass('active');
 
             // Render Mermaid diagrams without using eval
-            document.querySelectorAll('.mermaid').forEach((element) => {
-                mermaid.contentLoaded();
-            });
+            mermaid.init();
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.error('Failed to load onboarding_guide.md:', textStatus, errorThrown);
             $('#content').html('<p>Error loading onboarding_guide.md. Please check the file path or server logs.</p>');
@@ -132,9 +138,7 @@
         $.get('quickstart_guide.md', function(data) {
             const htmlContent = marked.parse(data);
             $('#quickstart').html(htmlContent);
-            document.querySelectorAll('#quickstart .mermaid').forEach((element) => {
-                mermaid.contentLoaded();
-            });
+            mermaid.init();
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.error('Failed to load quickstart_guide.md:', textStatus, errorThrown);
             $('#quickstart').html('<p>Error loading quickstart_guide.md.</p>');
