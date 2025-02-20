@@ -143,12 +143,12 @@
                 return;
             }
             const htmlContent = marked.parse(markdownContent.join('\n')); // Use '\n' for line breaks
-            $(`#${sectionId}`).html(htmlContent);
+            $(`#${sanitizeId(sectionId)}`).html(htmlContent);
         }
 
         // Function to sanitize section IDs
         function sanitizeId(id) {
-            return id.replace(/[:!]/g, ''); // Remove colons and exclamation marks
+            return id.replace(/[^a-zA-Z0-9-_]/g, ''); // Remove invalid characters
         }
     });
 </script>
