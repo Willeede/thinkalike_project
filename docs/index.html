@@ -1,144 +1,212 @@
-{
-  "description": "API schema for the ThinkAlike platform, with a focus on data transparency, user control, and ethical AI integration. This file serves as a starting point and should be replaced with a complete OpenAPI specification as the API develops.",
-  "version": "0.1.0",
-  "baseUrl": "/api/v1",
-  "endpoints": [
-    {
-      "endpoint": "/users",
-      "method": "GET",
-      "description": "Retrieves a list of users. Supports pagination and searching.",
-      "parameters": [
-        {
-          "name": "page",
-          "type": "integer",
-          "description": "Page number for pagination (starts at 1).",
-          "required": false,
-          "default": 1
-        },
-        {
-          "name": "pageSize",
-          "type": "integer",
-          "description": "Number of users per page.",
-          "required": false,
-          "default": 20
-        },
-        {
-          "name": "search",
-          "type": "string",
-          "description": "Search term (matches username, email, or full name).",
-          "required": false
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkAlike Documentation</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif; /* Use Open Sans for body */
+            margin: 0;
+            display: flex; /* Use flexbox for layout */
+            min-height: 100vh; /* Ensure full viewport height */
+            background-color: #000; /* Black background */
+            color: #eee; /* Very light gray text - better contrast */
         }
-      ],
-      "requestBody": null,
-      "responses": {
-        "200": {
-          "description": "Successful response - returns an array of user objects.",
-          "schema": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "user_id": {
-                  "type": "integer",
-                  "description": "Unique user ID.",
-                  "example": 123
-                },
-                "username": {
-                  "type": "string",
-                  "description": "User's chosen username.",
-                  "minLength": 3,
-                  "maxLength": 30,
-                  "example": "johndoe"
-                },
-                "email": {
-                  "type": "string",
-                  "format": "email",
-                  "description": "User's email address.",
-                  "example": "john.doe@example.com"
-                },
-                "full_name": {
-                  "type": "string",
-                  "description": "User's full name (optional).",
-                  "maxLength": 100,
-                  "required": false,
-                  "example": "John Doe"
-                },
-                "profile_picture_url": {
-                  "type": "string",
-                  "format": "url",
-                  "description": "URL of the user's profile picture (optional).",
-                  "required": false,
-                  "example": "/images/users/123.jpg"
-                },
-                "created_at": {
-                  "type": "string",
-                  "format": "date-time",
-                  "description": "Date and time the user account was created.",
-                  "example": "2024-02-29T14:30:00Z"
-                },
-                "is_active": {
-                  "type": "boolean",
-                  "description": "Indicates if the user account is active.",
-                  "example": true
-                },
-                "bio": {
-                  "type": "string",
-                  "description": "User's biography text (optional).",
-                  "maxLength": 500,
-                  "required": false,
-                  "example": "Software developer passionate about ethical AI."
-                },
-                "privacy_settings": {
-                  "type": "object",
-                  "description": "User's privacy settings.",
-                  "properties": {
-                    "profile_visibility": {
-                      "type": "string",
-                      "enum": [
-                        "public",
-                        "private",
-                        "connections_only"
-                      ],
-                      "description": "Who can view the user's profile.",
-                      "example": "connections_only"
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif; /* Montserrat for headings */
+            font-weight: 700; /* Bold headings */
+            color: #FFC300;  /* Amber/Honey Yellow for headings */
+        }
+        a {
+            color: #FF5733; /* Deep Orange for links */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #FF8C00;
+        }
+        /* Sidebar Styles */
+        #sidebar {
+            width: 250px;
+            background-color: #212121; /* Darker gray sidebar */
+            padding: 20px;
+            overflow-y: auto; /* Allow scrolling if content overflows */
+            border-right: 1px solid #444;
+        }
+
+        /* Main Content Styles */
+        #content {
+            flex: 1; /* Take up remaining space */
+            padding: 20px;
+            overflow-y: auto; /* Allow content to scroll */
+        }
+        .nav-link {
+            cursor: pointer;
+            padding: .5rem 1rem;
+            color: #FF5733; /* Deep Orange for links */
+            display: block; /* Make links block-level for easier clicking */
+            text-decoration: none; /* Remove underlines */
+        }
+
+        .nav-link:hover {
+            background-color: #333; /* Darker background on hover */
+            color: #FF8C00;
+        }
+
+        .nav-link.active {
+            background-color: #FF5733; /* Active link style */
+            color: white;
+        }
+        pre {
+            background-color: #333;
+            color: #eee;
+            padding: 10px;
+            border: 1px solid #666;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #333;
+            color: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .mermaid {
+            overflow: auto;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+
+<nav id="sidebar">
+    <h1>ThinkAlike Project Documentation</h1>
+    <ul class="nav flex-column" id="nav-links">
+    </ul>
+</nav>
+<main id="content" class="markdown-body">
+</main>
+
+<script>
+    $(document).ready(function() {
+        // Configure marked.js options
+        marked.setOptions({
+            gfm: true,
+            breaks: false,
+            sanitize: false,
+            smartLists: true,
+            smartypants: false
+        });
+
+        const files = [
+            "onboarding_guide.md",
+            "quickstart_guide.md",
+            "style_guide.md",
+            "CODE_OF_CONDUCT.md",
+            "CONTRIBUTING.md",
+            "INSTALLATION.md",
+            "ThinkAlike_Architectural_Design_Specifications.md",
+            "ThinkAlike_Data_Model_Schema.md",
+            "ThinkAlike_Security_and_Privacy_Implementation_Plan.md",
+            "ThinkAlike_Testing_and_Validation_Plan.md",
+            "ThinkAlike__MVP_Implementation_Guide.md",
+            "funding_model.md",
+            "project_overview.md",
+            "ai_driven_workflow.md",
+            "code_documentation_template.md",
+            "API_schema.json"
+        ];
+
+        // Function to generate navigation links in the sidebar
+        function generateNavLinks() {
+            const navLinks = files.map(file => {
+                const fileName = file.replace('.md', '').replace('.json', '').replace(/_/g, ' ').replace(/-/g, ' ');
+                return `<li class="nav-item">
+                            <a class="nav-link" data-file="${file}" href="#">${fileName}</a>
+                        </li>`;
+            }).join('');
+            $('#nav-links').html(navLinks);
+
+            // Event listener for sidebar navigation links
+            $('.nav-link').click(function(event) {
+                event.preventDefault();
+                $('#sidebar .nav-link').removeClass('active');
+                $(this).addClass('active');
+                const file = $(this).data('file');
+                loadContent(file);
+            });
+        }
+
+        // Function to check if a file exists
+        function fileExists(file) {
+            try {
+                let request = new XMLHttpRequest();
+                request.open("HEAD", file, false); // Use synchronous request for simplicity
+                request.send();
+                return request.status !== 404; // Check if file was found
+            } catch (error) {
+                console.warn(`Error checking file existence: ${file}`);
+                return false; // Consider the file as not existing in case of any error
+            }
+        }
+
+        // Function to load and render Markdown or JSON content using AJAX
+        function loadContent(file) {
+            // Check if the file exists before attempting to load
+            if (!fileExists(file)) {
+                console.error(`File not found: ${file}`);
+                $('#content').html(`<p>Error: Could not find content for ${file}.</p>`);
+                return; // Exit the function if the file does not exist
+            }
+            $.ajax({
+                url: file,
+                dataType: 'text',
+                success: function(data) {
+                    console.log(`Loading file: ${file}`);
+
+                    // Check if the file is JSON
+                    if (file.endsWith('.json')) {
+                        try {
+                            const jsonData = JSON.parse(data);
+                            const formattedJSON = JSON.stringify(jsonData, null, 2);
+                            $('#content').html(`<pre><code>${formattedJSON}</code></pre>`);
+                        } catch (error) {
+                            console.error(`Error parsing JSON from ${file}: ${error}`);
+                            $('#content').html(`<p>Error parsing JSON from ${file}.</p>`);
+                        }
+                    } else {
+                        // Convert Markdown to HTML using marked.js
+                        const htmlContent = marked.parse(data);
+                        $('#content').html(htmlContent);
+
+                        // Initialize Mermaid after rendering Markdown
+                        setTimeout(function() {
+                            mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
+                        }, 500);
                     }
-                  },
-                  "required": [
-                    "profile_visibility"
-                  ]
+                },
+                error: function(xhr, status, error) {
+                    console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
+                    $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
                 }
-              },
-              "required": [
-                "user_id",
-                "username",
-                "email",
-                "created_at",
-                "is_active"
-              ]
-            }
-          }
-        },
-        "400": {
-          "description": "Bad Request - Invalid input parameters.",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "example": "Invalid page number."
-              }
-            }
-          }
-        },
-        "500": {
-          "description": "Internal Server Error",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "example": "An unexpected error occurred."
-              }
-            }
-          }
- ▋
+            });
+        }
+
+        // Generate navigation links in the sidebar
+        generateNavLinks();
+
+        // Load the default file on page load (onboarding_guide.md)
+        loadContent('onboarding_guide.md');
+        $('.nav-link[data-file="onboarding_guide.md"]').addClass('active'); // Set as active
+    });
+</script>
+
+</body>
+</html>
