@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ThinkAlike Documentation</title>
-    <link rel="stylesheet" href="style.css">
     <style>
-        body { font-family: sans-serif; display: flex; margin: 0; }
+        body { font-family: sans-serif; padding: 20px; background-color: #000; color: #ccc; display: flex; margin: 0; }
+        h1, h2, h3 { color: #FFC300; }
+        a { color: #FF5733; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre { background-color: #333; color: #ccc; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .mermaid { overflow: auto; }
         #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; background-color: #f8f9fa; border-right: 1px solid #dee2e6; padding-top: 20px; }
         #content { flex: 1; padding: 20px; }
         .nav-link { cursor: pointer; padding: .5rem 1rem; color: #007bff; display: block; text-decoration: none; }
@@ -21,6 +25,7 @@
 <body>
 
 <nav id="sidebar">
+    <h1>ThinkAlike Project Documentation</h1>
     <ul class="nav flex-column" id="nav-links">
         <!-- Links will be dynamically generated here -->
     </ul>
