@@ -140,7 +140,7 @@
                 $('#sidebar .nav-link').removeClass('active');
                 $(this).addClass('active');
                 const file = $(this).data('file');
-                loadContent(file);
+                loadFile(file);
             });
         }
 
@@ -158,7 +158,7 @@
         }
 
         // Function to load and render Markdown or JSON content using AJAX
-        function loadContent(file) {
+        function loadFile(file) {
             // Check if the file exists before attempting to load
             if (!fileExists(file)) {
                 console.error(`File not found: ${file}`);
@@ -169,30 +169,32 @@
                 url: file,
                 dataType: 'text',
                 success: function(data) {
+                    // Log the file being loaded for debugging
                     console.log(`Loading file: ${file}`);
 
-                    // Check if the file is JSON
-                    if (file.endsWith('.json')) {
+                    // If the file is a JSON file, format it as such
+                    if (file.endsWith(".json")) {
                         try {
                             const jsonData = JSON.parse(data);
-                            const formattedJSON = JSON.stringify(jsonData, null, 2);
-                            $('#content').html(`<pre><code class="language-json">${formattedJSON}</code></pre>`);
+                            const formattedJson = JSON.stringify(jsonData, null, 2); // Pretty-print JSON with 2 spaces
+                            $('#content').html(`<pre><code>${formattedJson}</code></pre>`);
                         } catch (error) {
-                            console.error(`Error parsing JSON from ${file}: ${error}`);
-                            $('#content').html(`<p>Error parsing JSON from ${file}.</p>`);
+                            console.error(`Error parsing JSON file: ${file} - ${error}`);
+                            $('#content').html(`<p>Error: Could not parse JSON content for ${file}.</p>`);
                         }
                     } else {
                         // Convert Markdown to HTML using marked.js
-                        const htmlContent = marked.parse(data);
+                        var htmlContent = marked.parse(data);
                         $('#content').html(htmlContent);
 
-                        // Initialize Mermaid after rendering Markdown
+                        // Initialize Mermaid after rendering Markdown (with a delay)
                         setTimeout(function() {
                             mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
                         }, 500);
                     }
                 },
                 error: function(xhr, status, error) {
+                    // Log any errors during file loading
                     console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
                     $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
                 }
@@ -203,5 +205,10 @@
         generateNavLinks();
 
         // Load the default file on page load (onboarding_guide.md)
-        loadContent('onboarding_guide.md');
-        $('.nav-link[data-file="on
+        loadFile('onboarding_guide.md');
+        $('.nav-link[data-file="onboarding_guide.md"]').addClass('active'); // Set as active
+    });
+</script>
+
+</body>
+</html>
