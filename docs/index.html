@@ -5,136 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ThinkAlike Onboarding Guide</title>
     <style>
-        body { font-family: sans-serif; }
-        #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; background-color: #f8f9fa; border-right: 1px solid #dee2e6; }
-        #content { padding-left: 20px; }
-        .nav-link { cursor: pointer; padding: .5rem 1rem; color: #007bff; }
-        .nav-link:hover { background-color: #e9ecef; }
-        .nav-link.active { background-color: #007bff; color: white; }
-        .section-content { display: none; margin-bottom: 20px;}
-        .active-section { display: block; }
+        body { font-family: sans-serif; padding: 20px; background-color: #000; color: #ccc; }
+        h1, h2, h3 { color: #FFC300; }
+        a { color: #FF5733; }
+        pre { background-color: #333; color: #ccc; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .mermaid { overflow: auto; }
     </style>
 </head>
 <body>
+    <div id="content"></div>
 
-<div class="container-fluid">
-    <div class="row">
-        <nav id="sidebar" class="col-md-3 col-lg-2">
-            <div class="sidebar-sticky px-3 pt-3">
-                <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="overview">Project Overview</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="core-values">Core Values</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="architecture">Architecture</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="ui-components">UI Components</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="data-handling">Data Handling</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="ai-models">AI Models</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="testing">Testing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="contributing">Contributing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="quickstart">Quickstart</a></li>
-                </ul>
-            </div>
-        </nav>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configure marked.js
+            marked.setOptions({
+                renderer: new marked.Renderer(),
+                gfm: true,
+                breaks: false,
+                pedantic: false,
+                sanitize: false,
+                smartLists: true,
+                smartypants: false
+            });
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="content">
-            <div id="overview" class="section-content" style="display: block;"></div>
-            <div id="values" class="section-content"></div>
-            <div id="architecture" class="section-content"></div>
-            <div id="ui-components" class="section-content"></div>
-            <div id="data-handling" class="section-content"></div>
-            <div id="ai-models" class="section-content"></div>
-            <div id="testing" class="section-content"></div>
-            <div id="contributing" class="section-content"></div>
-            <div id="quickstart" class="section-content"></div>
-        </main>
-    </div>
-</div>
+            // Fetch and render ONBOARDING_GUIDE.md
+            fetch('onboarding_guide.md')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(markdown => {
+                    const htmlContent = marked.parse(markdown);
+                    document.getElementById('content').innerHTML = htmlContent;
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Configure marked.js
-        marked.setOptions({
-            renderer: new marked.Renderer(),
-            gfm: true, // Enable GitHub Flavored Markdown
-            breaks: false,
-            pedantic: false,
-            sanitize: false, // IMPORTANT: Allow HTML tags in Markdown
-            smartLists: true,
-            smartypants: false
+                    // Initialize Mermaid after rendering Markdown (with a delay)
+                    setTimeout(function() {
+                        mermaid.init();
+                    }, 500);
+                })
+                .catch(error => {
+                    console.error('Error fetching Markdown:', error);
+                    document.getElementById('content').innerHTML = '<p>Error loading content.</p>';
+                });
         });
-
-        // Load ONBOARDING_GUIDE.md
-        $.get('onboarding_guide.md', function(data) {
-            const sections = parseMarkdownSections(data);
-
-            // Render each section
-            for (const sectionId in sections) {
-                renderSection(sectionId, sections[sectionId]);
-            }
-
-            // Show the overview section by default
-            $('#overview').show();
-            $('.nav-link[data-section="overview"]').addClass('active');
-
-            // Initialize Mermaid *after* rendering Markdown (with a delay)
-            setTimeout(function() {
-                mermaid.init();
-            }, 500); // Increased delay
-        });
-
-        // Load and render quickstart.md
-        $.get('quickstart_guide.md', function(data) {
-            $('#quickstart').html(marked.parse(data));
-        });
-
-        // Sidebar navigation click handler
-        $('.nav-link').click(function(e) {
-            e.preventDefault();
-            $('.nav-link').removeClass('active');
-            $(this).addClass('active');
-
-            const sectionId = $(this).data('section');
-            $('.section-content').hide(); // Hide all sections
-            $(`#${sectionId}`).show(); // Show the selected section
-        });
-
-        // Function to parse Markdown into sections
-        function parseMarkdownSections(markdown) {
-            const sections = {};
-            const lines = markdown.split('\n');
-            let currentSection = null;
-
-            for (const line of lines) {
-                if (line.startsWith('# ')) {
-                    currentSection = 'overview';
-                    sections[currentSection] = sections[currentSection] || [];
-                } else if (line.startsWith('## ')) {
-                    // Extract section ID from heading
-                    currentSection = line.substring(3).trim().toLowerCase().replace(/ /g, '-');
-                    sections[currentSection] = sections[currentSection] || [];
-                }
-
-                if (currentSection) {
-                    sections[currentSection].push(line);
-                }
-            }
-
-            return sections;
-        }
-
-        // Function to render a section
-        function renderSection(sectionId, markdownContent) {
-          if (!markdownContent) {
-            console.warn(`renderSection: markdownContent is falsy for sectionId: ${sectionId}`);
-            return;
-          }
-          const htmlContent = marked.parse(markdownContent.join('')); // Join with empty string
-          $(`#${sectionId}`).html(htmlContent);
-        }
-    });
-
     </script>
 </body>
 </html>
