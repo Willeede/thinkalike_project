@@ -61,7 +61,7 @@ The ThinkAlike MVP will focus on the following core features:
              * User login (likely `POST /api/v1/auth/login`) - Requires implementing JWT authentication.
              * Get user data (`GET /api/v1/users/{user_id}`)
              * Get potential matches (`GET /api/v1/matches`) - Initially based on simple rules.
-              * Update connection status (`POST /api/v1/connections`) - Initially a simplified version.
+             * Update connection status (`POST /api/v1/connections`) - Initially a simplified version.
     * **Step 4: Connect Frontend to Backend**
         *  Modify the `DataTraceability` component to fetch data from the API.
         *  Implement UI elements to trigger API calls (e.g., a "Connect" button).
