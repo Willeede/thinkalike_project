@@ -3,104 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ThinkAlike Documentation</title>
+    <title>ThinkAlike Onboarding Guide</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; background-color: #121212; color: #e0e0e0; display: flex; margin: 0; }
-        h1, h2, h3 { color: #FFC300; }
-        a { color: #FF5733; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        pre { background-color: #333; color: #ccc; padding: 10px; border-radius: 5px; overflow-x: auto; }
-        .mermaid { overflow: auto; }
-        #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; background-color: #212121; border-right: 1px solid #444; padding-top: 20px; }
-        #content { flex: 1; padding: 20px; color: #B0C4DE; } /* Changed text color */
-        .nav-link { cursor: pointer; padding: .5rem 1rem; color: #FF5733; display: block; text-decoration: none; }
-        .nav-link:hover { background-color: #333; }
-        .nav-link.active { background-color: #FF5733; color: white; }
+        body { font-family: sans-serif; color: #ccc; }
+        #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; background-color: #f8f9fa; border-right: 1px solid #dee2e6; }
+        #content { padding-left: 20px; }
+        .nav-link { cursor: pointer; padding: .5rem 1rem; color: #007bff; }
+        .nav-link:hover { background-color: #e9ecef; }
+        .nav-link.active { background-color: #007bff; color: white; }
+        .section-content { display: none; margin-bottom: 20px;}
+        .active-section { display: block; }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 </head>
 <body>
 
-<nav id="sidebar">
-    <h1>ThinkAlike Project Documentation</h1>
-    <ul class="nav flex-column" id="nav-links">
-        <!-- Links will be dynamically generated here -->
-    </ul>
-</nav>
-<main id="content" class="markdown-body">
-    <!-- Markdown content will be loaded here -->
-</main>
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebar" class="col-md-3 col-lg-2">
+            <div class="sidebar-sticky px-3 pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="overview">Project Overview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="core-values">Core Values</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="architecture">Architecture</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="ui-components">UI Components</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="data-handling">Data Handling</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="ai-models">AI Models</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="testing">Testing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="contributing">Contributing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="quickstart">Quickstart</a></li>
+                </ul>
+            </div>
+        </nav>
 
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="content">
+            <div id="overview" class="section-content" style="display: block;"></div>
+            <div id="values" class="section-content"></div>
+            <div id="architecture" class="section-content"></div>
+            <div id="ui-components" class="section-content"></div>
+            <div id="data-handling" class="section-content"></div>
+            <div id="ai-models" class="section-content"></div>
+            <div id="testing" class="section-content"></div>
+            <div id="contributing" class="section-content"></div>
+            <div id="quickstart" class="section-content"></div>
+        </main>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <script>
     $(document).ready(function() {
-        if (typeof marked === 'undefined') {
-            console.error('marked.js is not loaded');
-        } else {
-            console.log('marked.js is loaded');
-        }
-
-        const files = [
-            "onboarding_guide.md",
-            "quickstart_guide.md",
-            "style_guide.md",
-            "ThinkAlike_Architectural_Design_Specifications.md",
-            "ThinkAlike_Data_Model_Schema.md",
-            "ThinkAlike_Security_and_Privacy_Implementation_Plan.md",
-            "ThinkAlike_Testing_and_Validation_Plan.md",
-            "ThinkAlike__MVP_Implementation_Guide.md",
-            "ai_driven_workflow.md",
-            "code_documentation_template.md",
-            "funding_model.md",
-            "manifesto_civilizationis_novae.md",
-            "mermaid_test.md",
-            "project_overview.md"
-        ];
-
-        function generateNavLinks() {
-            const navLinks = files.map(file => {
-                const fileName = file.replace('.md', '').replace(/_/g, ' ').replace(/-/g, ' ');
-                return `<li class="nav-item">
-                            <a class="nav-link" data-file="${file}" href="#">${fileName}</a>
-                        </li>`;
-            }).join('');
-            $('#nav-links').html(navLinks);
-        }
-
-        function loadMarkdown(file) {
-            $.ajax({
-                url: file,
-                dataType: 'text',
-                success: function(data) {
-                    console.log(`Loading file: ${file}`);
-                    const htmlContent = marked.parse(data);
-                    $('#content').html(htmlContent);
-                    mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
-                },
-                error: function(xhr, status, error) {
-                    console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
-                    $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
-                }
-            });
-        }
-
-        $('#sidebar').on('click', '.nav-link', function(event) {
-            event.preventDefault();
-            $('#sidebar .nav-link').removeClass('active');
-            $(this).addClass('active');
-            const file = $(this).data('file');
-            loadMarkdown(file);
+        // Configure marked.js
+        marked.setOptions({
+            renderer: new marked.Renderer(),
+            gfm: true, // Enable GitHub Flavored Markdown
+            breaks: false,
+            pedantic: false,
+            sanitize: false, // IMPORTANT: Allow HTML tags in Markdown
+            smartLists: true,
+            smartypants: false
         });
 
-        // Generate navigation links
-        generateNavLinks();
+        // Load ONBOARDING_GUIDE.md
+        $.get('onboarding_guide.md', function(data) {
+            const sections = parseMarkdownSections(data);
 
-        // Load the default file on page load
-        loadMarkdown('onboarding_guide.md');
+            // Render each section
+            for (const sectionId in sections) {
+                renderSection(sectionId, sections[sectionId]);
+            }
+
+            // Show the overview section by default
+            $('#overview').show();
+            $('.nav-link[data-section="overview"]').addClass('active');
+
+            // Initialize Mermaid *after* rendering Markdown (with a delay)
+            setTimeout(function() {
+                mermaid.init();
+            }, 500); // Increased delay
+        });
+
+        // Load and render quickstart.md
+        $.get('quickstart_guide.md', function(data) {
+            $('#quickstart').html(marked.parse(data));
+        });
+
+        // Sidebar navigation click handler
+        $('.nav-link').click(function(e) {
+            e.preventDefault();
+            $('.nav-link').removeClass('active');
+            $(this).addClass('active');
+
+            const sectionId = $(this).data('section');
+            $('.section-content').hide(); // Hide all sections
+            $(`#${sectionId}`).show(); // Show the selected section
+        });
+
+        // Function to parse Markdown into sections
+        function parseMarkdownSections(markdown) {
+            const sections = {};
+            const lines = markdown.split('\n');
+            let currentSection = null;
+
+            for (const line of lines) {
+                if (line.startsWith('# ')) {
+                    currentSection = 'overview';
+                    sections[currentSection] = sections[currentSection] || [];
+                } else if (line.startsWith('## ')) {
+                    // Extract section ID from heading
+                    currentSection = line.substring(3).trim().toLowerCase().replace(/ /g, '-');
+                    sections[currentSection] = sections[currentSection] || [];
+                }
+
+                if (currentSection) {
+                    sections[currentSection].push(line);
+                }
+            }
+
+            return sections;
+        }
+
+        // Function to render a section
+        function renderSection(sectionId, markdownContent) {
+          if (!markdownContent) {
+            console.warn(`renderSection: markdownContent is falsy for sectionId: ${sectionId}`);
+            return;
+          }
+          const htmlContent = marked.parse(markdownContent.join('')); // Join with empty string
+          $(`#${sectionId}`).html(htmlContent);
+        }
     });
-</script>
 
+    </script>
 </body>
 </html>
