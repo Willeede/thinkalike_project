@@ -31,6 +31,12 @@
 
 <script>
     $(document).ready(function() {
+        if (typeof marked === 'undefined') {
+            console.error('marked.js is not loaded');
+        } else {
+            console.log('marked.js is loaded');
+        }
+
         const files = [
             "onboarding_guide.md",
             "quickstart_guide.md",
@@ -63,13 +69,14 @@
                 url: file,
                 dataType: 'text',
                 success: function(data) {
+                    console.log(`Loading file: ${file}`);
                     const htmlContent = marked(data);
                     $('#content').html(htmlContent);
                     mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
                 },
                 error: function(xhr, status, error) {
-                    const errorMessage = `Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`;
-                    $('#content').html(`<p>${errorMessage}</p>`);
+                    console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
+                    $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
                 }
             });
         }
