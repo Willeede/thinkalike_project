@@ -3,138 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ThinkAlike Onboarding Guide</title>
+    <title>ThinkAlike Documentation</title>
     <style>
-        body { font-family: sans-serif; color: #ccc; }
-        #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; background-color: #f8f9fa; border-right: 1px solid #dee2e6; }
-        #content { padding-left: 20px; }
-        .nav-link { cursor: pointer; padding: .5rem 1rem; color: #007bff; }
-        .nav-link:hover { background-color: #e9ecef; }
-        .nav-link.active { background-color: #007bff; color: white; }
-        .section-content { display: none; margin-bottom: 20px;}
-        .active-section { display: block; }
+        body {
+            font-family: 'Questrial', sans-serif; /* Use Questrial for body */
+            padding: 20px;
+            background-color: #000; /* Black background */
+            color: #ccc; /* Light gray text - Better contrast */
+            display: flex;
+            margin: 0;
+        }
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif; /* Montserrat for headings */
+            font-weight: 700; /* Bold headings */
+            color: #FFC300; /* Amber/Honey Yellow for headings */
+        }
+        a {
+            color: #FF5733; /* Deep Orange for links */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Sidebar Styles */
+        #sidebar {
+            min-height: 100vh;
+            overflow-y: auto;
+            width: 250px;
+            background-color: #212121; /* Darker gray sidebar */
+            border-right: 1px solid #444;
+            padding-top: 20px;
+        }
+        #content {
+            flex: 1; /* Take up remaining space */
+            padding: 20px;
+            color: #ccc; /* Light gray text for content */
+        }
+        .nav-link {
+            cursor: pointer;
+            padding: .5rem 1rem;
+            color: #FF5733; /* Deep Orange for links */
+            display: block;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background-color: #333; /* Darker on hover */
+            color: #FF8C00; /* Neon Orange on hover */
+        }
+        .nav-link.active {
+            background-color: #FF5733; /* Deep Orange for active link */
+            color: white;
+        }
+        /* Style for code blocks */
+        pre {
+            background-color: #333; /* Dark background for code */
+            color: #eee; /* Light text for code */
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto; /* Allow horizontal scrolling */
+            margin-bottom: 1rem;
+            border: 1px solid #666; /* Add a border */
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        /* Style for Mermaid diagrams */
+        .mermaid {
+            overflow: auto; /* Ensure diagrams can scroll if needed */
+        }
+
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Questrial&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 </head>
 <body>
 
-<div class="container-fluid">
-    <div class="row">
-        <nav id="sidebar" class="col-md-3 col-lg-2">
-            <div class="sidebar-sticky px-3 pt-3">
-                <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="overview">Project Overview</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="core-values">Core Values</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="architecture">Architecture</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="ui-components">UI Components</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="data-handling">Data Handling</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="ai-models">AI Models</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="testing">Testing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="contributing">Contributing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-section="quickstart">Quickstart</a></li>
-                </ul>
-            </div>
-        </nav>
+<nav id="sidebar">
+    <h1>ThinkAlike Project Documentation</h1>
+    <ul class="nav flex-column" id="nav-links">
+        </ul>
+</nav>
+<main id="content" class="markdown-body">
+    </main>
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="content">
-            <div id="overview" class="section-content" style="display: block;"></div>
-            <div id="values" class="section-content"></div>
-            <div id="architecture" class="section-content"></div>
-            <div id="ui-components" class="section-content"></div>
-            <div id="data-handling" class="section-content"></div>
-            <div id="ai-models" class="section-content"></div>
-            <div id="testing" class="section-content"></div>
-            <div id="contributing" class="section-content"></div>
-            <div id="quickstart" class="section-content"></div>
-        </main>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <script>
     $(document).ready(function() {
-        // Configure marked.js
-        marked.setOptions({
-            renderer: new marked.Renderer(),
-            gfm: true, // Enable GitHub Flavored Markdown
-            breaks: false,
-            pedantic: false,
-            sanitize: false, // IMPORTANT: Allow HTML tags in Markdown
-            smartLists: true,
-            smartypants: false
-        });
+        if (typeof marked === 'undefined') {
+            console.error('marked.js is not loaded');
+        } else {
+            console.log('marked.js is loaded');
+        }
 
-        // Load ONBOARDING_GUIDE.md
-        $.get('onboarding_guide.md', function(data) {
-            const sections = parseMarkdownSections(data);
+        // List of Markdown files (Correct Order)
+        const files = [
+              "onboarding_guide.md",
+              "quickstart_guide.md",
+              "style_guide.md",
+              "CODE_OF_CONDUCT.md",
+              "CONTRIBUTING.md",
+              "INSTALLATION.md",
+              "ThinkAlike_Architectural_Design_Specifications.md",
+              "ThinkAlike_Data_Model_Schema.md",
+              "ThinkAlike_Security_and_Privacy_Implementation_Plan.md",
+              "ThinkAlike_Testing_and_Validation_Plan.md",
+              "ThinkAlike_UI-UX_Style_Guide.md",
+              "ThinkAlike__MVP_Implementation_Guide.md",
+              "funding_model.md",
+              "project_overview.md",
+              "ai_driven_workflow.md",
+              "code_documentation_template.md",
+              "API_schema.json"
+        ];
 
-            // Render each section
-            for (const sectionId in sections) {
-                renderSection(sectionId, sections[sectionId]);
-            }
+        // Function to generate navigation links in the sidebar
+        function generateNavLinks() {
+            const navLinks = files.map(file => {
+                const fileName = file.replace('.md', '').replace(/_/g, ' ').replace(/-/g, ' ');
+                return `<li class="nav-item">
+                            <a class="nav-link" data-file="${file}" href="#">${fileName}</a>
+                        </li>`;
+            }).join('');
+            $('#nav-links').html(navLinks);
+        }
 
-            // Show the overview section by default
-            $('#overview').show();
-            $('.nav-link[data-section="overview"]').addClass('active');
+        // Function to load and render Markdown content
+        function loadMarkdown(file) {
+            $.ajax({
+                url: file,
+                dataType: 'text',
+                success: function(data) {
+                    console.log(`Loading file: ${file}`);
+                    const htmlContent = marked.parse(data);
+                    $('#content').html(htmlContent);
+                    mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
+                },
+                error: function(xhr, status, error) {
+                    console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
+                    $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
+                }
+            });
+        }
 
-            // Initialize Mermaid *after* rendering Markdown (with a delay)
-            setTimeout(function() {
-                mermaid.init();
-            }, 500); // Increased delay
-        });
-
-        // Load and render quickstart.md
-        $.get('quickstart_guide.md', function(data) {
-            $('#quickstart').html(marked.parse(data));
-        });
-
-        // Sidebar navigation click handler
-        $('.nav-link').click(function(e) {
-            e.preventDefault();
-            $('.nav-link').removeClass('active');
+        // Sidebar link click handler
+        $('#sidebar').on('click', '.nav-link', function(event) {
+            event.preventDefault();
+            $('#sidebar .nav-link').removeClass('active');
             $(this).addClass('active');
-
-            const sectionId = $(this).data('section');
-            $('.section-content').hide(); // Hide all sections
-            $(`#${sectionId}`).show(); // Show the selected section
+            const file = $(this).data('file');
+            loadMarkdown(file);
         });
 
-        // Function to parse Markdown into sections
-        function parseMarkdownSections(markdown) {
-            const sections = {};
-            const lines = markdown.split('\n');
-            let currentSection = null;
+        // Generate navigation links
+        generateNavLinks();
 
-            for (const line of lines) {
-                if (line.startsWith('# ')) {
-                    currentSection = 'overview';
-                    sections[currentSection] = sections[currentSection] || [];
-                } else if (line.startsWith('## ')) {
-                    // Extract section ID from heading
-                    currentSection = line.substring(3).trim().toLowerCase().replace(/ /g, '-');
-                    sections[currentSection] = sections[currentSection] || [];
-                }
-
-                if (currentSection) {
-                    sections[currentSection].push(line);
-                }
-            }
-
-            return sections;
-        }
-
-        // Function to render a section
-        function renderSection(sectionId, markdownContent) {
-          if (!markdownContent) {
-            console.warn(`renderSection: markdownContent is falsy for sectionId: ${sectionId}`);
-            return;
-          }
-          const htmlContent = marked.parse(markdownContent.join('')); // Join with empty string
-          $(`#${sectionId}`).html(htmlContent);
-        }
+        // Load the default file on page load (onboarding_guide.md)
+        loadMarkdown('onboarding_guide.md');
     });
+</script>
 
-    </script>
 </body>
 </html>
