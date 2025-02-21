@@ -5,75 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ThinkAlike Documentation</title>
     <style>
-        body {
-            font-family: sans-serif;
-            display: flex; /* Use flexbox for layout */
-            min-height: 100vh; /* Ensure full viewport height */
-            margin: 0; /* Remove default body margin */
-            background-color: #000; /* Black background */
-            color: #eee; /* Very light gray - better contrast */
-        }
-        h1, h2, h3 {
-            color: #FFC300; /* Amber/Honey Yellow for headings */
-        }
-        a {
-            color: #FF5733; /* Deep Orange for links */
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-            color: #FF8C00
-        }
-        pre {
-            background-color: #333; /* Darker background for code */
-            color: #eee;       /* Lighter text color for code */
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;  /* Horizontal scrolling for long lines */
-            border: 1px solid #666;
-        }
-        code {
-            font-family: 'Courier New', Courier, monospace;
-        }
-        /* Sidebar Styles */
-        #sidebar {
-            min-height: 100vh;
-            overflow-y: auto;
-            width: 250px;
-            background-color: #212121; /* Darker gray sidebar */
-            border-right: 1px solid #444; /* Subtle border */
-            padding-top: 20px; /* Add some padding at the top */
-        }
-
-        /* Main Content Styles */
-        #content {
-            flex: 1; /* Take up remaining space */
-            padding: 20px;
-        }
-
-        .nav-link {
-            cursor: pointer;
-            padding: .5rem 1rem;
-            color: #FF5733; /* Deep Orange for links */
-            display: block; /* Make links block-level for easier clicking */
-            text-decoration: none; /* Remove underlines */
-        }
-
-        .nav-link:hover {
-            background-color: #333; /* Darker on hover */
-        }
-
-        .nav-link.active {
-            background-color: #FF5733; /* Deep Orange for active link */
-            color: white;
-        }
-    .mermaid {
-      overflow: auto;
-    }
+        body { font-family: sans-serif; padding: 20px; background-color: #121212; color: #e0e0e0; display: flex; margin: 0; }
+        h1, h2, h3 { color: #FFC300; }
+        a { color: #FF5733; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre { background-color: #333; color: #ccc; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .mermaid { overflow: auto; }
+        #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; background-color: #212121; border-right: 1px solid #444; padding-top: 20px; }
+        #content { flex: 1; padding: 20px; color: #B0C4DE; } /* Changed text color */
+        .nav-link { cursor: pointer; padding: .5rem 1rem; color: #FF5733; display: block; text-decoration: none; }
+        .nav-link:hover { background-color: #333; }
+        .nav-link.active { background-color: #FF5733; color: white; }
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Questrial&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
@@ -83,82 +27,80 @@
 <nav id="sidebar">
     <h1>ThinkAlike Project Documentation</h1>
     <ul class="nav flex-column" id="nav-links">
-        </ul>
+        <!-- Links will be dynamically generated here -->
+    </ul>
 </nav>
 <main id="content" class="markdown-body">
-    </main>
+    <!-- Markdown content will be loaded here -->
+</main>
 
 <script>
     $(document).ready(function() {
-        // Configure marked.js options
-        marked.setOptions({
-            gfm: true, // Enable GitHub Flavored Markdown
-            breaks: false, // Use GFM line breaks
-            sanitize: false, // Allow HTML tags
-            smartLists: true,
-            smartypants: false
-        });
+        if (typeof marked === 'undefined') {
+            console.error('marked.js is not loaded');
+        } else {
+            console.log('marked.js is loaded');
+        }
 
-           const files = [
+        const files = [
             "onboarding_guide.md",
             "quickstart_guide.md",
             "style_guide.md",
-            "CODE_OF_CONDUCT.md",
-            "CONTRIBUTING.md",
-            "INSTALLATION.md",
             "ThinkAlike_Architectural_Design_Specifications.md",
             "ThinkAlike_Data_Model_Schema.md",
             "ThinkAlike_Security_and_Privacy_Implementation_Plan.md",
             "ThinkAlike_Testing_and_Validation_Plan.md",
-            "ThinkAlike_UI-UX_Style_Guide.md",
             "ThinkAlike__MVP_Implementation_Guide.md",
-            "funding_model.md",
-            "project_overview.md",
             "ai_driven_workflow.md",
             "code_documentation_template.md",
-            "API_schema.json"
+            "funding_model.md",
+            "manifesto_civilizationis_novae.md",
+            "mermaid_test.md",
+            "project_overview.md"
         ];
 
-        // Function to generate navigation links in the sidebar
         function generateNavLinks() {
             const navLinks = files.map(file => {
                 const fileName = file.replace('.md', '').replace(/_/g, ' ').replace(/-/g, ' ');
                 return `<li class="nav-item">
-                            <a class="nav-link" data-file="<span class="math-inline">\{file\}" href\="\#"\></span>{fileName}</a>
+                            <a class="nav-link" data-file="${file}" href="#">${fileName}</a>
                         </li>`;
             }).join('');
             $('#nav-links').html(navLinks);
+        }
 
-            // Event listener for sidebar navigation links
-            $('.nav-link').click(function(event) {
-                event.preventDefault();
-                $('#sidebar .nav-link').removeClass('active');
-                $(this).addClass('active');
-                const file = $(this).data('file');
-                loadMarkdown(file);
+        function loadMarkdown(file) {
+            $.ajax({
+                url: file,
+                dataType: 'text',
+                success: function(data) {
+                    console.log(`Loading file: ${file}`);
+                    const htmlContent = marked.parse(data);
+                    $('#content').html(htmlContent);
+                    mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
+                },
+                error: function(xhr, status, error) {
+                    console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
+                    $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
+                }
             });
         }
 
+        $('#sidebar').on('click', '.nav-link', function(event) {
+            event.preventDefault();
+            $('#sidebar .nav-link').removeClass('active');
+            $(this).addClass('active');
+            const file = $(this).data('file');
+            loadMarkdown(file);
+        });
 
-        // Function to load and render Markdown content using AJAX
-        function loadMarkdown(file) {
-          $.ajax({
-            url: file,
-            dataType: 'text',
-            success: function(data) {
-              // Log the file being loaded for debugging
-              console.log(`Loading file: ${file}`);
+        // Generate navigation links
+        generateNavLinks();
 
-              // Convert Markdown to HTML using marked.js
-              var htmlContent = marked.parse(data);
-              $('#content').html(htmlContent);
+        // Load the default file on page load
+        loadMarkdown('onboarding_guide.md');
+    });
+</script>
 
-              // Initialize Mermaid after rendering Markdown (with a delay)
-              setTimeout(function() {
-                mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
-                }, 500);
-            },
-            error: function(xhr, status, error) {
-              // Log any errors during file loading
-              console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
-              $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p
+</body>
+</html>
