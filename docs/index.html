@@ -11,11 +11,11 @@
         a:hover { text-decoration: underline; }
         pre { background-color: #333; color: #ccc; padding: 10px; border-radius: 5px; overflow-x: auto; }
         .mermaid { overflow: auto; }
-        #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; background-color: #f8f9fa; border-right: 1px solid #dee2e6; padding-top: 20px; }
+        #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; background-color: #1a1a1a; border-right: 1px solid #444; padding-top: 20px; }
         #content { flex: 1; padding: 20px; }
-        .nav-link { cursor: pointer; padding: .5rem 1rem; color: #007bff; display: block; text-decoration: none; }
-        .nav-link:hover { background-color: #e9ecef; }
-        .nav-link.active { background-color: #007bff; color: white; }
+        .nav-link { cursor: pointer; padding: .5rem 1rem; color: #FF5733; display: block; text-decoration: none; }
+        .nav-link:hover { background-color: #333; }
+        .nav-link.active { background-color: #FF5733; color: white; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -75,7 +75,7 @@
                 dataType: 'text',
                 success: function(data) {
                     console.log(`Loading file: ${file}`);
-                    const htmlContent = marked(data);
+                    const htmlContent = marked.parse(data);
                     $('#content').html(htmlContent);
                     mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
                 },
