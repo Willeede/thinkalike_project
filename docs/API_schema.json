@@ -1,5 +1,5 @@
 {
-  "description": "API schema for the ThinkAlike platform, with a focus on data transparency, user control, and ethical AI integration. This file serves as a starting point and should be replaced with a complete OpenAPI specification as the API develops.",
+  "description": "API schema for the ThinkAlike platform, with a focus on data transparency, user control, and ethical AI integration.  This file serves as a starting point and should be replaced with a complete OpenAPI specification as the API develops.",
   "version": "0.1.0",
   "baseUrl": "/api/v1",
   "endpoints": [
@@ -38,83 +38,24 @@
             "items": {
               "type": "object",
               "properties": {
-                "user_id": {
-                  "type": "integer",
-                  "description": "Unique user ID.",
-                  "example": 123
-                },
-                "username": {
-                  "type": "string",
-                  "description": "User's chosen username.",
-                  "minLength": 3,
-                  "maxLength": 30,
-                  "example": "johndoe"
-                },
-                "email": {
-                  "type": "string",
-                  "format": "email",
-                  "description": "User's email address.",
-                  "example": "john.doe@example.com"
-                },
-                "full_name": {
-                  "type": "string",
-                  "description": "User's full name (optional).",
-                  "maxLength": 100,
-                  "required": false,
-                  "example": "John Doe"
-                },
-                "profile_picture_url": {
-                  "type": "string",
-                  "format": "url",
-                  "description": "URL of the user's profile picture (optional).",
-                  "required": false,
-                  "example": "/images/users/123.jpg"
-                },
-                "created_at": {
-                  "type": "string",
-                  "format": "date-time",
-                  "description": "Date and time the user account was created.",
-                  "example": "2024-02-29T14:30:00Z"
-                },
-                "is_active": {
-                  "type": "boolean",
-                  "description": "Indicates if the user account is active.",
-                  "example": true
-                },
-                "bio": {
-                  "type": "string",
-                  "description": "User's biography text (optional).",
-                  "maxLength": 500,
-                  "required": false,
-                  "example": "Software developer passionate about ethical AI."
-                },
+                "user_id": { "type": "integer", "description": "Unique user ID.", "example": 123 },
+                "username": { "type": "string", "description": "User's chosen username.", "minLength": 3, "maxLength": 30, "example": "johndoe" },
+                "email": { "type": "string", "format": "email", "description": "User's email address.", "example": "john.doe@example.com" },
+                "full_name": { "type": "string", "description": "User's full name (optional).", "maxLength": 100, "required": false, "example": "John Doe" },
+                "profile_picture_url": { "type": "string", "format": "url", "description": "URL of the user's profile picture (optional).", "required": false, "example": "/images/users/123.jpg" },
+                "created_at": { "type": "string", "format": "date-time", "description": "Date and time the user account was created.", "example": "2024-02-29T14:30:00Z" },
+                "is_active": { "type": "boolean", "description": "Indicates if the user account is active.", "example": true },
+                "bio": { "type": "string", "description": "User's biography text (optional).", "maxLength": 500, "required": false, "example": "Software developer passionate about ethical AI." },
                 "privacy_settings": {
                   "type": "object",
                   "description": "User's privacy settings.",
                   "properties": {
-                    "profile_visibility": {
-                      "type": "string",
-                      "enum": [
-                        "public",
-                        "private",
-                        "connections_only"
-                      ],
-                      "description": "Who can view the user's profile.",
-                      "example": "connections_only"
-                    }
+                    "profile_visibility": { "type": "string", "enum": ["public", "private", "connections_only"], "description": "Who can view the user's profile.", "example": "connections_only" }
                   },
-                  "required": [
-                    "profile_visibility"
-                  ]
+                  "required": ["profile_visibility"]
                 }
               },
-              "required": [
-                "user_id",
-                "username",
-                "email",
-                "created_at",
-                "is_active"
-              ]
+              "required": ["user_id", "username", "email", "created_at", "is_active"]
             }
           }
         },
@@ -123,10 +64,7 @@
           "schema": {
             "type": "object",
             "properties": {
-              "message": {
-                "type": "string",
-                "example": "Invalid page number."
-              }
+              "message": { "type": "string", "example": "Invalid page number." }
             }
           }
         },
@@ -135,10 +73,7 @@
           "schema": {
             "type": "object",
             "properties": {
-              "message": {
-                "type": "string",
-                "example": "An unexpected error occurred."
-              }
+              "message": { "type": "string", "example": "An unexpected error occurred." }
             }
           }
         }
@@ -166,38 +101,12 @@
         "schema": {
           "type": "object",
           "properties": {
-            "username": {
-              "type": "string",
-              "description": "Desired username.",
-              "minLength": 3,
-              "maxLength": 30,
-              "example": "johndoe"
-            },
-            "email": {
-              "type": "string",
-              "format": "email",
-              "description": "User's email address.",
-              "example": "john.doe@example.com"
-            },
-            "password": {
-              "type": "string",
-              "description": "User's password (will be hashed).",
-              "minLength": 8,
-              "example": "secure_password"
-            },
-            "full_name": {
-              "type": "string",
-              "description": "User's full name (optional).",
-              "maxLength": 100,
-              "required": false,
-              "example": "John Doe"
-            }
+            "username": { "type": "string", "description": "Desired username.", "minLength": 3, "maxLength": 30, "example": "johndoe" },
+            "email": { "type": "string", "format": "email", "description": "User's email address.", "example": "john.doe@example.com" },
+            "password": { "type": "string", "description": "User's password (will be hashed).", "minLength": 8, "example": "secure_password" },
+            "full_name": { "type": "string", "description": "User's full name (optional).", "maxLength": 100, "required": false, "example": "John Doe" }
           },
-          "required": [
-            "username",
-            "email",
-            "password"
-          ]
+          "required": ["username", "email", "password"]
         }
       },
       "responses": {
@@ -206,11 +115,7 @@
           "schema": {
             "type": "object",
             "properties": {
-              "user_id": {
-                "type": "integer",
-                "description": "Unique user ID.",
-                "example": 124
-              }
+              "user_id": { "type": "integer", "description": "Unique user ID.", "example": 124 }
             }
           }
         },
@@ -219,10 +124,7 @@
           "schema": {
             "type": "object",
             "properties": {
-              "message": {
-                "type": "string",
-                "example": "Username already taken."
-              }
+              "message": { "type": "string", "example": "Username already taken." }
             }
           }
         },
@@ -231,88 +133,75 @@
           "schema": {
             "type": "object",
             "properties": {
-              "message": {
-                "type": "string",
-                "example": "An unexpected error occurred."
-              }
+              "message": { "type": "string", "example": "An unexpected error occurred." }
             }
           }
         }
       },
-      "security": {
+       "security": {
         "authentication": "Not required for registration",
         "authorization": "N/A",
         "dataEncryption": "HTTPS + Password Hashing (e.g., bcrypt)",
         "dataHandling": "User data is handled according to ThinkAlike's ethical guidelines and privacy policy. Passwords are never stored in plain text."
       },
       "testingWorkflow": {
-        "dataFlowValidation": "UI parameters to track data flow during registration: Input fields for username, email, password, and optional full name. Data is sent to the /users endpoint via a POST request. A success message or error messages are displayed.",
-        "codeValidation": "UI components show the code being executed: A button triggers the API call. Console logs show the request and response. A code editor component displays the relevant backend code (e.g., the route handler in `main.py`).",
-        "performanceValidation": "UI components to track system performance: Response time is measured and displayed. Form validation performance is measured.",
-        "ethicalValidation": "UI parameters to check ethical code workflow: Checkboxes confirm agreement with terms of service and privacy policy. Tooltips explain password hashing. Error messages clearly explain validation failures."
+        "dataFlowValidation" : "UI parameters to track data flow during registration: Input fields for username, email, password, and optional full name.  Data is sent to the /users endpoint via a POST request.  A success message or error messages are displayed.",
+        "codeValidation" : "UI components show the code being executed: A button triggers the API call. Console logs show the request and response. A code editor component displays the relevant backend code (e.g., the route handler in `main.py`).",
+        "performanceValidation" : "UI components to track system performance:  Response time is measured and displayed. Form validation performance is measured.",
+        "ethicalValidation": "UI parameters to check ethical code workflow: Checkboxes confirm agreement with terms of service and privacy policy. Tooltips explain password hashing.  Error messages clearly explain validation failures."
       }
+
     },
     {
-      "endpoint": "/users/{user_id}",
-      "method": "GET",
-      "description": "Gets information about a user",
-      "parameters": [
-        {
-          "name": "user_id",
-          "type": "integer",
-          "description": "ID of the user",
-          "required": true
-        }
-      ],
-      "requestBody": null,
-      "responses": {
-        "200": {
-          "description": "Successful response",
-          "schema": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "user_id": {
-                  "type": "integer"
-                },
-                "username": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "created_at": {
-                  "type": "string",
-                  "format": "date-time"
+        "endpoint": "/users/{user_id}",
+        "method": "GET",
+        "description": "Gets information about a user",
+        "parameters": [
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "ID of the user",
+            "required": true
+          }
+        ],
+        "requestBody": null,
+        "responses": {
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "type": "array",
+                 "items": {
+                    "type": "object",
+                    "properties": {
+                      "user_id": { "type": "integer" },
+                      "username": { "type": "string" },
+                      "email": { "type": "string"},
+                         "created_at": { "type": "string", "format": "date-time" }
+                       }
+                   }
                 }
-              }
+          },
+            "404": {
+              "description": "User not found error message",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string" }
+                 }
+               }
             }
-          }
-        },
-        "404": {
-          "description": "User not found error message",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string"
+         },
+          "security": {
+              "authentication": "JWT",
+              "authorization": "Bearer Auth",
+               "dataEncryption" : "HTTPS + User Data Encryption"
+              },
+          "testingWorkflow": {
+              "dataFlowValidation" : "UI parameters to track data flow during a test",
+              "codeValidation" : "UI components to see and also to track what code is being executed.",
+               "performanceValidation" : "UI components to track system performance, response time, data loading times and also, security validation data.",
+             "ethicalValidation": "UI parameters to check ethical code workflow and to see if the system respects user agency and transparency."
               }
-            }
-          }
-        }
-      },
-      "security": {
-        "authentication": "JWT",
-        "authorization": "Bearer Auth",
-        "dataEncryption": "HTTPS + User Data Encryption"
-      },
-      "testingWorkflow": {
-        "dataFlowValidation": "UI parameters to track data flow during a test",
-        "codeValidation": "UI components to see and also to track what code is being executed.",
-        "performanceValidation": "UI components to track system performance, response time, data loading times and also, security validation data.",
-        "ethicalValidation": "UI parameters to check ethical code workflow and to see if the system respects user agency and transparency."
       }
-    }
   ]
 }
