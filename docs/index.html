@@ -39,6 +39,7 @@
         #content {
             flex: 1; /* Take up remaining space */
             padding: 20px;
+            overflow-y: auto; /* Allow content to scroll */
         }
         .nav-link {
             cursor: pointer;
@@ -57,10 +58,6 @@
             background-color: #FF5733; /* Active link style */
             color: white;
         }
-        .section-content {
-            display: none;
-            margin-bottom: 20px;
-        }
         pre {
             background-color: #333;
             color: #eee;
@@ -71,6 +68,10 @@
         }
         code {
             font-family: 'Courier New', Courier, monospace;
+            background-color: #333;
+            color: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
         }
         .mermaid {
             overflow: auto;
@@ -84,6 +85,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script> <!-- Ensure JSON language support -->
 </head>
 <body>
 
