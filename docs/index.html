@@ -6,7 +6,7 @@
     <title>ThinkAlike Documentation</title>
     <style>
         body {
-            font-family: 'Open Sans', sans-serif; /* Use Open Sans for body */
+            font-family: 'Questrial', sans-serif; /* Use Questrial */
             margin: 0;
             display: flex; /* Use flexbox for layout */
             min-height: 100vh; /* Ensure full viewport height */
@@ -39,7 +39,6 @@
         #content {
             flex: 1; /* Take up remaining space */
             padding: 20px;
-            overflow-y: auto; /* Allow content to scroll */
         }
         .nav-link {
             cursor: pointer;
@@ -58,41 +57,44 @@
             background-color: #FF5733; /* Active link style */
             color: white;
         }
-        pre {
-            background-color: #333;
-            color: #eee;
-            padding: 10px;
-            border: 1px solid #666;
-            border-radius: 4px;
-            overflow-x: auto;
+        .section-content {
+            display: none;
+            margin-bottom: 20px;
         }
-        code {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #333;
-            color: #eee;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-        .mermaid {
-            overflow: auto;
-        }
+      pre {
+          background-color: #333;
+          color: #eee;
+          padding: 10px;
+          border: 1px solid #666;
+          border-radius: 4px;
+          overflow-x: auto;
+      }
+      code {
+          font-family: 'Courier New', Courier, monospace;
+      }
+      .mermaid {
+        overflow: auto;
+      }
+
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Questrial&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
 
 <nav id="sidebar">
     <h1>ThinkAlike Project Documentation</h1>
     <ul class="nav flex-column" id="nav-links">
-    </ul>
+        </ul>
 </nav>
 <main id="content" class="markdown-body">
-</main>
+    </main>
 
 <script>
     $(document).ready(function() {
@@ -105,7 +107,7 @@
             smartypants: false
         });
 
-        const files = [
+           const files = [
             "onboarding_guide.md",
             "quickstart_guide.md",
             "style_guide.md",
@@ -140,25 +142,26 @@
                 $('#sidebar .nav-link').removeClass('active');
                 $(this).addClass('active');
                 const file = $(this).data('file');
-                loadFile(file);
+                loadContent(file); // Changed function name
             });
         }
 
-        // Function to check if a file exists
+
+     // Function to check if a file exists
         function fileExists(file) {
             try {
                 let request = new XMLHttpRequest();
                 request.open("HEAD", file, false); // Use synchronous request for simplicity
                 request.send();
                 return request.status !== 404; // Check if file was found
-            } catch (error) {
+              } catch (error) {
                 console.warn(`Error checking file existence: ${file}`);
                 return false; // Consider the file as not existing in case of any error
-            }
+              }
         }
 
         // Function to load and render Markdown or JSON content using AJAX
-        function loadFile(file) {
+        function loadContent(file) { // Changed function name
             // Check if the file exists before attempting to load
             if (!fileExists(file)) {
                 console.error(`File not found: ${file}`);
@@ -169,32 +172,31 @@
                 url: file,
                 dataType: 'text',
                 success: function(data) {
-                    // Log the file being loaded for debugging
                     console.log(`Loading file: ${file}`);
 
-                    // If the file is a JSON file, format it as such
-                    if (file.endsWith(".json")) {
+                    // Check if the file is JSON
+                    if (file.endsWith('.json')) {
                         try {
                             const jsonData = JSON.parse(data);
-                            const formattedJson = JSON.stringify(jsonData, null, 2); // Pretty-print JSON with 2 spaces
-                            $('#content').html(`<pre><code>${formattedJson}</code></pre>`);
+                            const formattedJSON = JSON.stringify(jsonData, null, 2);
+                            $('#content').html(`<pre><code class="language-json">${formattedJSON}</code></pre>`);
+                            hljs.highlightAll(); //Highlight
                         } catch (error) {
-                            console.error(`Error parsing JSON file: ${file} - ${error}`);
-                            $('#content').html(`<p>Error: Could not parse JSON content for ${file}.</p>`);
+                            console.error(`Error parsing JSON from ${file}: ${error}`);
+                            $('#content').html(`<p>Error parsing JSON from ${file}.</p>`);
                         }
                     } else {
                         // Convert Markdown to HTML using marked.js
-                        var htmlContent = marked.parse(data);
+                        const htmlContent = marked.parse(data);
                         $('#content').html(htmlContent);
 
-                        // Initialize Mermaid after rendering Markdown (with a delay)
+                        // Initialize Mermaid after rendering Markdown
                         setTimeout(function() {
                             mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
                         }, 500);
                     }
                 },
                 error: function(xhr, status, error) {
-                    // Log any errors during file loading
                     console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
                     $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
                 }
@@ -205,10 +207,13 @@
         generateNavLinks();
 
         // Load the default file on page load (onboarding_guide.md)
-        loadFile('onboarding_guide.md');
+        loadContent('onboarding_guide.md');
         $('.nav-link[data-file="onboarding_guide.md"]').addClass('active'); // Set as active
     });
 </script>
 
 </body>
 </html>
+
+
+
