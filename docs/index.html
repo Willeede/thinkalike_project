@@ -100,28 +100,28 @@
             $(`#${sectionId}`).show(); // Show the selected section
         });
 
-// Function to parse Markdown into sections
+        // Function to parse Markdown into sections
         function parseMarkdownSections(markdown) {
-          const sections = {};
-          const lines = markdown.split('\n');
-          let currentSection = null;
+            const sections = {};
+            const lines = markdown.split('\n');
+            let currentSection = null;
 
-          for (const line of lines) {
-            if (line.startsWith('# ')) {
-              currentSection = 'overview';
-              sections[currentSection] = sections[currentSection] || [];
-            } else if (line.startsWith('## ')) {
-              // Extract section ID from heading
-              currentSection = line.substring(3).trim().toLowerCase().replace(/[^a-z0-9]+/g, '-'); // Replace invalid characters
-              sections[currentSection] = sections[currentSection] || [];
+            for (const line of lines) {
+                if (line.startsWith('# ')) {
+                    currentSection = 'overview';
+                    sections[currentSection] = sections[currentSection] || [];
+                } else if (line.startsWith('## ')) {
+                    // Extract section ID from heading
+                    currentSection = line.substring(3).trim().toLowerCase().replace(/ /g, '-');
+                    sections[currentSection] = sections[currentSection] || [];
+                }
+
+                if (currentSection) {
+                    sections[currentSection].push(line);
+                }
             }
 
-            if (currentSection) {
-              sections[currentSection].push(line);
-            }
-          }
-
-          return sections;
+            return sections;
         }
 
         // Function to render a section
