@@ -6,14 +6,12 @@
     <title>ThinkAlike Documentation</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        body { font-family: sans-serif; }
-        #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; background-color: #f8f9fa; border-right: 1px solid #dee2e6; }
-        #content { padding-left: 20px; }
-        .nav-link { cursor: pointer; padding: .5rem 1rem; color: #007bff; }
+        body { font-family: sans-serif; display: flex; }
+        #sidebar { min-height: 100vh; overflow-y: auto; width: 250px; background-color: #f8f9fa; border-right: 1px solid #dee2e6; padding-top: 20px; }
+        #content { flex: 1; padding: 20px; }
+        .nav-link { cursor: pointer; padding: .5rem 1rem; color: #007bff; display: block; }
         .nav-link:hover { background-color: #e9ecef; }
         .nav-link.active { background-color: #007bff; color: white; }
-        .section-content { display: none; margin-bottom: 20px; }
-        .active-section { display: block; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -22,18 +20,14 @@
 </head>
 <body>
 
-<div class="container-fluid">
-    <div class="row">
-        <nav id="sidebar" class="col-3">
-            <ul class="nav flex-column" id="nav-links">
-                <!-- Links will be dynamically generated here -->
-            </ul>
-        </nav>
-        <main id="content" class="col-9 markdown-body">
-            <!-- Markdown content will be loaded here -->
-        </main>
-    </div>
-</div>
+<nav id="sidebar">
+    <ul class="nav flex-column" id="nav-links">
+        <!-- Links will be dynamically generated here -->
+    </ul>
+</nav>
+<main id="content" class="markdown-body">
+    <!-- Markdown content will be loaded here -->
+</main>
 
 <script>
     $(document).ready(function() {
