@@ -18,6 +18,20 @@
             font-weight: 700; /* Bold headings */
             color: #FFC300;  /* Amber/Honey Yellow for headings */
         }
+        h1 {
+            font-size: 2.5rem; /* Larger font size for h1 */
+            margin-bottom: 1rem;
+        }
+        h2 {
+            font-size: 1.75rem; /* Larger font size for h2 */
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        h3 {
+            font-size: 1.25rem; /* Larger font size for h3 */
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
         a {
             color: #FF5733; /* Deep Orange for links */
             text-decoration: none;
@@ -39,9 +53,8 @@
         #content {
             flex: 1; /* Take up remaining space */
             padding: 20px;
-            font-size: 18px;     /*  Increase base font size */
-            line-height: 1.6;   /*  Increase line height */
-
+            font-size: 19px;     /*  Increase base font size */
+            line-height: 1.7;   /*  Increase line height */
         }
         .nav-link {
             cursor: pointer;
@@ -132,7 +145,7 @@
             const navLinks = files.map(file => {
                 const fileName = file.replace('.md', '').replace(/_/g, ' ').replace(/-/g, ' ');
                 return `<li class="nav-item">
-                            <a class="nav-link" data-file="<span class="math-inline">\{file\}" href\="\#"\></span>{fileName}</a>
+                            <a class="nav-link" data-file="${file}" href="#">${fileName}</a>
                         </li>`;
             }).join('');
             $('#nav-links').html(navLinks);
@@ -166,4 +179,41 @@
             // Check if the file exists before attempting to load
             if (!fileExists(file)) {
                 console.error(`File not found: ${file}`);
-                $('#content').html(`<p>Error:
+                $('#content').html(`<p>Error: Could not find content for ${file}.</p>`);
+                return; // Exit the function if the file does not exist
+            }
+            $.ajax({
+                url: file,
+                dataType: 'text',
+                success: function(data) {
+                    // Log the file being loaded for debugging
+                    console.log(`Loading file: ${file}`);
+
+                    // Convert Markdown to HTML using marked.js
+                    var htmlContent = marked.parse(data);
+                    $('#content').html(htmlContent);
+
+                    // Initialize Mermaid after rendering Markdown (with a delay)
+                    setTimeout(function() {
+                        mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
+                    }, 500);
+                },
+                error: function(xhr, status, error) {
+                    // Log any errors during file loading
+                    console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
+                    $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
+                }
+            });
+        }
+
+        // Generate navigation links in the sidebar
+        generateNavLinks();
+
+        // Load the default file on page load (onboarding_guide.md)
+        loadMarkdown('onboarding_guide.md');
+        $('.nav-link[data-file="onboarding_guide.md"]').addClass('active'); // Set as active
+    });
+</script>
+
+</body>
+</html>
