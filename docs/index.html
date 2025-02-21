@@ -26,6 +26,7 @@
             text-decoration: underline;
             color: #FF8C00;
         }
+        /* Sidebar Styles */
         #sidebar {
             width: 250px;
             background-color: #212121; /* Darker gray sidebar */
@@ -33,9 +34,14 @@
             overflow-y: auto; /* Allow scrolling if content overflows */
             border-right: 1px solid #444;
         }
+
+        /* Main Content Styles */
         #content {
-            flex: 1;  /* Take up remaining space */
+            flex: 1; /* Take up remaining space */
             padding: 20px;
+            font-size: 18px;     /*  Increase base font size */
+            line-height: 1.6;   /*  Increase line height */
+
         }
         .nav-link {
             cursor: pointer;
@@ -126,7 +132,7 @@
             const navLinks = files.map(file => {
                 const fileName = file.replace('.md', '').replace(/_/g, ' ').replace(/-/g, ' ');
                 return `<li class="nav-item">
-                            <a class="nav-link" data-file="${file}" href="#">${fileName}</a>
+                            <a class="nav-link" data-file="<span class="math-inline">\{file\}" href\="\#"\></span>{fileName}</a>
                         </li>`;
             }).join('');
             $('#nav-links').html(navLinks);
@@ -160,41 +166,4 @@
             // Check if the file exists before attempting to load
             if (!fileExists(file)) {
                 console.error(`File not found: ${file}`);
-                $('#content').html(`<p>Error: Could not find content for ${file}.</p>`);
-                return; // Exit the function if the file does not exist
-            }
-            $.ajax({
-                url: file,
-                dataType: 'text',
-                success: function(data) {
-                    // Log the file being loaded for debugging
-                    console.log(`Loading file: ${file}`);
-
-                    // Convert Markdown to HTML using marked.js
-                    var htmlContent = marked.parse(data);
-                    $('#content').html(htmlContent);
-
-                    // Initialize Mermaid after rendering Markdown (with a delay)
-                    setTimeout(function() {
-                        mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
-                    }, 500);
-                },
-                error: function(xhr, status, error) {
-                    // Log any errors during file loading
-                    console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
-                    $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
-                }
-            });
-        }
-
-        // Generate navigation links in the sidebar
-        generateNavLinks();
-
-        // Load the default file on page load (onboarding_guide.md)
-        loadMarkdown('onboarding_guide.md');
-        $('.nav-link[data-file="onboarding_guide.md"]').addClass('active'); // Set as active
-    });
-</script>
-
-</body>
-</html>
+                $('#content').html(`<p>Error:
