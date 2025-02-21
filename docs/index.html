@@ -25,17 +25,8 @@
 <div class="container-fluid">
     <div class="row">
         <nav id="sidebar" class="col-3">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <span class="nav-link active" data-file="onboarding_guide.md">Onboarding Guide</span>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link" data-file="quickstart_guide.md">Quickstart Guide</span>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link" data-file="style_guide.md">Style Guide</span>
-                </li>
-                <!-- Add more navigation items as needed -->
+            <ul class="nav flex-column" id="nav-links">
+                <!-- Links will be dynamically generated here -->
             </ul>
         </nav>
         <main id="content" class="col-9 markdown-body">
@@ -46,6 +37,33 @@
 
 <script>
     $(document).ready(function() {
+        const files = [
+            "onboarding_guide.md",
+            "quickstart_guide.md",
+            "style_guide.md",
+            "ThinkAlike_Architectural_Design_Specifications.md",
+            "ThinkAlike_Data_Model_Schema.md",
+            "ThinkAlike_Security_and_Privacy_Implementation_Plan.md",
+            "ThinkAlike_Testing_and_Validation_Plan.md",
+            "ThinkAlike__MVP_Implementation_Guide.md",
+            "ai_driven_workflow.md",
+            "code_documentation_template.md",
+            "funding_model.md",
+            "manifesto_civilizationis_novae.md",
+            "mermaid_test.md",
+            "project_overview.md"
+        ];
+
+        function generateNavLinks() {
+            const navLinks = files.map(file => {
+                const fileName = file.replace('.md', '').replace(/_/g, ' ').replace(/-/g, ' ');
+                return `<li class="nav-item">
+                            <span class="nav-link" data-file="${file}">${fileName}</span>
+                        </li>`;
+            }).join('');
+            $('#nav-links').html(navLinks);
+        }
+
         function loadMarkdown(file) {
             $.ajax({
                 url: file,
@@ -61,12 +79,15 @@
             });
         }
 
-        $('#sidebar .nav-link').on('click', function() {
+        $('#sidebar').on('click', '.nav-link', function() {
             $('#sidebar .nav-link').removeClass('active');
             $(this).addClass('active');
             const file = $(this).data('file');
             loadMarkdown(file);
         });
+
+        // Generate navigation links
+        generateNavLinks();
 
         // Load the default file on page load
         loadMarkdown('onboarding_guide.md');
