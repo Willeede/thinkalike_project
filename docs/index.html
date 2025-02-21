@@ -80,9 +80,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
 
@@ -141,74 +143,4 @@
                 $(this).addClass('active');
                 const file = $(this).data('file');
                 loadContent(file);
-            });
-        }
-
-        // Function to check if a file exists
-        function fileExists(file) {
-            try {
-                let request = new XMLHttpRequest();
-                request.open("HEAD", file, false); // Use synchronous request for simplicity
-                request.send();
-                return request.status !== 404; // Check if file was found
-            } catch (error) {
-                console.warn(`Error checking file existence: ${file}`);
-                return false; // Consider the file as not existing in case of any error
-            }
-        }
-
-        // Function to load and render Markdown or JSON content using AJAX
-        function loadContent(file) {
-            // Check if the file exists before attempting to load
-            if (!fileExists(file)) {
-                console.error(`File not found: ${file}`);
-                $('#content').html(`<p>Error: Could not find content for ${file}.</p>`);
-                return; // Exit the function if the file does not exist
-            }
-            $.ajax({
-                url: file,
-                dataType: 'text',
-                success: function(data) {
-                    console.log(`Loading file: ${file}`);
-
-                    // Check if the file is JSON
-                    if (file.endsWith('.json')) {
-                        try {
-                            const jsonData = JSON.parse(data);
-                            const formattedJSON = JSON.stringify(jsonData, null, 2);
-                            $('#content').html(`<pre><code class="language-json">${formattedJSON}</code></pre>`);
-                        } catch (error) {
-                            console.error(`Error parsing JSON from ${file}: ${error}`);
-                            $('#content').html(`<p>Error parsing JSON from ${file}.</p>`);
-                        }
-                    } else {
-                        // Convert Markdown to HTML using marked.js
-                        const htmlContent = marked.parse(data);
-                        $('#content').html(htmlContent);
-
-                        // Initialize Mermaid after rendering Markdown
-                        setTimeout(function() {
-                            mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
-                        }, 500);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
-                    $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
-                }
-            });
-        }
-
-        // Generate navigation links in the sidebar
-        generateNavLinks();
-
-        // Load the default file on page load (onboarding_guide.md)
-        loadContent('onboarding_guide.md');
-        $('.nav-link[data-file="onboarding_guide.md"]').addClass('active'); // Set as active
-    });
-</script>
-
-</body>
-</html>
-
 
