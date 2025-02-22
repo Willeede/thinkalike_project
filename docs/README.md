@@ -1,15 +1,15 @@
 # ThinkAlike: Connect with Purpose
 
-** Connecting Like-Minded Individuals
+**Connecting Like-Minded Individuals**
 
 ## What is ThinkAlike?
 
-ThinkAlike is an open-source platform designed to foster genuine human connections through ethical technology and user empowerment. We're building a system that goes beyond superficial online interactions to create meaningful and lasting connections.
+ThinkAlike is an open-source platform designed to foster genuine human connections through ethical technology and user empowerment. We're building a system that goes beyond superficial online interactions, helping users discover themselves, connect with like-minded individuals, build meaningful relationships, and contribute to a better future. We leverage AI to enhance human connection, *not* to replace it, always prioritizing transparency, user agency, and ethical data handling. ThinkAlike is more than an app; it's a movement towards a more human-centered digital world, built on the principles of "Enlightenment 2.0."
 
 ## Key Features
 
 *   **Ethical AI Matching:** Intelligent matchmaking based on shared values, interests, and lifestyles, *not* superficial metrics or manipulative algorithms.
-*   **Data Traceability:** A unique, interactive visualization (the "Data Traceability" component) that shows users *exactly* how their data is being used and how it influences AI decisions. Full transparency and user control.
+*   **Data Traceability:** A unique, interactive visualization (the "Data Traceability" component) that shows users *exactly* how their data is being used and how it influences AI decisions. Full transparency and control.
 *   **User Empowerment:** Users have complete control over their data, their privacy settings, and their interactions with the AI and other users.
 *   **Community Building:** Tools to create and join communities based on shared interests and goals, fostering real-world connections.
 *   **Open Source and Transparent:** The entire codebase is open source and available on GitHub, encouraging community contributions and scrutiny.
@@ -22,16 +22,16 @@ Ready to contribute? We need your help to build the future of ethical connection
 
 To set up a local development environment and start contributing:
 
-1.  **Follow the [Quickstart Guide](docs/quickstart_guide.md).** This provides step-by-step instructions.
+1.  **Follow the [Quickstart Guide](quickstart_guide.md).** This provides step-by-step instructions.
 
-For a more comprehensive overview of the project, including our core values, architecture, and contribution guidelines, please see the full [Onboarding Guide](docs/onboarding_guide.md).
+For a more comprehensive overview of the project, including our core values, architecture, and contribution guidelines, please see the full [Onboarding Guide](onboarding_guide.md).
 
 ## Technology Stack
 
 *   **Frontend:** React
 *   **Backend:** Python (FastAPI)
 *   **Database:** SQLite (for development), PostgreSQL (planned for production)
-*   **AI:** Initially a rule-based system for matching and data traceability visualization. Future plans include exploring more advanced models (e.g., collaborative filtering, natural language processing).
+*   **AI:** Initially a simple rule-based system for matching and data traceability visualization. Future plans include exploring more advanced models (e.g., collaborative filtering, natural language processing) for enhanced personalization and community features.
 *   **Documentation:** Markdown, rendered with `marked.js` and `mermaid.js`
 
 ## Contributing
@@ -59,6 +59,6 @@ We encourage contributions and modifications to the code, but we request that an
 
 ## Contact
 
-Join our community on Discord: [https://discord.gg/TnAcWezH](https://www.google.com/url?sa=E&source=gmail&q=https://discord.gg/TnAcWezH)
+Join our community on Discord: [https://discord.gg/TnAcWezH](https://discord.gg/TnAcWezH)
 
 For bug reports and feature requests, please open an issue on GitHub.
