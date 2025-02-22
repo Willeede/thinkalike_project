@@ -4,12 +4,12 @@
 
 ## What is ThinkAlike?
 
-ThinkAlike is an open-source platform designed to foster genuine human connections through ethical technology and user empowerment. We're building a system that goes beyond superficial online interactions, helping users discover themselves, connect with like-minded individuals, build meaningful relationships, and contribute to a better future. We leverage AI to enhance human connection, *not* to replace it, always prioritizing transparency, user agency, and ethical data handling. ThinkAlike is more than an app; it's a movement towards a more human-centered digital world, built on the principles of "Enlightenment 2.0."
+ThinkAlike is an open-source platform designed to foster genuine human connections through ethical technology and user empowerment. We're building a system that goes beyond superficial online interactions to create meaningful and lasting connections.
 
 ## Key Features
 
 *   **Ethical AI Matching:** Intelligent matchmaking based on shared values, interests, and lifestyles, *not* superficial metrics or manipulative algorithms.
-*   **Data Traceability:** A unique, interactive visualization (the "Data Traceability" component) that shows users *exactly* how their data is being used and how it influences AI decisions. Full transparency and control.
+*   **Data Traceability:** A unique, interactive visualization (the "Data Traceability" component) that shows users *exactly* how their data is being used and how it influences AI decisions. Full transparency and user control.
 *   **User Empowerment:** Users have complete control over their data, their privacy settings, and their interactions with the AI and other users.
 *   **Community Building:** Tools to create and join communities based on shared interests and goals, fostering real-world connections.
 *   **Open Source and Transparent:** The entire codebase is open source and available on GitHub, encouraging community contributions and scrutiny.
@@ -31,7 +31,7 @@ For a more comprehensive overview of the project, including our core values, arc
 *   **Frontend:** React
 *   **Backend:** Python (FastAPI)
 *   **Database:** SQLite (for development), PostgreSQL (planned for production)
-*   **AI:** Initially a rule-based system for matching and data traceability visualization. Future plans include exploring more advanced models (e.g., collaborative filtering, natural language processing) for enhanced personalization and community features.
+*   **AI:** Initially a rule-based system for matching and data traceability visualization. Future plans include exploring more advanced models (e.g., collaborative filtering, natural language processing).
 *   **Documentation:** Markdown, rendered with `marked.js` and `mermaid.js`
 
 ## Contributing
@@ -53,7 +53,7 @@ The full project documentation is available at [https://thinkalike-project.onren
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Visual assets (images, logos, and the `style_guide.md` file) are licensed under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).  *(You'll need to provide the actual link to the CC BY-NC-ND license.)*
+Visual assets (images, logos, and the `style_guide.md` file) are licensed under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 We encourage contributions and modifications to the code, but we request that any derivative works respect the core visual style and branding of the ThinkAlike project.
 
