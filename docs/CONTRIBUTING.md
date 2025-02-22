@@ -1,6 +1,6 @@
 # Contributing to ThinkAlike
 
-Thank you for your interest in contributing to ThinkAlike! We welcome contributions from everyone, and we believe that a diverse and inclusive community is essential for building a truly ethical and human-centered platform.  Every contribution, no matter how small, is valuable.
+Thank you for your interest in contributing to ThinkAlike! We welcome contributions from everyone, and we believe that a diverse and inclusive community is essential for building a truly ethical and innovative platform.
 
 This guide provides detailed information on how to contribute to the project.  Please read it carefully before submitting your first contribution.
 
@@ -46,7 +46,7 @@ There are many ways to contribute to ThinkAlike, regardless of your skill level 
 
 Before you start contributing, please follow these steps:
 
-1.  **Read the [Onboarding Guide](docs/onboarding/ONBOARDING_GUIDE.md) and [Quickstart Guide](docs/onboarding/quickstart.md).** These documents provide an overview of the project, its goals, and how to set up your development environment.
+1.  **Read the [Onboarding Guide](docs/onboarding/ONBOARDING_GUIDE.md) and [Quickstart Guide](docs/onboarding/quickstart.md).** These documents provide an overview of the project, its goals, and how you can get involved.
 2.  **Explore the [GitHub Repository](https://github.com/Willeede/thinkalike_project).** Familiarize yourself with the project structure, codebase, and existing documentation.
 3.  **Check the [Issues Tab](https://github.com/Willeede/thinkalike_project/issues).** Look for open issues labeled "good first issue" or "help wanted." These are good starting points for new contributors.
 4. **Join our community** Introduce yourself, and let us know what areas are you interested in.
@@ -63,7 +63,7 @@ ThinkAlike follows a standard Git-based workflow:
     cd thinkalike_project
     ```
 
-3.  **Create a Feature Branch:** For *each* contribution (bug fix, new feature, documentation update, etc.), create a *new* branch from the `main` branch. Use a descriptive branch name that reflects the purpose of your contribution.  Use the following prefixes:
+3.  **Create a Feature Branch:** For *each* contribution (bug fix, new feature, documentation update, etc.), create a *new* branch from the `main` branch. Use a descriptive branch name that reflects the nature of your change:
 
     *   `fix/`: For bug fixes.
     *   `feature/`: For new features.
@@ -106,7 +106,7 @@ ThinkAlike follows a standard Git-based workflow:
     *   If your change affects the UI, include screenshots or GIFs demonstrating the changes.
     *   Select appropriate reviewers (if you know who to ask; otherwise, leave it blank).
 
-9.  **Code Review and Collaboration:** Project maintainers and community members will review your PR.  They may provide feedback, request changes, or ask questions.  Be responsive and collaborative during the review process.  Address any feedback and make the necessary revisions.
+9.  **Code Review and Collaboration:** Project maintainers and community members will review your PR.  They may provide feedback, request changes, or ask questions.  Be responsive and collaborative during this process.
 
 10. **Merge:** Once your PR is approved, a project maintainer will merge it into the `main` branch.  Congratulations! Your contribution is now part of ThinkAlike.
 
