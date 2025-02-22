@@ -2,13 +2,13 @@
 
 **Version 1.0 - Draft - Work in Progress**
 
-ThinkAlike is committed to fostering a welcoming, respectful, and inclusive community for everyone who contributes to and uses our project. This Code of Conduct outlines our expectations for participant behavior and the consequences for unacceptable behavior.
+ThinkAlike is committed to fostering a welcoming, respectful, and inclusive community for everyone who contributes to and uses our project. This Code of Conduct outlines our expectations for participants within the ThinkAlike community, as well as the consequences for unacceptable behavior.
 
 **[Please note: This Code of Conduct is currently INCOMPLETE and contains PLACEHOLDER CONTENT. A more detailed and comprehensive Code of Conduct will be added in a future update.]**
 
 **1. Our Pledge - The Revolutionary Promise**
 
-In the interest of fostering an open and welcoming environment, we, as contributors and maintainers, pledge to make participation in our project and our community a harassment-free experience for everyone.
+In the interest of fostering an open and welcoming environment, we, as contributors and maintainers, pledge to make participation in our project and our community a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
 
 **2. Expected Behaviors - Actions of a True Revolutionary**
 
@@ -36,7 +36,7 @@ The following behaviors are considered unacceptable within the ThinkAlike commun
 
 **4. Reporting Violations - Upholding the Ethical Code**
 
-If you experience or witness behavior that violates this Code of Conduct, please report it to the ThinkAlike project maintainers or designated Code of Conduct enforcement team (if established). All reports will be kept confidential and will be reviewed and addressed seriously and fairly.
+If you experience or witness behavior that violates this Code of Conduct, please report it to the ThinkAlike project maintainers or designated Code of Conduct enforcement team (if established). All reports will be reviewed and investigated promptly and fairly.
 
 **How to Report:**
 
