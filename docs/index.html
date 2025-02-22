@@ -127,11 +127,11 @@
             "CODE_OF_CONDUCT.md",
             "CONTRIBUTING.md",
             "INSTALLATION.md",
-            "Architectural_Design.md",
+            "ThinkAlike_Architectural_Design_Specifications.md",
             "ThinkAlike_Data_Model_Schema.md",
-            "Security_And_Privacy.md",
-            "Testing_And_Validation.md",
-            "MVP_Implementation.md",
+            "ThinkAlike_Security_and_Privacy_Implementation_Plan.md",
+            "ThinkAlike_Testing_and_Validation_Plan.md",
+            "ThinkAlike__MVP_Implementation_Guide.md",
             "funding_model.md",
             "project_overview.md",
             "ai_driven_workflow.md",
@@ -142,8 +142,7 @@
         // Function to generate navigation links in the sidebar
         function generateNavLinks() {
             const navLinks = files.map(file => {
-                let fileName = file.replace('.md', '').replace('.json', '').replace(/_/g, ' ').replace(/-/g, ' ');
-                fileName = fileName.replace('ThinkAlike', '').trim(); // Remove "ThinkAlike" and trim
+                let fileName = file.replace('ThinkAlike_', '').replace('__', '_').replace('.md', '').replace('.json', '').replace(/_/g, ' ').replace(/-/g, ' ');
                 fileName = toTitleCase(fileName); // Convert to Title Case
                 return `<li class="nav-item">
                             <a class="nav-link" data-file="${file}" href="#">${fileName}</a>
