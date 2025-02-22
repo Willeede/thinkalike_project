@@ -80,9 +80,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Questrial&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
 
@@ -127,9 +129,7 @@
         // Function to generate navigation links in the sidebar
         function generateNavLinks() {
             const navLinks = files.map(file => {
-                let fileName = file.replace('.md', '').replace('.json', '').replace(/_/g, ' ').replace(/-/g, ' ');
-                fileName = fileName.replace('ThinkAlike', '').trim(); // Remove "ThinkAlike" and trim
-                fileName = toTitleCase(fileName); // Convert to Title Case
+                const fileName = file.replace('.md', '').replace('.json', '').replace(/_/g, ' ').replace(/-/g, ' ');
                 return `<li class="nav-item">
                             <a class="nav-link" data-file="${file}" href="#">${fileName}</a>
                         </li>`;
@@ -203,19 +203,15 @@
             });
         }
 
-    // Function to convert a string to Title Case
-    function toTitleCase(str) {
-        return str.replace(/\w\S*/g, function(txt){
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        });
-    }
-
         // Generate navigation links in the sidebar
         generateNavLinks();
 
         // Load the default file on page load (onboarding_guide.md)
         loadContent('onboarding_guide.md');
         $('.nav-link[data-file="onboarding_guide.md"]').addClass('active'); // Set as active
+
+        // Initialize highlight.js
+        hljs.highlightAll();
     });
 </script>
 
