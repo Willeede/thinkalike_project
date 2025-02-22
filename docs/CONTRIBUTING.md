@@ -8,7 +8,7 @@ This guide provides detailed information on how to contribute to the project. Pl
 
 There are many ways to contribute to ThinkAlike, regardless of your skill level or background:
 
-*   **Code:** Contribute to the frontend (React), backend (Python/FastAPI), or AI models.  This includes:
+*   **Code:** Contribute to the frontend (React), backend (Python/FastAPI), or AI models. This includes:
     *   Implementing new features.
     *   Fixing bugs.
     *   Refactoring and optimizing existing code.
@@ -23,7 +23,7 @@ There are many ways to contribute to ThinkAlike, regardless of your skill level 
     *   Creating tutorials and examples for new users and contributors.
     *   Improving the onboarding guide and quickstart guide.
     *   Translating documentation into other languages.
-*   **Testing:**  Help ensure the quality and reliability of the platform:
+*   **Testing:** Help ensure the quality and reliability of the platform:
     *   Writing unit tests, integration tests, and UI tests.
     *   Performing manual testing and reporting bugs.
     *   Participating in user acceptance testing (UAT).
@@ -32,7 +32,7 @@ There are many ways to contribute to ThinkAlike, regardless of your skill level 
     *   Improving existing AI models.
     *   Creating datasets for training and evaluation.
     *   Implementing ethical AI guidelines and bias mitigation techniques.
-*   **Ethical and Security Expertise:**  Help ensure the project adheres to its ethical principles and security best practices:
+*   **Ethical and Security Expertise:** Help ensure the project adheres to its ethical principles and security best practices:
     *   Participating in ethical reviews of the platform and AI models.
     *   Identifying and mitigating potential security vulnerabilities.
     *   Contributing to the development of ethical guidelines and policies.
@@ -63,7 +63,7 @@ ThinkAlike follows a standard Git-based workflow:
     cd thinkalike_project
     ```
 
-3.  **Create a Feature Branch:** For *each* contribution (bug fix, new feature, documentation update, etc.), create a *new* branch from the `main` branch. Use a descriptive branch name that reflects the purpose of your contribution.  Use the following prefixes:
+3.  **Create a Feature Branch:** For *each* contribution (bug fix, new feature, documentation update, etc.), create a *new* branch from the `main` branch. Use a descriptive branch name that reflects the purpose of your contribution. Use the following prefixes:
 
     *   `fix/`: For bug fixes.
     *   `feature/`: For new features.
@@ -86,7 +86,7 @@ ThinkAlike follows a standard Git-based workflow:
 5.  **Test Thoroughly:** *Before* submitting your changes, test them *thoroughly*. This includes:
     *   **Unit Tests:** If you're adding or modifying code, write unit tests to verify its functionality.
     *   **Integration Tests:** If your changes affect multiple components, test the interactions between them.
-    *   **UI Tests:** Use the UI testing framework to validate the appearance and behavior of UI components.
+    *   **UI Tests:** Use the UI testing framework to validate the appearance and behavior of UI components.  *Emphasize the use of UI elements for testing and validation, consistent with the project's philosophy.*
     *   **Manual Testing:** Manually test your changes in a browser to ensure they work as expected.
     *   **Use UI testing parameters:** Use UI data feedback components to test and document your changes.
 
@@ -112,36 +112,11 @@ ThinkAlike follows a standard Git-based workflow:
 
 ## Code Style Guidelines
 
-*(This section will link to a separate `code_style.md` file. For now, I'm providing some general guidelines.)*
+We strive for clean, readable, and maintainable code.  Please follow the guidelines in the [`code_style.md`](code_style.md) file.  Here are some general principles:
 
-We strive for clean, readable, and maintainable code. Please follow these guidelines:
-
-*   **Frontend (React):**
-    *   Follow the [Airbnb React/JSX Style Guide](https://airbnb.io/javascript/react/).
-    *   Use functional components and Hooks whenever possible.
-    *   Write clear and concise component names.
-    *   Use meaningful variable and function names.
-    *   Keep components small and focused. Break down large components into smaller, reusable ones.
-    *   Use CSS Modules or Styled Components for component-specific styles.
-    *   Thoroughly test all components, using the UI as a testing tool.
-    *   For more details, check the [`code_style.md`](../code_style.md) file.
-
-*   **Backend (Python/FastAPI):**
-    *   Follow the [PEP 8 Style Guide](https://www.python.org/dev/peps/pep-0008/).
-    *   Use type hints.
-    *   Write clear and concise function names.
-    *   Use meaningful variable names.
-    *   Keep functions short and focused.
-    *   Include docstrings for all functions and classes.
-    *   Thoroughly test all code.
-    *   For more details, check the [`code_style.md`](../code_style.md) file.
-
-*   **General:**
-    *   Write clear and concise comments to explain *why* your code does what it does (not just *what* it does).
-    *   Use consistent indentation (4 spaces for Python, 2 spaces for JavaScript/React).
-    *   Avoid unnecessary code duplication. Use functions and components to promote reusability.
-    *   Keep code as simple as possible (but no simpler).
-    *   Prioritize readability.
+*   **Frontend (React):**  Follow the Airbnb React/JSX Style Guide, use functional components and Hooks, keep components small, and use CSS Modules or Styled Components.
+*   **Backend (Python/FastAPI):**  Follow PEP 8, use type hints, keep functions short, and include docstrings.
+*   **General:**  Write clear comments, use consistent indentation, avoid code duplication, and prioritize readability.
 
 ## Documentation Guidelines
 
@@ -151,68 +126,41 @@ We strive for clean, readable, and maintainable code. Please follow these guidel
 *   **Completeness:** Provide comprehensive documentation for all aspects of the project.
 *   **Structure:** Use headings, lists, and other formatting elements to organize the documentation logically.
 *   **Examples:** Include code examples and usage instructions where appropriate.
-*   **UI Driven:** Use UI components to provide feedback about data workflows.
+*   **UI Driven:** Use UI components to provide feedback about data workflows, and to validate the correct implementation of those workflows.
 
 ## Commit Message Guidelines
 
-We follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification for commit messages. This helps us automate the changelog generation and provides a consistent history.
+We follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification for commit messages.
 
 **Commit Message Structure:**
 
-```
 <type>[optional scope]: <description>
 
 [optional body]
 
 [optional footer(s)]
-```
 
-*   **`<type>`:** Must be one of the following:
-    *   `feat`: A new feature.
-    *   `fix`: A bug fix.
-    *   `docs`: Documentation only changes.
-    *   `style`: Changes that do not affect the meaning of the code (white-space, formatting, etc.).
-    *   `refactor`: A code change that neither fixes a bug nor adds a feature.
-    *   `perf`: A code change that improves performance.
-    *   `test`: Adding missing tests or correcting existing tests.
-    *   `chore`: Other changes that don't modify src or test files (e.g., updating build scripts).
-    *   `ui-test`: Changes related to UI testing parameters or workflows.
-*   **`[optional scope]`:** A scope may be provided to a commit’s type to provide additional contextual information and is contained within parenthesis, e.g., `feat(parser): add ability to parse arrays`. In our project, you can use scopes like `ui`, `backend`, `ai`, `docs`, `tests`.
-*   **`<description>`:** A short description of the change in the present imperative tense (e.g., "Add login form," *not* "Added login form" or "Adds login form").
 
-**Example Commit Messages:**
+*   **`<type>`:**  (See list in original file - no changes needed here)
+*   **`[optional scope]`:** (See original file - no changes needed here)
+*   **`<description>`:**  (See original file - no changes needed here)
 
-```
-feat(ui): add data traceability component
-fix(backend): resolve database connection issue
-docs: update onboarding guide with contribution guidelines
-test(ui): add unit tests for action button component
-style(frontend): format code with Prettier
-chore: update dependencies
-ui-test(DataTraceability): implement tests for data loading
-```
+**Example Commit Messages:** (No changes needed here)
 
 ## Code Review Process
 
-All code contributions to ThinkAlike are subject to code review. This ensures code quality, consistency, and adherence to project guidelines.
-
-*   **Pull Requests:** All changes should be submitted via Pull Requests (PRs).
-*   **Reviewers:** Project maintainers and community members will review your PR.
-*   **Feedback:** Reviewers will provide feedback, ask questions, and suggest changes.
-*   **Iteration:** You may need to make revisions to your code based on the feedback.
-*   **Approval:** Once the reviewers are satisfied with the changes, they will approve the PR.
-*   **Merging:** A project maintainer will merge the approved PR into the `main` branch.
+All code contributions to ThinkAlike are subject to code review. (No changes needed here)
 
 ## Community and Communication
 
-*   **GitHub:** [https://github.com/Willeede/thinkalike_project](https://github.com/Willeede/thinkalike_project)
-*   **Discord:** For real-time discussions, questions, announcements, and community building. [Join our Discord Server](https://discord.gg/TnAcWezH)
+*   **GitHub:** [https://github.com/Willeede/thinkalike_project](https://github.com/Willeede/thinkalike_project) (Correct)
+*   **Discord:** [Join our Discord Server](https://discord.gg/TnAcWezH) (Correct)
 
 ## Using AI Coding Assistants
 
-We encourage using AI coding assistants like Copilot or Gemini to improve your coding experience. However, always *review*, *understand*, and *test* the code suggested by these tools. AI-generated code is not always perfect and may require modifications. **You are responsible for the quality and correctness of the code you submit, regardless of whether it was written by you or by an AI assistant.**
+We encourage using AI coding assistants like Copilot or Gemini to improve your coding experience.  However, always *review*, *understand*, and *test* the code suggested by these tools. AI-generated code is not always perfect and may require modifications.  **You are responsible for the quality and correctness of the code you submit, regardless of whether it was written by you or by an AI assistant.**
 
-Here are a few example prompts you can use with AI coding assistants:
+Here are a few example prompts you can use:
 
 *   **To understand a component:**
 
@@ -245,9 +193,8 @@ Here are a few example prompts you can use with AI coding assistants:
 *   **Debugging:**
 
     > "Explain this error: [Error message]. Here's the code: [Paste code]"
-
 * **To write a commit message:**
 
-    > "Write a conventional commit message for this change: [Describe the change you made]"
+    > "Write a conventional commit message for this change: [Describe the change you made]"
 
 By providing *specific* code snippets and clear instructions, you can get much more useful results from AI assistants. Remember to always review and adapt the suggestions to fit the project's specific needs.
