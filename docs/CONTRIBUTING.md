@@ -81,13 +81,13 @@ ThinkAlike follows a standard Git-based workflow:
     git checkout -b docs/#99-update-readme
     ```
 
-4.  **Make Your Changes:** Implement your contribution, following the coding style guidelines (see below) and best practices.  Write clear, concise, and well-documented code.
+4.  **Make Your Changes:** Implement your contribution, following the coding style guidelines (see below) and best practices. Write clear, concise, and well-documented code.
 
-5.  **Test Thoroughly:**  *Before* submitting your changes, test them *thoroughly*.  This includes:
+5.  **Test Thoroughly:** *Before* submitting your changes, test them *thoroughly*. This includes:
     *   **Unit Tests:** If you're adding or modifying code, write unit tests to verify its functionality.
     *   **Integration Tests:** If your changes affect multiple components, test the interactions between them.
     *   **UI Tests:** Use the UI testing framework to validate the appearance and behavior of UI components.
-    *   **Manual Testing:**  Manually test your changes in a browser to ensure they work as expected.
+    *   **Manual Testing:** Manually test your changes in a browser to ensure they work as expected.
     *   **Use UI testing parameters:** Use UI data feedback components to test and document your changes.
 
 6.  **Commit Your Changes:** Commit your changes with clear and descriptive commit messages. Follow the Conventional Commits specification (see below).
@@ -102,13 +102,13 @@ ThinkAlike follows a standard Git-based workflow:
     *   Go to the main ThinkAlike repository on GitHub.
     *   You should see a prompt to create a pull request from your recently pushed branch.
     *   Click "Compare & pull request."
-    *   Provide a *clear and detailed description* of your changes.  Explain the *purpose* of the contribution, the *problem* it solves, and *how* you tested it.  Reference any relevant issues (e.g., "Fixes #123").
+    *   Provide a *clear and detailed description* of your changes. Explain the *purpose* of the contribution, the *problem* it solves, and *how* you tested it. Reference any relevant issues (e.g., "Fixes #123").
     *   If your change affects the UI, include screenshots or GIFs demonstrating the changes.
     *   Select appropriate reviewers (if you know who to ask; otherwise, leave it blank).
 
-9.  **Code Review and Collaboration:** Project maintainers and community members will review your PR.  They may provide feedback, request changes, or ask questions.  Be responsive and collaborative during the review process.  Address any feedback and make the necessary revisions.
+9.  **Code Review and Collaboration:** Project maintainers and community members will review your PR. They may provide feedback, request changes, or ask questions. Be responsive and collaborative during the review process. Address any feedback and make the necessary revisions.
 
-10. **Merge:** Once your PR is approved, a project maintainer will merge it into the `main` branch.  Congratulations! Your contribution is now part of ThinkAlike.
+10. **Merge:** Once your PR is approved, a project maintainer will merge it into the `main` branch. Congratulations! Your contribution is now part of ThinkAlike.
 
 ## Code Style Guidelines
 
@@ -121,9 +121,10 @@ We strive for clean, readable, and maintainable code. Please follow these guidel
     *   Use functional components and Hooks whenever possible.
     *   Write clear and concise component names.
     *   Use meaningful variable and function names.
-    *   Keep components small and focused.  Break down large components into smaller, reusable ones.
+    *   Keep components small and focused. Break down large components into smaller, reusable ones.
     *   Use CSS Modules or Styled Components for component-specific styles.
     *   Thoroughly test all components, using the UI as a testing tool.
+    *   For more details, check the [`code_style.md`](../code_style.md) file.
 
 *   **Backend (Python/FastAPI):**
     *   Follow the [PEP 8 Style Guide](https://www.python.org/dev/peps/pep-0008/).
@@ -133,6 +134,7 @@ We strive for clean, readable, and maintainable code. Please follow these guidel
     *   Keep functions short and focused.
     *   Include docstrings for all functions and classes.
     *   Thoroughly test all code.
+    *   For more details, check the [`code_style.md`](../code_style.md) file.
 
 *   **General:**
     *   Write clear and concise comments to explain *why* your code does what it does (not just *what* it does).
@@ -149,7 +151,7 @@ We strive for clean, readable, and maintainable code. Please follow these guidel
 *   **Completeness:** Provide comprehensive documentation for all aspects of the project.
 *   **Structure:** Use headings, lists, and other formatting elements to organize the documentation logically.
 *   **Examples:** Include code examples and usage instructions where appropriate.
-* **UI Driven:** Use UI components to provide feedback about data workflows.
+*   **UI Driven:** Use UI components to provide feedback about data workflows.
 
 ## Commit Message Guidelines
 
@@ -204,34 +206,48 @@ All code contributions to ThinkAlike are subject to code review. This ensures co
 ## Community and Communication
 
 *   **GitHub:** [https://github.com/Willeede/thinkalike_project](https://github.com/Willeede/thinkalike_project)
-*   **Communication Channels:** [Insert link to Discord/Slack/etc. here] - For real-time discussions, questions, announcements, and community building. (Will: You need to provide the actual link.)
+*   **Discord:** For real-time discussions, questions, announcements, and community building. [Join our Discord Server](https://discord.gg/TnAcWezH)
 
 ## Using AI Coding Assistants
 
-We encourage using AI coding assistants like Copilot or Gemini to improve your coding experience. However, always verify and test the code suggested.
+We encourage using AI coding assistants like Copilot or Gemini to improve your coding experience. However, always *review*, *understand*, and *test* the code suggested by these tools. AI-generated code is not always perfect and may require modifications. **You are responsible for the quality and correctness of the code you submit, regardless of whether it was written by you or by an AI assistant.**
 
-**Here are a few prompts you can use:**
-*  To understand a component:
-"Explain the purpose and functionality of the following React component, including the meaning of each prop and the expected data types.
-```jsx
- Paste component code here
-```"
+Here are a few example prompts you can use with AI coding assistants:
 
-* To write a test:
-  "Write a unit test for the following Python function using pytest:
-   ```python
-   Paste function code here
-   ```"
-*  To refactor code:
-"Refactor the following JavaScript code to improve readability and maintainability. Explain the changes you made:
-```javascript
-Paste code snippet here
-```"
+*   **To understand a component:**
 
-* To write documentation:
-"Write a concise documentation comment (in JSDoc format) for the following React component:
- ```jsx
- Paste component code here
- ```"
-* Debugging:
-"Explain this error: [Error message]. Here's the code: [Paste code]"
+    > "Explain the purpose and functionality of the following React component, including the meaning of each prop and the expected data types:
+    >  ```jsx
+    >  [Paste component code here]
+    >  ```"
+
+*   **To write a test:**
+
+    > "Write a unit test for the following Python function using pytest:
+    >  ```python
+    >  [Paste function code here]
+    >  ```"
+
+*   **To refactor code:**
+
+    > "Refactor the following JavaScript code to improve readability and maintainability. Explain the changes you made:
+    >  ```javascript
+    >  [Paste code snippet here]
+    >  ```"
+
+*   **To write documentation:**
+
+    > "Write a concise documentation comment (in JSDoc format) for the following React component:
+    >  ```jsx
+    >  [Paste component code here]
+    >  ```"
+
+*   **Debugging:**
+
+    > "Explain this error: [Error message]. Here's the code: [Paste code]"
+
+* **To write a commit message:**
+
+    > "Write a conventional commit message for this change: [Describe the change you made]"
+
+By providing *specific* code snippets and clear instructions, you can get much more useful results from AI assistants. Remember to always review and adapt the suggestions to fit the project's specific needs.
