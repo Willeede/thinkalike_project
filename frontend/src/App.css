@@ -1,31 +1,25 @@
 /* frontend/src/App.css */
 
-/* --- Fonts (Google Fonts - Ensure these are linked in public/index.html) --- */
-/*  (The <link> tags should already be in your index.html)
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Questrial&display=swap" rel="stylesheet">
-*/
-
 /* --- CSS Variables (for easy color management) --- */
 :root {
   --color-primary-amber: #FFC300;
-  --color-primary-deep-orange: #F86B03;
+  --color-primary-deep-orange: #FF5733;
   --color-primary-neon-orange: #FF8C00;
   --color-primary-ruby: #800000;
   --color-highlight-ruby: #e60000;
-   --color-ruby-shadow: #3f0000;
+  --color-ruby-shadow: #3f0000;
   --color-secondary-dark-blue: #001F3F;
   --color-neutral-black: #000000;
   --color-neutral-dark-gray: #333333;
   --color-neutral-medium-gray: #666666;
   --color-neutral-light-gray: #CCCCCC;
   --color-neutral-white: #FFFFFF;
+  --color-accent-blue: #00FFFF; /* Added for consistency */
 }
 
 /* --- Global Styles --- */
 body {
-  font-family: 'Questrial', sans-serif; /* Questrial for body text */
+  font-family: 'Open Sans', sans-serif; /* Use Open Sans for body text */
   background-color: var(--color-neutral-black); /* Black background */
   color: var(--color-neutral-light-gray); /* Light gray text */
   margin: 0; /* Remove default body margin */
@@ -62,3 +56,4 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* --- Add more component-specific styles here as needed --- */
+
