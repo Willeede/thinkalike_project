@@ -8,7 +8,7 @@ This document outlines the visual style and branding guidelines for the ThinkAli
 |----------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | **Primary Colors:**        |             |                                                                                                                                     |
 | Amber/Honey Yellow (Neutral) | `#FFC300`  | AI indicator (idle state), base color for some UI elements, subtle highlights.                                                      |
-| Deep Orange (Active)       | `#FF5733`   | AI indicator (active/processing state), data visualization, progress indicators.                                                    |
+| Deep Orange (Active)       | `#F86B03`   | AI indicator (active/processing state), data visualization, progress indicators.                                                    |
 | Neon Orange (Highlight)    | `#FF8C00`   | Calls to action, important notifications, errors, interactive elements. Use sparingly.                                              |
 | Deep Ruby (Connection)     | `#800000`   | Indicates a successful, real-world connection established between users.                                                            |
 | Ruby Highlight (Optional)  | `#e60000`   | *Use very sparingly*. For visual highlights *only* (not for text).                                                                  |
@@ -66,7 +66,7 @@ h1, h2, h3 {
 
 **AI Agent Indicator**  
 - A circular shape with a dynamic, multi-hued orange/red light at its center against a black background.
-- **Pulsating Light**: The central light pulsates with a period of 1.5 seconds (adjustable), smoothly transitioning between `#FFC300` (brighter yellow-orange) and `#FF5733` (deeper orange). The intensity change should follow an ease-in-out timing function.
+- **Pulsating Light**: The central light pulsates with a period of 1.5 seconds (adjustable), smoothly transitioning between `#FFC300` (brighter yellow-orange) and `#F86B03` (deeper orange). The intensity change should follow an ease-in-out timing function.
 - **Blue Variant**: The blue color (`#001F3F`) can be used to indicate a different state of the AI agent (e.g., providing information, communicating with the user). The waveform color can change from blue, to orange and finally to ruby red, to represent the transition from AI interaction to real world connection.
 - **Sinusoidal Waveform**: A sinusoidal waveform with a wavelength of 20 pixels (adjustable) and an amplitude of 5 pixels (adjustable) travels across the circle from left to right over a duration of 1 second (adjustable). The waveform color is `#001F3F`.
 - **Triangle Indicator**: A subtle, triangle shape using color `#800000`. The triangle should be within the circle, and should become clearly visible (increasing in opacity or brightness) when a direct, real-world connection is established between two users. The change must be smooth.
@@ -76,7 +76,7 @@ h1, h2, h3 {
 **Pulsating Light**  
 - `period: 1.5s (adjustable)`  
 - `colorStart: #FFC300`  
-- `colorEnd: #FF5733`  
+- `colorEnd: #F86B03`  
 - `easing: ease-in-out`
 
 **Sinusoidal Waveform**  
