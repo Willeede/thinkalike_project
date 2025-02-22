@@ -8,7 +8,7 @@ This document outlines the visual style and branding guidelines for the ThinkAli
 | ---------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **Primary Colors:**           |             |                                                                                                                                    |
 | Amber/Honey Yellow (Neutral) | `#FFC300`     | AI indicator (idle state), base color for some UI elements, subtle highlights.                                                    |
-| Deep Mandarine Orange (Active)         | `#F86B03`     | AI indicator (active/processing state), data visualization, progress indicators.  **CORRECTED COLOR**                                                |
+| Deep Mandarine Orange (Active)         | `#F86B03`     | AI indicator (active/processing state), data visualization, progress indicators.                                               |
 | Neon Orange (Highlight)     | `#FF8C00`     | Calls to action, important notifications, errors, interactive elements. Use sparingly.                                          |
 | Deep Ruby (Connection)       | `#800000`     | Indicates a successful, real-world connection established between users.                                                          |
 | Ruby Highlight (Optional)   | `#e60000`    | *Use very sparingly*. For visual highlights *only* (not for text).                                                                 |
