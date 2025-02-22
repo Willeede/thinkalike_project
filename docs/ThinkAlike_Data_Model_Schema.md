@@ -8,9 +8,7 @@ This document describes the data models and database schema used in the ThinkAli
 
 ## Entity-Relationship Diagram (ERD)
 
-*(Will: Insert an image of your ERD here. You can create this using a tool like dbdiagram.io, Lucidchart, or draw.io)*
-
-![ER Diagram Placeholder](placeholder.png)
+![ThinkAlike ER Diagram](../assets/images/thinkalike_erd.png)
 
 ## Tables
 
