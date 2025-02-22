@@ -28,17 +28,21 @@
         }
         /* Sidebar Styles */
         #sidebar {
-            width: 250px;
+            flex: 0 0 250px; /* Fixed width sidebar */
             background-color: #212121; /* Darker gray sidebar */
             padding: 20px;
             overflow-y: auto; /* Allow scrolling if content overflows */
             border-right: 1px solid #444;
+            position: fixed;
+            height: 100%;
         }
 
         /* Main Content Styles */
-        #content {
+        #main-content {
             flex: 1; /* Take up remaining space */
             padding: 20px;
+            margin-left: 270px; /* Adjust based on sidebar width */
+            overflow-y: auto; /* Allow content to scroll */
         }
         .nav-link {
             cursor: pointer;
@@ -93,7 +97,7 @@
     <ul class="nav flex-column" id="nav-links">
     </ul>
 </nav>
-<main id="content" class="markdown-body">
+<main id="main-content" class="markdown-body">
 </main>
 
 <script>
@@ -166,7 +170,7 @@
             // Check if the file exists before attempting to load
             if (!fileExists(file)) {
                 console.error(`File not found: ${file}`);
-                $('#content').html(`<p>Error: Could not find content for ${file}.</p>`);
+                $('#main-content').html(`<p>Error: Could not find content for ${file}.</p>`);
                 return; // Exit the function if the file does not exist
             }
             $.ajax({
@@ -180,16 +184,16 @@
                         try {
                             const jsonData = JSON.parse(data);
                             const formattedJSON = JSON.stringify(jsonData, null, 2);
-                            $('#content').html(`<pre><code class="language-json">${formattedJSON}</code></pre>`);
+                            $('#main-content').html(`<pre><code class="language-json">${formattedJSON}</code></pre>`);
                             hljs.highlightAll(); // Highlight
                         } catch (error) {
                             console.error(`Error parsing JSON from ${file}: ${error}`);
-                            $('#content').html(`<p>Error parsing JSON from ${file}.</p>`);
+                            $('#main-content').html(`<p>Error parsing JSON from ${file}.</p>`);
                         }
                     } else {
                         // Convert Markdown to HTML using marked.js
                         const htmlContent = marked.parse(data);
-                        $('#content').html(htmlContent);
+                        $('#main-content').html(htmlContent);
 
                         // Initialize Mermaid after rendering Markdown
                         setTimeout(function() {
@@ -199,7 +203,7 @@
                 },
                 error: function(xhr, status, error) {
                     console.error(`Error loading file: ${file} - ${xhr.status} ${xhr.statusText}`);
-                    $('#content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
+                    $('#main-content').html(`<p>Error loading content: ${xhr.status} ${xhr.statusText}</p>`);
                 }
             });
         }
