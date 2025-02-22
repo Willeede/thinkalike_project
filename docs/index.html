@@ -6,7 +6,7 @@
     <title>ThinkAlike Documentation</title>
     <style>
         body {
-            font-family: 'Open Sans', sans-serif; /* Use Open Sans */
+            font-family: 'Questrial', sans-serif; /* Use Questrial */
             margin: 0;
             display: flex; /* Use flexbox for layout */
             min-height: 100vh; /* Ensure full viewport height */
@@ -79,7 +79,7 @@
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Questrial&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
@@ -124,10 +124,18 @@
             "API_schema.json"
         ];
 
-        // Function to generate navigation links in the sidebar
+    // Function to convert a string to Title Case
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function(txt){
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
+    // Function to generate navigation links in the sidebar
         function generateNavLinks() {
             const navLinks = files.map(file => {
-                const fileName = file.replace('.md', '').replace('.json', '').replace(/_/g, ' ').replace(/-/g, ' ');
+                let fileName = file.replace('.md', '').replace('.json', '').replace(/_/g, ' ').replace(/-/g, ' ');
+                fileName = toTitleCase(fileName); // Convert to Title Case
                 return `<li class="nav-item">
                             <a class="nav-link" data-file="${file}" href="#">${fileName}</a>
                         </li>`;
@@ -188,7 +196,7 @@
                         const htmlContent = marked.parse(data);
                         $('#content').html(htmlContent);
 
-                        // Initialize Mermaid after rendering Markdown (with a delay)
+                        // Initialize Mermaid after rendering Markdown
                         setTimeout(function() {
                             mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
                         }, 500);
