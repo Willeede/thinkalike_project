@@ -28,7 +28,7 @@
         }
         /* Sidebar Styles */
         #sidebar {
-            flex: 0 0 250px; /* Fixed width sidebar */
+            flex: 0 0 220px; /* Adjusted width of the sidebar */
             background-color: #212121; /* Darker gray sidebar */
             padding: 20px;
             overflow-y: auto; /* Allow scrolling if content overflows */
@@ -36,12 +36,21 @@
             position: fixed;
             height: 100%;
         }
+        #sidebar h1 {
+            font-size: 1.5rem; /* Adjusted font size */
+            margin: 0;
+        }
+        #sidebar h2 {
+            font-size: 1rem; /* Adjusted font size */
+            margin: 0;
+            color: #eee; /* Light gray text for subtitle */
+        }
 
         /* Main Content Styles */
         #main-content {
             flex: 1; /* Take up remaining space */
             padding: 20px;
-            margin-left: 270px; /* Adjust based on sidebar width */
+            margin-left: 240px; /* Adjust based on sidebar width */
             overflow-y: auto; /* Allow content to scroll */
         }
         .nav-link {
@@ -93,7 +102,8 @@
 <body>
 
 <nav id="sidebar">
-    <h1>ThinkAlike Project Documentation</h1>
+    <h1>ThinkAlike Project</h1>
+    <h2>Documentation</h2>
     <ul class="nav flex-column" id="nav-links">
     </ul>
 </nav>
