@@ -124,17 +124,11 @@
             "API_schema.json"
         ];
 
-    // Function to convert a string to Title Case
-    function toTitleCase(str) {
-        return str.replace(/\w\S*/g, function(txt){
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        });
-    }
-
-    // Function to generate navigation links in the sidebar
+        // Function to generate navigation links in the sidebar
         function generateNavLinks() {
             const navLinks = files.map(file => {
                 let fileName = file.replace('.md', '').replace('.json', '').replace(/_/g, ' ').replace(/-/g, ' ');
+                fileName = fileName.replace('ThinkAlike', '').trim(); // Remove "ThinkAlike" and trim
                 fileName = toTitleCase(fileName); // Convert to Title Case
                 return `<li class="nav-item">
                             <a class="nav-link" data-file="${file}" href="#">${fileName}</a>
@@ -208,6 +202,13 @@
                 }
             });
         }
+
+    // Function to convert a string to Title Case
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function(txt){
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
 
         // Generate navigation links in the sidebar
         generateNavLinks();
