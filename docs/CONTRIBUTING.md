@@ -46,7 +46,7 @@ There are many ways to contribute to ThinkAlike, regardless of your skill level 
 
 Before you start contributing, please follow these steps:
 
-1.  **Read the [Onboarding Guide](onboarding_guide.md) and [Quickstart Guide](quickstart_guide.md).** These documents provide an overview of the project, its goals, and how to set up your development environment.
+1.  **Read the [Onboarding Guide](#onboarding_guide.md) and [Quickstart Guide](#quickstart_guide.md).** These documents provide an overview of the project, its goals, and how to set up your development environment.
 2.  **Explore the [GitHub Repository](https://github.com/Willeede/thinkalike_project).** Familiarize yourself with the project structure, codebase, and existing documentation.
 3.  **Check the [Issues Tab](https://github.com/Willeede/thinkalike_project/issues).** Look for open issues labeled "good first issue" or "help wanted." These are good starting points for new contributors.
 4.  **Join our community:** Introduce yourself on our [Discord Server](https://discord.gg/TnAcWezH), and let us know what areas you are interested in.
