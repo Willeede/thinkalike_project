@@ -148,18 +148,17 @@
             });
         }
 
-
-     // Function to check if a file exists
+        // Function to check if a file exists
         function fileExists(file) {
             try {
                 let request = new XMLHttpRequest();
                 request.open("HEAD", file, false); // Use synchronous request for simplicity
                 request.send();
                 return request.status !== 404; // Check if file was found
-              } catch (error) {
+            } catch (error) {
                 console.warn(`Error checking file existence: ${file}`);
                 return false; // Consider the file as not existing in case of any error
-              }
+            }
         }
 
         // Function to load and render Markdown or JSON content using AJAX
@@ -205,12 +204,12 @@
             });
         }
 
-    // Function to convert a string to Title Case
-    function toTitleCase(str) {
-        return str.replace(/\w\S*/g, function(txt){
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        });
-    }
+        // Function to convert a string to Title Case
+        function toTitleCase(str) {
+            return str.replace(/\w\S*/g, function(txt){
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+        }
 
         // Generate navigation links in the sidebar
         generateNavLinks();
