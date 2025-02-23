@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
 
 class Config:
     """
@@ -6,22 +9,18 @@ class Config:
     Loads configuration settings from environment variables or defaults.
     """
 
-    DEBUG = os.environ.get("DEBUG", False) # Debug mode (default: False)
-    SECRET_KEY = os.environ.get("SECRET_KEY", "your-secret-key-here") # Replace with a strong secret key in production!
+    DEBUG = os.environ.get("DEBUG", False)  # Debug mode (default: False)
+    SECRET_KEY = os.environ.get("SECRET_KEY", "your-secret-key-here")  # Replace with a strong secret key in production!
 
-    # --- Database Configuration (Placeholder - To be configured later) ---
+    # --- Database Configuration ---
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///thinkalike.db")  # Example SQLite database URL (for development)
-    SQLALCHEMY_TRACK_MODIFICATIONS = False # Disable modification tracking for performance
+    SQLALCHEMY_TRACK_MODIFICATIONS = False  # Disable modification tracking for performance
 
+    # --- API Keys and External Service Credentials ---
+    AI_API_KEY = os.environ.get("AI_API_KEY")  # Placeholder for AI service API key
 
-    # --- API Keys and External Service Credentials (Placeholders - To be configured later) ---
-    AI_API_KEY = os.environ.get("AI_API_KEY") # Placeholder for AI service API key
-    # Add other API keys or service credentials here as needed
-
-
-    # --- Application-Specific Configuration (Placeholders - To be configured later) ---
-    # Example:  UI_URL = os.environ.get("UI_URL", "http://localhost:3000") # URL of the UI application
-
+    # --- Application-Specific Configuration ---
+    UI_URL = os.environ.get("UI_URL", "http://localhost:3000")  # URL of the UI application
 
     @staticmethod
     def init_app(app):
@@ -31,4 +30,4 @@ class Config:
         """
         pass
 
-config = Config() # Instantiate the Config class
+config = Config()  # Instantiate the Config class
