@@ -7,20 +7,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.agents.code_developer_agent import CodeDeveloperAgent
 from backend.agents.task_allocator_agent import TaskAllocatorAgent
 from backend.agents.ethical_assurance_agent import EthicalAssuranceAgent
-from backend.app.config import get_settings  # Import get_settings
-from backend.app.routes import agent_routes, feedback_routes  # Import agent_routes AND feedback_routes
+from backend.app.config import get_settings
+from backend.app.routes import agent_routes, feedback_routes
 
-message_queue = queue.Queue()  # Central Message Queue
-settings = get_settings() # Load settings
+message_queue = queue.Queue()
+settings = get_settings()
 
 app = FastAPI(
-    title=settings.app_name # Use app_name from settings for title
+    title=settings.app_name
 )
 
 # CORS configuration
 origins = [
     "http://localhost:3000",  # React dev server
-    "https://your-frontend-domain.com",  # Your frontend domain (update accordingly)
+    "https://thinkalike-project.onrender.com",  # Your frontend domain
 ]
 
 app.add_middleware(
@@ -31,16 +31,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(agent_routes.router)  # Include agent routes from agent_routes.py
-app.include_router(feedback_routes.router) # Include feedback routes from feedback_routes.py
+app.include_router(agent_routes.router)
+app.include_router(feedback_routes.router)
 
 @app.get("/")
 async def read_root():
-    return {"message": "ThinkAlike API is running", "app_name": settings.app_name} # Use app_name from settings
-
+    return {"message": "ThinkAlike API is running", "app_name": settings.app_name}
 
 if __name__ == "__main__":
-    # Initialize and start agents
     code_developer = CodeDeveloperAgent(agent_id="code_developer_agent", message_queue=message_queue)
     task_allocator = TaskAllocatorAgent(agent_id="task_allocator_agent", message_queue=message_queue)
     ethical_validator = EthicalAssuranceAgent(agent_id="ethical_validator_agent", message_queue=message_queue)
@@ -54,11 +52,11 @@ if __name__ == "__main__":
 
     try:
         while True:
-            time.sleep(1)  # Main process can do other tasks or just monitor agents
+            time.sleep(1)
     except KeyboardInterrupt:
         print("Stopping agents...")
         for agent in agents:
             agent.stop()
     for agent in agents:
-        agent.join()  # Wait for agents to finish
+        agent.join()
     print("Agents stopped. Exiting.")
