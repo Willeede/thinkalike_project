@@ -4,14 +4,13 @@ import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.app.config import get_settings
+from backend.app.config import config
 from backend.app.routes import agent_routes, feedback_routes
 
 message_queue = queue.Queue()
-settings = get_settings()
 
 app = FastAPI(
-    title=settings.app_name
+    title="ThinkAlike"
 )
 
 # CORS configuration
