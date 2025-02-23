@@ -1,188 +1,177 @@
 import React, { useRef, useEffect, useState } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import './DataTraceability.css';
-import 'react-tooltip/dist/react-tooltip.css'
-import { Tooltip as ReactTooltip } from 'react-tooltip'
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 
-function DataTraceability({ dataFlow, connectionStatus = 'disconnected' }) {
-    const fgRef = useRef();
-    const [animationTime, setAnimationTime] = useState(0);
+function DataTraceability({ connectionStatus = 'disconnected' }) {
+  const fgRef = useRef();
+  const [animationTime, setAnimationTime] = useState(0);
+  const [dataFlow, setDataFlow] = useState(null);
 
-    // Check for data
-    if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
-        return (
-            <div className="data-traceability">
-                <p>No data flow to display.</p>
-            </div>
-        );
+  useEffect(() => {
+    fetch('https://thinkalike-backend.onrender.com/api/v1/graph')
+      .then(response => response.json())
+      .then(data => setDataFlow(data))
+      .catch(error => console.error('Error fetching graph data:', error));
+  }, []);
+
+  if (!dataFlow) {
+    return <div>Loading...</div>;
+  }
+
+  const nodeColors = {
+    1: '#FFC300',
+    2: '#F86B03',
+    3: '#800000',
+    4: '#001F3F',
+  };
+
+  const getNodeColor = (node) => {
+    if (node.isAI) {
+      return '#F86B03';
     }
+    return nodeColors[node.group] || '#CCCCCC';
+  };
 
-    // Color mapping for node groups (based on style_guide.md)
-    const nodeColors = {
-        1: '#FFC300', // User Input
-        2: '#F86B03',   // API Request/Response
-        3: '#800000', // Database
-        4: '#001F3F', // AI Agent
+  const getWaveformColor = () => {
+    if (connectionStatus === 'connected') {
+      return '#800000';
+    } else if (connectionStatus === 'connecting') {
+      return '#FF5733';
+    } else {
+      return '#001F3F';
+    }
+  };
+
+  useEffect(() => {
+    let animationFrameId;
+
+    const animate = () => {
+      setAnimationTime(prevTime => prevTime + 1);
+      fgRef.current && fgRef.current.refresh();
+      animationFrameId = requestAnimationFrame(animate);
     };
 
-    // Select the color of the node
-    const getNodeColor = (node) => {
-        if (node.isAI) {
-            return '#F86B03'; // Node color
-        }
-        return nodeColors[node.group] || '#CCCCCC'; // color by group
-    };
+    animationFrameId = requestAnimationFrame(animate);
 
-    // Function to get waveform color based on connection status
-    const getWaveformColor = () => {
-        if (connectionStatus === 'connected') {
-            return '#800000'; // Ruby Red
-        } else if (connectionStatus === 'connecting') {
-            return '#FF5733'; // Deep Orange
-        } else {
-            return '#001F3F'; // Dark Blue (AI)
-        }
-    };
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [connectionStatus]);
 
-    // Animation effect using useEffect
-    useEffect(() => {
-        let animationFrameId;
-        const animate = () => {
-            setAnimationTime(prevTime => prevTime + 1);
-            fgRef.current && fgRef.current.refresh();
-            animationFrameId = requestAnimationFrame(animate);
-        };
+  const getNodeTooltip = (node) => {
+    return `
+      <div>
+        <b>${node.label}</b><br/>
+        Group: ${node.group}<br/>
+        ${node.isAI ? "<b>AI Agent</b><br/>" : ""}
+        Value: ${node.value || 'N/A'}<br/>
+      </div>
+    `;
+  };
 
-        animationFrameId = requestAnimationFrame(animate);
+  const getEdgeTooltip = (edge) => {
+    return `
+      <div>
+        Source: ${edge.source.label}<br/>
+        Target: ${edge.target.label}<br/>
+        Value: ${edge.value || 'N/A'}
+      </div>
+    `;
+  };
 
-        return () => cancelAnimationFrame(animationFrameId);
-    }, [connectionStatus]); // Re-render when connectionStatus changes
+  return (
+    <div className="data-traceability">
+      <h2>Data Traceability</h2>
+      <div className="data-traceability-graph">
+        <ForceGraph2D
+          ref={fgRef}
+          graphData={dataFlow}
+          nodeLabel="label"
+          nodeAutoColorBy="group"
+          linkDirectionalArrowLength={3.5}
+          linkDirectionalArrowRelPos={1}
+          linkWidth={1.5}
+          linkColor={() => '#001F3F'}
+          nodeCanvasObject={(node, ctx, globalScale) => {
+            const label = node.label;
+            const fontSize = 12 / globalScale;
+            ctx.font = `${fontSize}px Montserrat`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = 'white';
 
-    // Prepare tooltip content. This is MUCH more readable.
-    const getNodeTooltip = (node) => {
-        return `
-            <div>
-            <b>${node.label}</b><br/>
-            Group: ${node.group}<br/>
-            ${node.isAI ? "<b>AI Agent</b><br/>" : ""}
-            Value: ${node.value || 'N/A'}<br/>
-            </div>
-        `;
-    };
+            let nodeSize = (node.isAI ? 12 : 8) / globalScale;
 
-    const getEdgeTooltip = (edge) => {
-        return `
-            <div>
-            Source: ${edge.source.label}<br/>
-            Target: ${edge.target.label}<br/>
-            Value: ${edge.value || 'N/A'}
-            </div>
-        `;
-    };
+            if (node.isAI) {
+              const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5;
+              nodeSize += pulsate * 4 / globalScale;
+              const r = Math.floor((parseInt('#F86B03'.slice(1, 3), 16) * pulsate) + (parseInt('#FFC300'.slice(1, 3), 16) * (1 - pulsate)));
+              const g = Math.floor((parseInt('#F86B03'.slice(3, 5), 16) * pulsate) + (parseInt('#FFC300'.slice(3, 5), 16) * (1 - pulsate)));
+              const b = Math.floor((parseInt('#F86B03'.slice(5, 7), 16) * pulsate) + (parseInt('#FFC300'.slice(5, 7), 16) * (1 - pulsate)));
+              ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            }
 
-    return (
-        <div className="data-traceability">
-            <h2>Data Traceability</h2>
-            <div className="data-traceability-graph">
-                <ForceGraph2D
-                    ref={fgRef}
-                    graphData={dataFlow}
-                    nodeLabel="label"
-                    nodeAutoColorBy="group"
-                    linkDirectionalArrowLength={3.5}
-                    linkDirectionalArrowRelPos={1}
-                    linkWidth={1.5}
-                    linkColor={() => '#001F3F'}
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
+            ctx.fillStyle = getNodeColor(node);
+            ctx.fill();
+            ctx.save();
+            ctx.clip();
 
-                    // Custom node rendering
-                    nodeCanvasObject={(node, ctx, globalScale) => {
-                        const label = node.label;
-                        const fontSize = 12 / globalScale;
-                        ctx.font = `${fontSize}px Montserrat`;
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillStyle = 'white';
+            if (node.isAI) {
+              const waveWidth = nodeSize * 2.2;
+              const waveHeight = nodeSize * 0.4;
+              const numWaves = 3;
+              const waveOffset = animationTime * 0.1;
 
-                        let nodeSize = (node.isAI ? 12 : 8) / globalScale;
+              ctx.beginPath();
+              ctx.strokeStyle = getWaveformColor();
+              ctx.lineWidth = 2 / globalScale;
+              ctx.moveTo(node.x - waveWidth / 2, node.y);
 
-                        // Pulsating effect for AI node
-                        if (node.isAI) {
-                            const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5;
-                            nodeSize += pulsate * 4 / globalScale;
-                            // color interpolation
-                            const r = Math.floor((parseInt('#F86B03'.slice(1, 3), 16) * pulsate) + (parseInt('#FFC300'.slice(1, 3), 16) * (1 - pulsate)));
-                            const g = Math.floor((parseInt('#F86B03'.slice(3, 5), 16) * pulsate) + (parseInt('#FFC300'.slice(3, 5), 16) * (1 - pulsate)));
-                            const b = Math.floor((parseInt('#F86B03'.slice(5, 7), 16) * pulsate) + (parseInt('#FFC300'.slice(5, 7), 16) * (1 - pulsate)));
-                            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-                        }
+              for (let i = -waveWidth / 2; i <= waveWidth / 2; i += 1 / globalScale) {
+                const x = node.x + i;
+                const y = node.y + waveHeight * Math.sin((i / waveWidth) * Math.PI * numWaves + waveOffset);
+                ctx.lineTo(x, y);
+              }
+              ctx.stroke();
+            }
 
-                        // ** Clipping (Important for Waveform) **
-                        ctx.beginPath();
-                        ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
-                        ctx.fillStyle = getNodeColor(node); // Use dynamic color
-                        ctx.fill();
-                        ctx.save();
-                        ctx.clip();
+            if (node.isAI && connectionStatus === 'connected') {
+              const triangleSize = nodeSize * 0.7;
+              const triangleHeight = triangleSize * Math.sqrt(3) / 2;
+              ctx.beginPath();
+              ctx.moveTo(node.x, node.y - triangleSize / 2);
+              ctx.lineTo(node.x - triangleSize / 2, node.y + triangleHeight / 2);
+              ctx.lineTo(node.x + triangleSize / 2, node.y + triangleHeight / 2);
+              ctx.closePath();
+              ctx.fillStyle = '#800000';
+              ctx.fill();
+            }
 
-                        // Sinusoidal Waveform (for AI node)
-                        if (node.isAI) {
-                            const waveWidth = nodeSize * 2.2;  // <-- Slightly wider than the circle
-                            const waveHeight = nodeSize * 0.4; // Height of the waveform
-                            const numWaves = 3; // Number of waves across the circle
-                            const waveOffset = animationTime * 0.1; // Horizontal offset, based on time (for animation)
+            ctx.restore();
 
-                            ctx.beginPath();
-                            ctx.strokeStyle = getWaveformColor(); // Use the dynamic waveform color
-                            ctx.lineWidth = 2 / globalScale;
-                            ctx.moveTo(node.x - waveWidth / 2, node.y);
+            ctx.fillStyle = 'white';
+            ctx.fillText(label, node.x, node.y + fontSize * 1.5);
 
-                            for (let i = -waveWidth / 2; i <= waveWidth / 2; i += 1 / globalScale) {
-                                // Calculate the y-coordinate of the sine wave
-                                const x = node.x + i;
-                                const y = node.y + waveHeight * Math.sin((i / waveWidth) * Math.PI * numWaves + waveOffset);
-                                ctx.lineTo(x, y);
-                            }
-                            ctx.stroke();
-                        }
-
-                        // Draw triangle
-                        if (node.isAI && connectionStatus === 'connected') {
-                            const triangleSize = nodeSize * 0.7; // Adjust size as needed
-                            const triangleHeight = triangleSize * Math.sqrt(3) / 2; // For an equilateral triangle
-                            ctx.beginPath();
-                            ctx.moveTo(node.x, node.y - triangleSize / 2);
-                            ctx.lineTo(node.x - triangleSize / 2, node.y + triangleHeight / 2);
-                            ctx.lineTo(node.x + triangleSize / 2, node.y + triangleHeight / 2);
-                            ctx.closePath();
-                            ctx.fillStyle = '#800000'; // Deep Ruby for connection
-                            ctx.fill();
-                        }
-
-                        ctx.restore();
-
-                        // Draw the label
-                        ctx.fillStyle = 'white';
-                        ctx.fillText(label, node.x, node.y + fontSize * 1.5);
-
-                        // Set up tooltip content.
-                        node.dataTipContent = getNodeTooltip(node);
-                        node.__rd3t_tooltip = node.dataTipContent; // Required by the library
-                    }}
-                    onNodeClick={(node) => {
-                        console.log("Node clicked:", node); // Log node data to console, for testing.
-                    }}
-                    onLinkHover={(link) => { // Add hovering events
-                        // Display tooltip for edges.
-                        fgRef.current.linkVisibility(l => l === link);
-                        if (link) {
-                            fgRef.current.tooltipContent(getEdgeTooltip(link));
-                        }
-                    }}
-                />
-                <ReactTooltip />
-            </div>
-        </div>
-    );
+            node.dataTipContent = getNodeTooltip(node);
+            node.__rd3t_tooltip = node.dataTipContent;
+          }}
+          onNodeClick={(node) => {
+            console.log("Node clicked:", node);
+          }}
+          onLinkHover={(link) => {
+            fgRef.current.linkVisibility(l => l === link);
+            if (link) {
+              fgRef.current.tooltipContent(getEdgeTooltip(link));
+            }
+          }}
+        />
+        <ReactTooltip anchorSelect=".data-traceability-graph canvas"
+                      getContent={(dataTip) => dataTip} place="top"/>
+      </div>
+    </div>
+  );
 }
 
 export default DataTraceability;
