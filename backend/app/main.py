@@ -4,9 +4,6 @@ import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.agents.code_developer_agent import CodeDeveloperAgent
-from backend.agents.task_allocator_agent import TaskAllocatorAgent
-from backend.agents.ethical_assurance_agent import EthicalAssuranceAgent
 from backend.app.config import get_settings
 from backend.app.routes import agent_routes, feedback_routes
 
@@ -29,8 +26,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["*"],
-    max_age=3600
+    expose_headers=["*"]
 )
 
 app.include_router(agent_routes.router)
