@@ -1,13 +1,20 @@
-from pydantic import BaseSettings
+class Config:
+    """
+    Configuration class for the backend application.
+    Loads configuration settings from environment variables or defaults.
+    """
 
-class Settings(BaseSettings):
-    app_name: str = "ThinkAlike"
-    database_url: str
-    ai_api_key: str
-    secret_key: str
+    DEBUG = False  # Debug mode (default: False)
+    SECRET_KEY = "your-default-secret-key"  # Replace with a strong secret key in production!
 
-    class Config:
-        env_file = ".env"
+    # --- Database Configuration ---
+    SQLALCHEMY_DATABASE_URI = "sqlite:///thinkalike.db"  # Example SQLite database URL (for development)
+    SQLALCHEMY_TRACK_MODIFICATIONS = False  # Disable modification tracking for performance
 
-def get_settings():
-    return Settings()
+    # --- API Keys and External Service Credentials ---
+    AI_API_KEY = "your-default-ai-api-key"  # Placeholder for AI service API key
+
+    # --- Application-Specific Configuration ---
+    UI_URL = "http://localhost:3000"  # URL of the UI application
+
+config = Config()  # Instantiate the Config class
