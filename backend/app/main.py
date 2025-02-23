@@ -4,8 +4,8 @@ import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.app.config import config
-from backend.app.routes import agent_routes, feedback_routes
+from app.config import config
+from app.routes import agent_routes, feedback_routes
 
 message_queue = queue.Queue()
 
