@@ -3,11 +3,13 @@ import queue
 import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# Import your routes (assuming you have them in a 'routes' module)
-from .routes import agent_routes, feedback_routes
+from fastapi.responses import JSONResponse
+
+# Import your routes using a relative import (CORRECTED)
+from backend.routes import agent_routes, feedback_routes
 
 # Import the settings from the config module
-from .config.config import settings  # Corrected import
+from .config.config import settings  # Correct relative import
 
 
 app = FastAPI(
