@@ -1,47 +1,36 @@
 import multiprocessing
 import queue
 import time
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-# Import your routes using a relative import (CORRECTED)
+# Correct relative import for your project structure:
 from backend.routes import agent_routes, feedback_routes
-
-# Import the settings from the config module
-from .config.config import settings  # Correct relative import
-
+from .config.config import settings
 
 app = FastAPI(
     title="ThinkAlike"
 )
 
-# CORS (Cross-Origin Resource Sharing) configuration
-# THIS IS CRUCIAL
-origins = [
-    "http://localhost:3000",   # Allow local development frontend
-    "https://thinkalike-project.onrender.com",  # Your *deployed* frontend URL
-    # Add any other origins you need to allow (e.g., a staging environment)
-]
+# CORS (Cross-Origin Resource Sharing) configuration - ALLOW ALL origins for now
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  #  List of allowed origins
-    allow_credentials=True,  #  Allow cookies (if you use them)
-    allow_methods=["*"],    #  Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+    allow_origins=origins,  #  Start with allowing all origins, restrict later
+    allow_credentials=True,
+    allow_methods=["*"],    #  Allow all methods
     allow_headers=["*"],    #  Allow all headers
 )
-
 
 # Include your API routers
 app.include_router(agent_routes.router)
 app.include_router(feedback_routes.router)
 
-# Accessing configuration settings (for testing/demonstration)
+# Accessing configuration settings (for testing/demonstration - you can remove these later)
 print(f"Debug mode: {settings.debug}")
 print(f"Database URL: {settings.database_url}")
-# You can now use settings.secret_key, settings.database_url, etc., throughout your app
-
 
 # VERY BASIC EXAMPLE ENDPOINT (replace with your actual data)
 @app.get("/api/v1/graph")
