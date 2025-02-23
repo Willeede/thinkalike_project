@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from typing import List
-from app.services import agent_service  # Import your agent_service
-# from app.models import Agent, Task, Document  # Import your Pydantic models - COMMENTED OUT for placeholder models
+from ..services import agent_service  # Import your agent_service
+# from ..models import Agent, Task, Document  # Import your Pydantic models - COMMENTED OUT for placeholder models
 
 router = APIRouter()
 
