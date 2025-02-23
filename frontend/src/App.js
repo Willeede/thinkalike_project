@@ -1,36 +1,39 @@
-import React, { useState } from 'react'; // Import useState
+import React, { useState, useEffect } from 'react';
 import DataTraceability from './components/DataTraceability';
-import dataFlow from './data/DataTraceabilityExampleData';
 import './App.css';
 
 function App() {
-  const [connectionStatus, setConnectionStatus] = useState('disconnected'); // Add state
+  const [dataFlow, setDataFlow] = useState(null);
+  const [connectionStatus, setConnectionStatus] = useState('disconnected');
 
-  const toggleConnectionStatus = () => {
-    setConnectionStatus(prevStatus => {
-      if (prevStatus === 'disconnected') {
-        return 'connecting';
-      } else if (prevStatus === 'connecting') {
-        return 'connected';
-      } else {
-        return 'disconnected';
-      }
-    });
-  };
+  useEffect(() => {
+    // Fetch initial data flow from backend
+    fetch('https://thinkalike-backend.onrender.com/api/v1/graph')
+      .then(response => response.json())
+      .then(data => setDataFlow(data))
+      .catch(error => console.error('Error fetching graph data:', error));
+
+    // Simulate connection status changes
+    const statuses = ['disconnected', 'connecting', 'connected'];
+    let index = 0;
+    const intervalId = setInterval(() => {
+      setConnectionStatus(statuses[index]);
+      index = (index + 1) % statuses.length;
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>My Application Homepage</h1>
-        {/* Add a button to toggle the connection status */}
-        <button onClick={toggleConnectionStatus}>
-          Toggle Connection Status (Current: {connectionStatus})
-        </button>
+        <h1>ThinkAlike Project</h1>
       </header>
-      <section className="content">
-        {/* Pass connectionStatus as a prop */}
+      {dataFlow ? (
         <DataTraceability dataFlow={dataFlow} connectionStatus={connectionStatus} />
-      </section>
+      ) : (
+        <p>Loading data...</p>
+      )}
     </div>
   );
 }
