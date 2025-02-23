@@ -2,12 +2,13 @@ import multiprocessing
 import queue
 import time
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from backend.agents.code_developer_agent import CodeDeveloperAgent
 from backend.agents.task_allocator_agent import TaskAllocatorAgent
 from backend.agents.ethical_assurance_agent import EthicalAssuranceAgent
 from backend.app.config import get_settings  # Import get_settings
-from backend.app.routes import agent_routes  # Import agent_routes
+from backend.app.routes import agent_routes, feedback_routes  # Import agent_routes AND feedback_routes
 
 message_queue = queue.Queue()  # Central Message Queue
 settings = get_settings() # Load settings
@@ -16,7 +17,22 @@ app = FastAPI(
     title=settings.app_name # Use app_name from settings for title
 )
 
+# CORS configuration
+origins = [
+    "http://localhost:3000",  # React dev server
+    "https://your-frontend-domain.com",  # Your frontend domain (update accordingly)
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(agent_routes.router)  # Include agent routes from agent_routes.py
+app.include_router(feedback_routes.router) # Include feedback routes from feedback_routes.py
 
 @app.get("/")
 async def read_root():
