@@ -3,13 +3,11 @@ import queue
 import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse # Import JSONResponse
-
 # Import your routes (assuming you have them in a 'routes' module)
 from .routes import agent_routes, feedback_routes
 
 # Import the settings from the config module
-from .config.config import settings # Corrected import
+from .config.config import settings  # Corrected import
 
 
 app = FastAPI(
@@ -37,10 +35,10 @@ app.add_middleware(
 app.include_router(agent_routes.router)
 app.include_router(feedback_routes.router)
 
-# Accessing configuration settings
+# Accessing configuration settings (for testing/demonstration)
 print(f"Debug mode: {settings.debug}")
 print(f"Database URL: {settings.database_url}")
-# You can now use settings.secret_key, settings.database_url, etc.
+# You can now use settings.secret_key, settings.database_url, etc., throughout your app
 
 
 # VERY BASIC EXAMPLE ENDPOINT (replace with your actual data)
