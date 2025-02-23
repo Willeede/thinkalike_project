@@ -7,35 +7,11 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 function DataTraceability({ connectionStatus = 'disconnected' }) {
   const fgRef = useRef();
   const [animationTime, setAnimationTime] = useState(0);
-  const [dataFlow, setDataFlow] = useState(null);
+  const [graphData, setGraphData] = useState({ nodes: [], edges: [] });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetch('https://thinkalike-backend.onrender.com/api/v1/graph')
-      .then(response => response.json())
-      .then(data => setDataFlow(data))
-      .catch(error => console.error('Error fetching graph data:', error));
-  }, []);
-
-  useEffect(() => {
-    if (!dataFlow) return;
-
-    let animationFrameId;
-
-    const animate = () => {
-      setAnimationTime(prevTime => prevTime + 1);
-      fgRef.current && fgRef.current.refresh();
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [dataFlow, connectionStatus]);
-
-  if (!dataFlow) {
-    return <div>Loading...</div>;
-  }
-
+  // Color mapping (remains the same)
   const nodeColors = {
     1: '#FFC300',
     2: '#F86B03',
@@ -45,20 +21,58 @@ function DataTraceability({ connectionStatus = 'disconnected' }) {
 
   const getNodeColor = (node) => {
     if (node.isAI) {
-      return '#F86B03';
+      return '#F86B03'; // pulsating color
     }
-    return nodeColors[node.group] || '#CCCCCC';
+    return nodeColors[node.group] || '#CCCCCC'; // color by group
   };
 
   const getWaveformColor = () => {
     if (connectionStatus === 'connected') {
-      return '#800000';
+      return '#800000'; // Ruby Red
     } else if (connectionStatus === 'connecting') {
-      return '#FF5733';
+      return '#FF5733'; // Deep Orange
     } else {
-      return '#001F3F';
+      return '#001F3F'; // Dark Blue (AI)
     }
   };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    setLoading(true); // Set loading to true when we start fetching
+    setError(null); // Clear any previous errors
+
+    fetch('https://thinkalike-backend.onrender.com/graph') // Use the correct endpoint path
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setGraphData(data);
+        setLoading(false); // Set loading to false after data is fetched
+      })
+      .catch(error => {
+        console.error("Error fetching graph data:", error);
+        setError(error.message); // Set error state
+        setLoading(false); // Set loading to false even on error
+      });
+  }, []); // Empty dependency array means this runs *once* on mount
+
+  // Animation effect using useEffect (remains mostly the same, but depends on connectionStatus)
+  useEffect(() => {
+    let animationFrameId;
+
+    const animate = () => {
+      setAnimationTime(prevTime => prevTime + 1); // Increment time
+      fgRef.current && fgRef.current.refresh(); // Force re-render
+      animationFrameId = requestAnimationFrame(animate); // Request next frame
+    };
+
+    animationFrameId = requestAnimationFrame(animate); // Start animation
+
+    return () => cancelAnimationFrame(animationFrameId); // Cleanup on unmount
+  }, [connectionStatus]); // Re-run animation when connectionStatus changes
 
   const getNodeTooltip = (node) => {
     return `
@@ -81,19 +95,36 @@ function DataTraceability({ connectionStatus = 'disconnected' }) {
     `;
   };
 
+  if (loading) {
+    return <div className="data-traceability">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="data-traceability">Error: {error}</div>;
+  }
+
+  if (!graphData || !graphData.nodes || !graphData.edges) {
+    return (
+      <div className="data-traceability">
+        <p>No data flow to display.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="data-traceability">
       <h2>Data Traceability</h2>
       <div className="data-traceability-graph">
         <ForceGraph2D
           ref={fgRef}
-          graphData={dataFlow}
+          graphData={graphData} // Use the fetched data
           nodeLabel="label"
           nodeAutoColorBy="group"
           linkDirectionalArrowLength={3.5}
           linkDirectionalArrowRelPos={1}
           linkWidth={1.5}
           linkColor={() => '#001F3F'}
+
           nodeCanvasObject={(node, ctx, globalScale) => {
             const label = node.label;
             const fontSize = 12 / globalScale;
@@ -104,6 +135,7 @@ function DataTraceability({ connectionStatus = 'disconnected' }) {
 
             let nodeSize = (node.isAI ? 12 : 8) / globalScale;
 
+            // Pulsating effect for AI node
             if (node.isAI) {
               const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5;
               nodeSize += pulsate * 4 / globalScale;
@@ -120,6 +152,7 @@ function DataTraceability({ connectionStatus = 'disconnected' }) {
             ctx.save();
             ctx.clip();
 
+            // Sinusoidal Waveform (for AI node)
             if (node.isAI) {
               const waveWidth = nodeSize * 2.2;
               const waveHeight = nodeSize * 0.4;
@@ -139,6 +172,9 @@ function DataTraceability({ connectionStatus = 'disconnected' }) {
               ctx.stroke();
             }
 
+            ctx.restore();
+
+            // Triangle
             if (node.isAI && connectionStatus === 'connected') {
               const triangleSize = nodeSize * 0.7;
               const triangleHeight = triangleSize * Math.sqrt(3) / 2;
@@ -151,14 +187,14 @@ function DataTraceability({ connectionStatus = 'disconnected' }) {
               ctx.fill();
             }
 
-            ctx.restore();
-
             ctx.fillStyle = 'white';
             ctx.fillText(label, node.x, node.y + fontSize * 1.5);
 
+            // Set up tooltip content
             node.dataTipContent = getNodeTooltip(node);
             node.__rd3t_tooltip = node.dataTipContent;
           }}
+
           onNodeClick={(node) => {
             console.log("Node clicked:", node);
           }}
@@ -170,7 +206,7 @@ function DataTraceability({ connectionStatus = 'disconnected' }) {
           }}
         />
         <ReactTooltip anchorSelect=".data-traceability-graph canvas"
-                      getContent={(dataTip) => dataTip} place="top"/>
+                      getContent={(dataTip) => dataTip} place="top" />
       </div>
     </div>
   );
