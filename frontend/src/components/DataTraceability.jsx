@@ -80,8 +80,13 @@ function DataTraceability() {
     }
   };
 
-  // Animation effect using requestAnimationFrame.
+  // Animation effect using useEffect - MOVED HERE before conditional return
   useEffect(() => {
+    // Skip animation if we don't have data
+    if (!graphData || !graphData.nodes || !graphData.edges) {
+      return;
+    }
+
     let animationFrameId;
 
     const animate = () => {
@@ -91,8 +96,8 @@ function DataTraceability() {
     };
 
     animationFrameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [connectionStatus]);
+    return () => cancelAnimationFrame(animationFrameId); // Cleanup on unmount
+  }, [connectionStatus, graphData]); // Add graphData as dependency
 
   // Prepare tooltip content for nodes.
   const getNodeTooltip = (node) => {
@@ -190,7 +195,7 @@ function DataTraceability() {
               ctx.lineTo(node.x - triangleSize / 2, node.y + triangleHeight / 2);
               ctx.lineTo(node.x + triangleSize / 2, node.y + triangleHeight / 2);
               ctx.closePath();
-              ctx.fillStyle = '#800000';
+              ctx.fillStyle = '#800000'; // Deep Ruby for connection
               ctx.fill();
             }
 
@@ -213,7 +218,7 @@ function DataTraceability() {
             }
           }}
         />
-        <ReactTooltip 
+        <ReactTooltip
           anchorSelect=".data-traceability-graph canvas"
           getContent={(dataTip) => dataTip}
           place="top"
