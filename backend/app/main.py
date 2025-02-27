@@ -1,3 +1,5 @@
+import os
+print(os.getcwd())
 import multiprocessing
 import queue
 import time
