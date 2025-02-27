@@ -1,9 +1,5 @@
 import os
-<<<<<<< HEAD
-print(os.getcwd())
-=======
 import sys
->>>>>>> d0d51ceac51fc749c8c04a9884120d94095db7f4
 import multiprocessing
 import queue
 import time
