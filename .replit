@@ -1,2 +1,1 @@
-v8
-run = "cd backend/app && python main.py & cd ../../ui && npm install && npm start"
+run = "cd backend/app && python main.py & cd ../../frontend && npm install && npm start"
