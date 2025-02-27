@@ -1,13 +1,19 @@
-import os
-from pydantic import BaseSettings, Field
+class Config:
+    """
+    Configuration class for the backend application.
+    Loads configuration settings from environment variables or defaults.
+    """
+    DEBUG = False  # Debug mode (default: False)
+    SECRET_KEY = "your-default-secret-key"  # Replace with a strong secret key in production!
 
-class Settings(BaseSettings):
-    debug: bool = False  # Set to True in development, False in production
-    secret_key: str = Field(default="your-secret-key-here", env="SECRET_KEY") # You MUST change this in production!
-    database_url: str = Field(default="sqlite:///./thinkalike.db", env="DATABASE_URL")  # Default to SQLite
-    ai_api_key: str | None = Field(default=None, env="AI_API_KEY") # Example: For an external AI service
+    # --- Database Configuration ---
+    SQLALCHEMY_DATABASE_URI = "sqlite:///thinkalike.db"  # Example SQLite database URL (for development)
+    SQLALCHEMY_TRACK_MODIFICATIONS = False  # Disable modification tracking for performance
 
-    class Config:
-        env_file = ".env"  # Load environment variables from a .env file
+    # --- API Keys and External Service Credentials ---
+    AI_API_KEY = "your-default-ai-api-key"  # Placeholder for AI service API key
 
-settings = Settings()
+    # --- Application-Specific Configuration ---
+    UI_URL = "http://localhost:3000"  # URL of the UI application
+
+config = Config()  # Instantiate the configuration
