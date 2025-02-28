@@ -23,6 +23,10 @@ app.include_router(feedback_router)
 # Mount static files
 app.mount("/", StaticFiles(directory="app"), name="static")
 
+@app.get("/")
+async def root():
+    return {"message": "Welcome to ThinkAlike API!"}
+
 @app.get("/api/v1/graph")
 async def get_graph_data():
     return {
