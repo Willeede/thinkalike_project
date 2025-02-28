@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 # Directly import the router objects from each route file
 from backend.app.endpoints.agent_routes import router as agent_router
@@ -18,6 +19,9 @@ app.add_middleware(
 
 app.include_router(agent_router)
 app.include_router(feedback_router)
+
+# Mount static files
+app.mount("/", StaticFiles(directory="app"), name="static")
 
 @app.get("/api/v1/graph")
 async def get_graph_data():
