@@ -1,10 +1,7 @@
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter
 
 router = APIRouter()
 
-@router.get("")
+@router.get("/agent") # Add the explicit path
 async def get_agent():
     return {"message": "This is the agent endpoint. Replace with your agent logic."}
-
-app = FastAPI()
-app.include_router(router)

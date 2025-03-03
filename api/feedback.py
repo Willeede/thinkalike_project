@@ -1,10 +1,7 @@
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter
 
 router = APIRouter()
 
-@router.get("")
+@router.get("/feedback")  # Add explicit path
 async def get_feedback():
     return {"message": "This is the feedback endpoint. Replace with your feedback logic."}
-
-app = FastAPI()
-app.include_router(router)

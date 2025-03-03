@@ -8,11 +8,11 @@ from api.index import router as index_router
 
 app = FastAPI()
 
-# CORS configuration (Update these origins when you deploy your frontend!)
+# CORS configuration
 origins = [
-    "http://localhost:3000",  # For local React development (if using port 3000)
-    "http://localhost:5173",  # For local React development (if using port 5173 - Vite default)
-    # Add your Render frontend URL here after deploying the frontend!
+    "http://localhost:3000",
+    "http://localhost:5173",
+    # Add your Render frontend URL here!
 ]
 
 app.add_middleware(
@@ -23,9 +23,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include the routers from your API files.
-app.include_router(agent_router)
-app.include_router(feedback_router)
-app.include_router(graph_router)
-app.include_router(connection_status_router)
-app.include_router(index_router)
+# Include routers WITH PREFIXES
+app.include_router(index_router) # No prefix for the root
+app.include_router(agent_router, prefix="/agent")  # Prefix for agent routes
+app.include_router(feedback_router, prefix="/feedback")  # Prefix for feedback routes
+app.include_router(graph_router, prefix="/api/v1/graph") #Prefix for graph
+app.include_router(connection_status_router, prefix="/api/v1/connection") #Prefix for status

@@ -1,10 +1,7 @@
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter
 
 router = APIRouter()
 
-@router.get("")
+@router.get("/status") # Add explicit path
 async def get_status():
     return {"message": "Connection status check successful."}
-
-app = FastAPI()
-app.include_router(router)
