@@ -8,12 +8,8 @@ from api.index import router as index_router
 
 app = FastAPI()
 
-# CORS configuration
-origins = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    # Add your Render frontend URL here!
-]
+# CORS configuration - TEMPORARILY ALLOW ALL ORIGINS
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
