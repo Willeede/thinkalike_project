@@ -1,6 +1,0 @@
-@echo off
-echo Installing dependencies...
-pip install -r backend\requirements.txt
-
-echo Starting FastAPI application...
-python -m uvicorn backend.app.main:app --reload --host 0.0.0.0 --port 8000
