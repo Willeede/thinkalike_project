@@ -1,10 +1,15 @@
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 
 router = APIRouter()
 
-@router.get("")
-async def get_feedback():
-    return {"message": "This is the feedback endpoint. Replace with your feedback logic."}
+class Feedback(BaseModel):
+    message: str
 
-app = FastAPI()
-app.include_router(router)
+@router.get("/feedback")  # This line is crucial!
+async def get_feedback():
+    try:
+        message = "This is the feedback endpoint."
+        return {"message": message}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
