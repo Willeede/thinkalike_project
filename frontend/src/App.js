@@ -13,9 +13,8 @@ function App() {
 
   useEffect(() => {
     setLoading(true);
-    // Use direct Render backend URL
-    const backendUrl = 'https://thinkalike-api.onrender.com';
-    fetch(`${backendUrl}/api/v1/graph/graph`)
+    // HARDCODED backend URL - no environment variables
+    fetch('https://thinkalike-api.onrender.com/api/v1/graph/graph')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

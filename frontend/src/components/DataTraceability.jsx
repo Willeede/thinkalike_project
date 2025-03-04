@@ -4,16 +4,22 @@ import './DataTraceability.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
-function DataTraceability() {
-    // Local state for fetched graph data and connection status.
-    const [graphData, setGraphData] = useState({ nodes: [], edges: [] });
-    const [connectionStatus, setConnectionStatus] = useState('disconnected');
+function DataTraceability({ dataFlow, connectionStatus: initialConnectionStatus }) {
+    // Use props if available, otherwise use local state
+    const [graphData, setGraphData] = useState(dataFlow || { nodes: [], edges: [] });
+    const [connectionStatus, setConnectionStatus] = useState(initialConnectionStatus || 'disconnected');
 
     const fgRef = useRef();
     const [animationTime, setAnimationTime] = useState(0);
 
-    // Fetch graph data from the backend using absolute URL
+    // Fetch graph data only if not provided via props
     useEffect(() => {
+        if (dataFlow) {
+            setGraphData(dataFlow);
+            return; // Skip fetch if we have data from props
+        }
+        
+        // HARDCODED backend URL - no environment variables
         fetch('https://thinkalike-api.onrender.com/api/v1/graph/graph')
             .then((response) => {
                 if (!response.ok) {
@@ -25,10 +31,11 @@ function DataTraceability() {
             .catch((error) => {
                 console.error("Error fetching graph data:", error);
             });
-    }, []);
+    }, [dataFlow]);
 
     // Fetch connection status using absolute URL
     const checkConnectionStatus = () => {
+        // HARDCODED backend URL - no environment variables
         fetch('https://thinkalike-api.onrender.com/api/v1/connection/status')
             .then((response) => {
                 if (!response.ok) {
@@ -156,7 +163,7 @@ function DataTraceability() {
                         // Clipping (Important for Waveform).
                         ctx.beginPath();
                         ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
-                        ctx.fillStyle = getNodeColor(node); // FIXED: Added the value assignment
+                        ctx.fillStyle = getNodeColor(node);
                         ctx.fill();
                         ctx.save();
                         ctx.clip();
