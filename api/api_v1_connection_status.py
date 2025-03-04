@@ -1,10 +1,15 @@
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 
 router = APIRouter()
 
-@router.get("")
-async def get_status():
-    return {"message": "Connection status check successful."}
+class ConnectionStatus(BaseModel):
+    message: str
 
-app = FastAPI()
-app.include_router(router)
+@router.get("/status")  # Changed this line
+async def get_connection_status():
+    try:
+        message = "This is the connection status endpoint under /api/v1/connection."
+        return {"message": message}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
