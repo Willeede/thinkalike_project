@@ -1,10 +1,15 @@
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 
 router = APIRouter()
 
-@router.get("")
-async def root():
-    return {"message": "ThinkAlike API Root.  Go to /docs for documentation."}
+class Index(BaseModel):
+    message: str
 
-app = FastAPI()
-app.include_router(router)
+@router.get("/")  # Changed from @router.get("")
+async def root():
+    try:
+        message = "ThinkAlike API is running"
+        return {"message": message}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
