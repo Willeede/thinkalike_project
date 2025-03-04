@@ -1,70 +1,22 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+# dependencies
+node_modules/
+/.pnp
+.pnp.js
 
-# Distribution / packaging
-.Python
-_build/
-build/
-dist/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg
-*.whl
-*.egg-info
-*.dist-info
+# testing
+/coverage
+
+# production
+# Note: We are intentionally NOT ignoring /build for Render deployment
+
+# misc
+.DS_Store
 .env
-*.egg
-Pipfile
-Pipfile.lock
-wheelhouse/
-*.manifest
-*.spec
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Environments
-.venv/
-venv/  # Explicitly ignore venv folder (CRUCIAL!)
-*.env*
-*.venv
-env/
-ENV/
-python-env/
-bin/
-lib/
-include/
-pyvenv.cfg
-env.build/
-env.test/
-instance/
-.python-version
-
-# PyInstaller
-*.manifest
-*.spec
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-pytest-cache/
-.pytest_cache/
-.pytest-cov
-*.py-cov
-*.prof
-*.lcov
-*.egg
-cover/
-profile_html/
-profile.out
-coverage.xml
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

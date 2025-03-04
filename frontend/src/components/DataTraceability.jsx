@@ -12,37 +12,37 @@ function DataTraceability() {
     const fgRef = useRef();
     const [animationTime, setAnimationTime] = useState(0);
 
- // Fetch graph data from the backend's /api/v1/graph endpoint
-  useEffect(() => {
-    fetch('/api/v1/graph/graph')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch graph data");
-        }
-        return response.json();
-      })
-      .then((data) => setGraphData(data))
-      .catch((error) => {
-        console.error("Error fetching graph data:", error);
-      });
-  }, []);
+ // Fetch graph data from the backend using absolute URL
+  useEffect(() => {
+    fetch('https://thinkalike-api.onrender.com/api/v1/graph/graph')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch graph data");
+        }
+        return response.json();
+      })
+      .then((data) => setGraphData(data))
+      .catch((error) => {
+        console.error("Error fetching graph data:", error);
+      });
+  }, []);
 
-  // Fetch connection status from the backend's /api/v1/connection/status endpoint when the button is clicked.
-  const checkConnectionStatus = () => {
-    fetch('/api/v1/connection/status')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch connection status");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setConnectionStatus(data.status);
-      })
-      .catch((error) => {
-        console.error("Error fetching connection status:", error);
-      });
-  };
+  // Fetch connection status using absolute URL
+  const checkConnectionStatus = () => {
+    fetch('https://thinkalike-api.onrender.com/api/v1/connection/status')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch connection status");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setConnectionStatus(data.status);
+      })
+      .catch((error) => {
+        console.error("Error fetching connection status:", error);
+      });
+  };
 
     // Always call the hook, but skip animation if data is missing
     useEffect(() => {
@@ -156,81 +156,4 @@ function DataTraceability() {
             // Clipping (Important for Waveform).
             ctx.beginPath();
             ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
-            ctx.fillStyle = getNodeColor(node);
-            ctx.fill();
-            ctx.save();
-            ctx.clip();
-
-            // Sinusoidal Waveform (for AI node).
-            if (node.isAI) {
-                const waveWidth = nodeSize * 2.2;   // Slightly wider than the circle.
-                const waveHeight = nodeSize * 0.4;  // Height of waveform.
-                const numWaves = 3;                  // Number of waves.
-                const waveOffset = animationTime * 0.1; // Horizontal offset for animation.
-
-                ctx.beginPath();
-                ctx.strokeStyle = getWaveformColor();
-                ctx.lineWidth = 2 / globalScale;
-                ctx.moveTo(node.x - waveWidth / 2, node.y);
-
-                for (let i = -waveWidth / 2; i <= waveWidth / 2; i += 1 / globalScale) {
-                    const x = node.x + i;
-                    const y = node.y + waveHeight * Math.sin((i / waveWidth) * Math.PI * numWaves + waveOffset);
-                    ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-            }
-            ctx.restore();
-
-            // Draw triangle overlay for AI node when connection status is 'connected'.
-            if (node.isAI && connectionStatus === 'connected') {
-                const triangleSize = nodeSize * 0.7; // Adjust size as needed.
-                const triangleHeight = triangleSize * Math.sqrt(3) / 2; // Equilateral triangle height.
-                ctx.beginPath();
-                ctx.moveTo(node.x, node.y - triangleSize / 2);
-                ctx.lineTo(node.x - triangleSize / 2, node.y + triangleHeight / 2);
-                ctx.lineTo(node.x + triangleSize / 2, node.y + triangleHeight / 2);
-                ctx.closePath();
-                ctx.fillStyle = '#800000'; // Deep Ruby for connection
-                ctx.fill();
-            }
-
-            // Draw the label.
-            ctx.fillStyle = 'white';
-            ctx.fillText(label, node.x, node.y + fontSize * 1.5);
-
-            // Set tooltip content for the node.
-            node.dataTipContent = getNodeTooltip(node);
-            node.__rd3t_tooltip = node.dataTipContent;
-
-          }}
-          onNodeClick={(node) => {
-            console.log("Node clicked:", node);
-          }}
-
-          onLinkHover={(link) => {
-            // Display tooltip for edges.
-            fgRef.current.linkVisibility(l => l === link);
-            if (link) {
-              fgRef.current.tooltipContent(getEdgeTooltip(link));
-            }
-          }}
-
-        />
-        <ReactTooltip
-          anchorSelect=".data-traceability-graph canvas"
-          getContent={(dataTip) => dataTip}
-          place="top"
-        />
-      </div>
-      <div className="connection-status">
-        <button onClick={checkConnectionStatus}>
-          Check Connection Status
-        </button>
-        <p>Status: {connectionStatus}</p>
-      </div>
-    </div>
-  );
-}
-
-export default DataTraceability;
+            ctx.fillStyle
