@@ -7,13 +7,8 @@ from api.index import router as index_router
 
 app = FastAPI()
 
-app.include_router(agent_router)
-app.include_router(feedback_router)
+app.include_router(agent_router, prefix="/agent")  # Added prefix
+app.include_router(feedback_router, prefix="/feedback")  # Added prefix
 app.include_router(graph_router, prefix="/api/v1/graph")
 app.include_router(connection_status_router, prefix="/api/v1/connection")
 app.include_router(index_router)
-
-
-# @app.get("/")  <--- REMOVE THIS LINE
-# async def root():
-#     return {"message": "ThinkAlike API Root"}
