@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import DataTraceabilityDiagram from './components/DataTraceabilityDiagram'; // Corrected import
+import DataTraceabilityDiagram from './components/DataTraceabilityDiagram';
 import './App.css';
 import 'react-tooltip/dist/react-tooltip.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Removed unused Link import
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Graph from './components/Graph';
 
 function App() {
@@ -13,10 +13,9 @@ function App() {
 
     useEffect(() => {
         setLoading(true);
-        // Use environment variable for API URL
-        const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000'; // Fallback for local development
+        const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000'; // Use this line
 
-        fetch(`${API_BASE_URL}/api/v1/graph/graph`) // Use the variable here
+        fetch(`${API_BASE_URL}/api/v1/graph/graph`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -62,14 +61,6 @@ function App() {
                     <button onClick={toggleConnectionStatus}>
                         Toggle Connection Status (Current: {connectionStatus})
                     </button>
-                    {/* Removed the  navigation menu, there is already one in DataTraceabilityDiagram.
-                    <nav>
-                        <ul>
-                            <li><Link to="/">Home</Link></li>
-                            <li><Link to="/graph">Graph</Link></li>
-                        </ul>
-                    </nav>
-                    */}
                 </header>
                 <section className="content">
                     <Routes>
