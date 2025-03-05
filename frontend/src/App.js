@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import DataTraceability from './components/DataTraceability';
+import DataTraceability from './components/DataTraceability'; // Corrected import
 import './App.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -53,7 +53,7 @@ function App() {
         return <div>Error: {error}</div>;
     }
 
-    return ( //This was the line with the error
+    return (
         <Router>
             <div className="App">
                 <header className="App-header">
