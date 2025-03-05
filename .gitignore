@@ -68,3 +68,4 @@ cover/
 profile_html/
 profile.out
 coverage.xml
+frontend/node_modules/
