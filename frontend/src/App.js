@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import DataTraceability from './components/DataTraceability';
+import DataTraceabilityDiagram from './components/DataTraceabilityDiagram'; // Corrected import
 import './App.css';
 import 'react-tooltip/dist/react-tooltip.css';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'; // Import Router and Link
-import Graph from './components/Graph'; // Import Graph
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Removed unused Link import
+import Graph from './components/Graph';
 
 function App() {
     const [connectionStatus, setConnectionStatus] = useState('disconnected');
@@ -13,7 +13,10 @@ function App() {
 
     useEffect(() => {
         setLoading(true);
-        fetch('/api/v1/graph/graph') // Corrected URL: /api/v1/graph/graph
+        // Use environment variable for API URL
+        const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000'; // Fallback for local development
+
+        fetch(`${API_BASE_URL}/api/v1/graph/graph`) // Use the variable here
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -52,17 +55,25 @@ function App() {
     }
 
     return (
-        <Router> {/* Wrap with Router */}
+        <Router>
             <div className="App">
                 <header className="App-header">
                     <h1>ThinkAlike</h1>
                     <button onClick={toggleConnectionStatus}>
                         Toggle Connection Status (Current: {connectionStatus})
                     </button>
+                    {/* Removed the  navigation menu, there is already one in DataTraceabilityDiagram.
+                    <nav>
+                        <ul>
+                            <li><Link to="/">Home</Link></li>
+                            <li><Link to="/graph">Graph</Link></li>
+                        </ul>
+                    </nav>
+                    */}
                 </header>
                 <section className="content">
-                    <Routes> {/* Use Routes component */}
-                        <Route path="/" element={<DataTraceability dataFlow={dataFlow} connectionStatus={connectionStatus} />} />
+                    <Routes>
+                        <Route path="/" element={<DataTraceabilityDiagram dataFlow={dataFlow} connectionStatus={connectionStatus} />} />
                         <Route path="/graph" element={<Graph />} />
                         <Route path="*" element={<div>404 Not Found</div>} />
                     </Routes>
