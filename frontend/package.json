@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "chmod +x ./node_modules/.bin/react-scripts && react-scripts build", 
+    "build": "npx react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -45,6 +45,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "http://localhost:8000" 
+  }
+}
 }
