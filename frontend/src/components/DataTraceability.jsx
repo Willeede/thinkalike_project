@@ -14,7 +14,7 @@ function DataTraceability() {
 
   // Fetch graph data from the backend's /api/v1/graph endpoint
   useEffect(() => {
-    fetch('/api/v1/graph')
+    fetch('https://thinkalike-api.onrender.com/api/v1/graph/graph')
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch graph data");
@@ -27,9 +27,27 @@ function DataTraceability() {
       });
   }, []);
 
+  // Animation effect - MOVED HERE before any conditional returns
+  useEffect(() => {
+    let animationFrameId;
+
+    const animate = () => {
+      setAnimationTime(prevTime => prevTime + 1);
+      fgRef.current && fgRef.current.refresh();
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    // Only start animation if we have data to animate
+    if (graphData && graphData.nodes && graphData.edges && graphData.nodes.length > 0) {
+      animationFrameId = requestAnimationFrame(animate);
+    }
+    
+    return () => cancelAnimationFrame(animationFrameId); // Cleanup on unmount
+  }, [connectionStatus, graphData]); // Added graphData as dependency
+
   // Fetch connection status from the backend's /api/v1/connection/status endpoint when the button is clicked.
   const checkConnectionStatus = () => {
-    fetch('/api/v1/connection/status')
+    fetch('https://thinkalike-api.onrender.com/api/v1/connection/status')
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch connection status");
@@ -79,25 +97,6 @@ function DataTraceability() {
       return '#001F3F'; // Dark Blue (AI).
     }
   };
-
-  // Animation effect using useEffect - MOVED HERE before conditional return
-  useEffect(() => {
-    // Skip animation if we don't have data
-    if (!graphData || !graphData.nodes || !graphData.edges) {
-      return;
-    }
-
-    let animationFrameId;
-
-    const animate = () => {
-      setAnimationTime(prevTime => prevTime + 1);
-      fgRef.current && fgRef.current.refresh();
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animationFrameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrameId); // Cleanup on unmount
-  }, [connectionStatus, graphData]); // Add graphData as dependency
 
   // Prepare tooltip content for nodes.
   const getNodeTooltip = (node) => {
