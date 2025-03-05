@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import DataTraceability from './components/DataTraceability';
+import DataTraceabilityDiagram from './components/DataTraceabilityDiagram'; // Corrected import
 import './App.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
@@ -13,8 +13,10 @@ function App() {
 
   useEffect(() => {
     setLoading(true);
-    // HARDCODED backend URL - no environment variables
-    fetch('https://thinkalike-api.onrender.com/api/v1/graph/graph')
+    // Use environment variable for API URL
+    const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://thinkalike-api.onrender.com'; // Fallback to hardcoded URL if env var is not set
+
+    fetch(`${API_BASE_URL}/api/v1/graph/graph`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -69,7 +71,7 @@ function App() {
         </header>
         <section className="content">
           <Routes>
-            <Route path="/" element={<DataTraceability dataFlow={dataFlow} connectionStatus={connectionStatus} />} />
+            <Route path="/" element={<DataTraceabilityDiagram dataFlow={dataFlow} connectionStatus={connectionStatus} />} /> {/* Corrected component name */}
             <Route path="/graph" element={<Graph />} />
             <Route path="*" element={<div>404 Not Found</div>} />
           </Routes>
