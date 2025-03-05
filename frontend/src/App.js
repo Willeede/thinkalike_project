@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import DataTraceabilityDiagram from './components/DataTraceabilityDiagram';
+import DataTraceability from './components/DataTraceability'; // CORRECTED IMPORT
 import './App.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -13,7 +13,7 @@ function App() {
 
     useEffect(() => {
         setLoading(true);
-        const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000'; // Use this line
+        const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000'; // Use environment variable
 
         fetch(`${API_BASE_URL}/api/v1/graph/graph`)
             .then((response) => {
@@ -54,24 +54,3 @@ function App() {
     }
 
     return (
-        <Router>
-            <div className="App">
-                <header className="App-header">
-                    <h1>ThinkAlike</h1>
-                    <button onClick={toggleConnectionStatus}>
-                        Toggle Connection Status (Current: {connectionStatus})
-                    </button>
-                </header>
-                <section className="content">
-                    <Routes>
-                        <Route path="/" element={<DataTraceabilityDiagram dataFlow={dataFlow} connectionStatus={connectionStatus} />} />
-                        <Route path="/graph" element={<Graph />} />
-                        <Route path="*" element={<div>404 Not Found</div>} />
-                    </Routes>
-                </section>
-            </div>
-        </Router>
-    );
-}
-
-export default App;
