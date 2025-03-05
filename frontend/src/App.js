@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import DataTraceability from './components/DataTraceability'; // CORRECTED IMPORT
+import DataTraceability from './components/DataTraceability';
 import './App.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -53,4 +53,25 @@ function App() {
         return <div>Error: {error}</div>;
     }
 
-    return (
+    return ( //This was the line with the error
+        <Router>
+            <div className="App">
+                <header className="App-header">
+                    <h1>ThinkAlike</h1>
+                    <button onClick={toggleConnectionStatus}>
+                        Toggle Connection Status (Current: {connectionStatus})
+                    </button>
+                </header>
+                <section className="content">
+                    <Routes>
+                        <Route path="/" element={<DataTraceability dataFlow={dataFlow} connectionStatus={connectionStatus} />} />
+                        <Route path="/graph" element={<Graph />} />
+                        <Route path="*" element={<div>404 Not Found</div>} />
+                    </Routes>
+                </section>
+            </div>
+        </Router>
+    );
+}
+
+export default App;
