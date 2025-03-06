@@ -13,7 +13,7 @@ app = FastAPI(title="ThinkAlike")
 # Correct CORS configuration (SPECIFIC ORIGINS)
 origins = [
     "http://localhost:3000",  # Local development
-    "http://localhost:3001",  # Your frontend is here.
+    "http://localhost:3001",  # Allow React on port 3001 (if used)
     "https://thinkalike-frontend.onrender.com",  # Your Render frontend URL
 ]
 
@@ -30,9 +30,9 @@ app.include_router(agent_router, prefix="/agent")
 app.include_router(feedback_router, prefix="/feedback")
 app.include_router(graph_router, prefix="/api/v1/graph")
 app.include_router(connection_status_router, prefix="/api/v1/connection")
-app.include_router(index_router)
+app.include_router(index_router)  # NO PREFIX
 
-
-@app.get("/")  # Keep this simple route if you want
-async def root():
-    return {"message": "Welcome to ThinkAlike API!"}
+# --- REMOVE OR COMMENT OUT THIS ROOT ROUTE ---
+# @app.get("/")
+# async def root():
+#     return {"message": "Welcome to ThinkAlike API!"}
