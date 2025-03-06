@@ -1,4 +1,3 @@
-#backend\app\api\api_v1_graph.py
 from fastapi import APIRouter, HTTPException
 import logging
 
@@ -6,7 +5,7 @@ router = APIRouter()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-@router.get("/graph")  # This is the correct endpoint: /api/v1/graph/graph
+@router.get("/graph")  # This creates the /api/v1/graph/graph endpoint
 async def get_graph():
     logger.info("Entering get_graph function")  # Log entry point
     try:
