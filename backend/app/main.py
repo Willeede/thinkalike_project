@@ -32,7 +32,7 @@ app.include_router(graph_router, prefix="/api/v1/graph")
 app.include_router(connection_status_router, prefix="/api/v1/connection")
 app.include_router(index_router)  # NO PREFIX
 
-# --- REMOVE OR COMMENT OUT THIS ROOT ROUTE ---
+# --- REMOVE THIS ROOT ROUTE ---
 # @app.get("/")
 # async def root():
 #     return {"message": "Welcome to ThinkAlike API!"}
