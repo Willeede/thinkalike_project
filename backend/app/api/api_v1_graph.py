@@ -1,3 +1,4 @@
+#backend\app\api\api_v1_graph.py
 from fastapi import APIRouter, HTTPException
 import logging
 
@@ -5,11 +6,12 @@ router = APIRouter()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-@router.get("/graph")  # Corrected:  This will become /api/v1/graph/graph
+@router.get("/graph")  # This is the correct endpoint: /api/v1/graph/graph
 async def get_graph():
-    logger.info("Entering get_graph function")
+    logger.info("Entering get_graph function")  # Log entry point
     try:
-        # Replace this with your ACTUAL graph data
+        # --- Your API logic (replace with your actual data fetching) ---
+        logger.info("Before creating example data") # Add logging *before* any data fetching/processing
         message =  {
             "nodes": [
                 {"id": "node1", "label": "User Input", "group": 1, "value": "User data input"},
@@ -23,10 +25,9 @@ async def get_graph():
                 {"from": "node3", "to": "node4", "value": "Data for response"}
             ]
         }
-        logger.info(f"Returning graph data")  # More specific log message
+        logger.info(f"Returning graph data: {message}")  # Log the data *before* returning
         return message
-    except Exception as e:
-        logger.error(f"Error in get_graph: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
 
-# REMOVED: app = FastAPI() and app.include_router(router)
+    except Exception as e:
+        logger.error(f"Error in get_graph: {e}") # Log any errors
+        raise HTTPException(status_code=500, detail=str(e))
