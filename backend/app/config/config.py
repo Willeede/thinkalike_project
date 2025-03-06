@@ -1,19 +1,44 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 class Config:
-    """
-    Configuration class for the backend application.
-    Loads configuration settings from environment variables or defaults.
-    """
-    DEBUG = False  # Debug mode (default: False)
-    SECRET_KEY = "your-default-secret-key"  # Replace with a strong secret key in production!
+    """Base configuration."""
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'a_default_secret_key'  # For sessions, etc.
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # Add other general configurations here
 
-    # --- Database Configuration ---
-    SQLALCHEMY_DATABASE_URI = "sqlite:///thinkalike.db"  # Example SQLite database URL (for development)
-    SQLALCHEMY_TRACK_MODIFICATIONS = False  # Disable modification tracking for performance
+class DevelopmentConfig(Config):
+    """Development configuration."""
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or 'sqlite:///dev_database.db'
+    # Example:  LOG_LEVEL = 'DEBUG'
 
-    # --- API Keys and External Service Credentials ---
-    AI_API_KEY = "your-default-ai-api-key"  # Placeholder for AI service API key
+class TestingConfig(Config):
+    """Testing configuration."""
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or 'sqlite:///test_database.db'
+    # Example:  PRESERVE_CONTEXT_ON_EXCEPTION = False
 
-    # --- Application-Specific Configuration ---
-    UI_URL = "http://localhost:3000"  # URL of the UI application
+class ProductionConfig(Config):
+    """Production configuration."""
+    DEBUG = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    # Add production-specific settings (e.g., database URL, email server)
 
-config = Config()  # Instantiate the configuration
+    # Example (IMPORTANT: Use environment variables for sensitive data)
+    # MAIL_SERVER = os.environ.get('MAIL_SERVER')
+    # MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
+    # MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
+    # MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    # MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+
+
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+
+    'default': DevelopmentConfig  # Set a default configuration
+}

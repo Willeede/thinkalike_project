@@ -12,8 +12,8 @@ app = FastAPI(title="ThinkAlike")
 
 # Correct CORS configuration (SPECIFIC ORIGINS)
 origins = [
-    "http://localhost:3000",  # Local development - React default port
-    "http://localhost:3001",  # Allow React on port 3001 (if used)
+    "http://localhost:3000",  # Local development
+    "http://localhost:3001",  # Your frontend is here.
     "https://thinkalike-frontend.onrender.com",  # Your Render frontend URL
 ]
 
