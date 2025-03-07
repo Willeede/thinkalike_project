@@ -1,33 +1,57 @@
 from fastapi import APIRouter, HTTPException
 import logging
+import os
+import psycopg2
+from dotenv import load_dotenv
+
+load_dotenv()
 
 router = APIRouter()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-@router.get("/graph")  # This creates the /api/v1/graph/graph endpoint
+@router.get("/graph")
 async def get_graph():
-   logger.info("Entering get_graph function")  # Log entry point
-   try:
-       # --- Your API logic (replace with your actual data fetching) ---
-       logger.info("Before creating example data") # Add logging *before* any data fetching/processing
-       message =  {
-           "nodes": [
-               {"id": "node1", "label": "User Input", "group": 1, "value": "User data input"},
-               {"id": "node2", "label": "AI Agent", "group": 4, "isAI": True, "value": "AI processing node"},
-               {"id": "node3", "label": "Database", "group": 3, "value": "Persistent data storage"},
-               {"id": "node4", "label": "Response", "group": 2, "value": "Response to the user"}
-           ],
-           "edges": [
-               {"from": "node1", "to": "node2", "value": "User data"},
-               {"from": "node2", "to": "node3", "value": "AI processed data"},
-               {"from": "node3", "to": "node4", "value": "Data for response"}
-           ]
-       }
-       logger.info(f"Returning graph data: {message}")  # Log the data *before* returning
-       return message
+    logger.info("Entering get_graph function")
+    try:
+        db_url = os.environ.get("DATABASE_URL")
+        if not db_url:
+            raise HTTPException(status_code=500, detail="DATABASE_URL not configured")
 
-   except Exception as e:
-       logger.error(f"Error in get_graph: {e}") # Log any errors
-       raise HTTPException(status_code=500, detail=str(e))
-   ```
+        conn = psycopg2.connect(db_url)
+        cur = conn.cursor()
+
+        cur.execute("SELECT id, label, \"group\", value, \"isAI\" FROM nodes;")
+        nodes = []
+        for row in cur.fetchall():
+            node_id, label, group, value, is_ai = row
+            nodes.append({
+                "id": str(node_id),
+                "label": label,
+                "group": group,
+                "value": value,
+                "isAI": bool(is_ai),
+            })
+
+        cur.execute("SELECT source, target, value FROM edges;")
+        edges = []
+        for row in cur.fetchall():
+            source, target, value = row
+            edges.append({
+                "from": str(source),
+                "to": str(target),
+                "value": value,
+            })
+
+        cur.close()
+        conn.close()
+        return {"nodes": nodes, "edges": edges}
+
+    except psycopg2.Error as db_err:
+        logger.error(f"Database error: {db_err}")
+        raise HTTPException(status_code=500, detail=f"Database error: {db_err}")
+    except Exception as e:
+        logger.error(f"Error in get_graph: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+

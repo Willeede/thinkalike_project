@@ -1,69 +1,43 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import './DataTraceability.css';
 import 'react-tooltip/dist/react-tooltip.css';
-import { Tooltip as ReactTooltip } from 'react-tooltip';
+import { Tooltip } from 'react-tooltip';
 
-function DataTraceability() {
-  // Local state for fetched graph data and connection status.
-  const [graphData, setGraphData] = useState({ nodes: [], edges: [] });
-  const [connectionStatus, setConnectionStatus] = useState('disconnected');
+function DataTraceability({ dataFlow, connectionStatus }) {
+  const fgRef = React.useRef();
+  const [animationTime, setAnimationTime] = React.useState(0);
 
-  const fgRef = useRef();
-  const [animationTime, setAnimationTime] = useState(0);
+  // Convert the dataFlow format to match what ForceGraph2D expects
+  const graphData = React.useMemo(() => {
+    if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
+      return { nodes: [], links: [] };
+    }
+    return {
+      nodes: dataFlow.nodes,
+      links: dataFlow.edges.map(edge => ({
+        source: edge.from,
+        target: edge.to,
+        value: edge.value
+      }))
+    };
+  }, [dataFlow]);
 
-  // Fetch graph data from the backend's /api/v1/graph endpoint
-  useEffect(() => {
-    fetch('https://thinkalike-api.onrender.com/api/v1/graph/graph')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch graph data");
-        }
-        return response.json();
-      })
-      .then((data) => setGraphData(data))
-      .catch((error) => {
-        console.error("Error fetching graph data:", error);
-      });
-  }, []);
-
-  // Animation effect - MOVED HERE before any conditional returns
-  useEffect(() => {
+  // Animation effect for pulsating effect
+  React.useEffect(() => {
     let animationFrameId;
-
     const animate = () => {
       setAnimationTime(prevTime => prevTime + 1);
-      fgRef.current && fgRef.current.refresh();
       animationFrameId = requestAnimationFrame(animate);
     };
-
-    // Only start animation if we have data to animate
-    if (graphData && graphData.nodes && graphData.edges && graphData.nodes.length > 0) {
+    if (dataFlow && dataFlow.nodes && dataFlow.edges && dataFlow.nodes.length > 0) {
       animationFrameId = requestAnimationFrame(animate);
     }
-    
-    return () => cancelAnimationFrame(animationFrameId); // Cleanup on unmount
-  }, [connectionStatus, graphData]); // Added graphData as dependency
-
-  // Fetch connection status from the backend's /api/v1/connection/status endpoint when the button is clicked.
-  const checkConnectionStatus = () => {
-    fetch('https://thinkalike-api.onrender.com/api/v1/connection/status')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch connection status");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setConnectionStatus(data.status);
-      })
-      .catch((error) => {
-        console.error("Error fetching connection status:", error);
-      });
-  };
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [connectionStatus, dataFlow]);
 
   // If no graph data, show a placeholder message.
-  if (!graphData || !graphData.nodes || !graphData.edges) {
+  if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
     return (
       <div className="data-traceability">
         <p>No data flow to display.</p>
@@ -71,34 +45,31 @@ function DataTraceability() {
     );
   }
 
-  // Color mapping for node groups (based on style_guide.md)
-  // Expand this as you add more node types/groups.
+  // Color mapping for node groups
   const nodeColors = {
-    1: '#FFC300', // Amber/Honey Yellow (Neutral) - e.g., User Input
-    2: '#F86B03', // Deep Orange (Active) - e.g., API Request, Response
-    3: '#800000', // Deep Ruby (Connection) - e.g., Database
-    4: '#001F3F', // Dark Blue - e.g., AI Agent
+    1: '#FFC300',
+    2: '#F86B03',
+    3: '#800000',
+    4: '#001F3F'
   };
 
   const getNodeColor = (node) => {
     if (node.isAI) {
-      return '#F86B03'; // Pulsating color for AI nodes.
+      return '#F86B03';
     }
     return nodeColors[node.group] || '#CCCCCC';
   };
 
-  // Function to get waveform color based on connection status.
   const getWaveformColor = () => {
     if (connectionStatus === 'connected') {
-      return '#800000'; // Ruby Red.
+      return '#800000';
     } else if (connectionStatus === 'connecting') {
-      return '#FF5733'; // Deep Orange.
+      return '#FF5733';
     } else {
-      return '#001F3F'; // Dark Blue (AI).
+      return '#001F3F';
     }
   };
 
-  // Prepare tooltip content for nodes.
   const getNodeTooltip = (node) => {
     return `
       <div>
@@ -110,7 +81,6 @@ function DataTraceability() {
     `;
   };
 
-  // Prepare tooltip content for edges.
   const getEdgeTooltip = (edge) => {
     return `
       <div>
@@ -134,7 +104,6 @@ function DataTraceability() {
           linkDirectionalArrowRelPos={1}
           linkWidth={1.5}
           linkColor={() => '#001F3F'}
-          // Custom node rendering.
           nodeCanvasObject={(node, ctx, globalScale) => {
             const label = node.label;
             const fontSize = 12 / globalScale;
@@ -144,19 +113,15 @@ function DataTraceability() {
             ctx.fillStyle = 'white';
 
             let nodeSize = (node.isAI ? 12 : 8) / globalScale;
-
-            // Pulsating effect for AI node.
             if (node.isAI) {
-              const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5; // Oscillates between 0 and 1.
+              const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5;
               nodeSize += (pulsate * 4) / globalScale;
-              // Color interpolation for pulsating effect.
               const r = Math.floor((parseInt('#F86B03'.slice(1, 3), 16) * pulsate) + (parseInt('#FFC300'.slice(1, 3), 16) * (1 - pulsate)));
               const g = Math.floor((parseInt('#F86B03'.slice(3, 5), 16) * pulsate) + (parseInt('#FFC300'.slice(3, 5), 16) * (1 - pulsate)));
               const b = Math.floor((parseInt('#F86B03'.slice(5, 7), 16) * pulsate) + (parseInt('#FFC300'.slice(5, 7), 16) * (1 - pulsate)));
               ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
             }
 
-            // Clipping (Important for Waveform).
             ctx.beginPath();
             ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
             ctx.fillStyle = getNodeColor(node);
@@ -164,18 +129,15 @@ function DataTraceability() {
             ctx.save();
             ctx.clip();
 
-            // Sinusoidal Waveform (for AI node).
             if (node.isAI) {
-              const waveWidth = nodeSize * 2.2;  // Slightly wider than the circle.
-              const waveHeight = nodeSize * 0.4; // Height of waveform.
-              const numWaves = 3;              // Number of waves.
-              const waveOffset = animationTime * 0.1; // Horizontal offset for animation.
-
+              const waveWidth = nodeSize * 2.2;
+              const waveHeight = nodeSize * 0.4;
+              const numWaves = 3;
+              const waveOffset = animationTime * 0.1;
               ctx.beginPath();
               ctx.strokeStyle = getWaveformColor();
               ctx.lineWidth = 2 / globalScale;
               ctx.moveTo(node.x - waveWidth / 2, node.y);
-
               for (let i = -waveWidth / 2; i <= waveWidth / 2; i += 1 / globalScale) {
                 const x = node.x + i;
                 const y = node.y + waveHeight * Math.sin((i / waveWidth) * Math.PI * numWaves + waveOffset);
@@ -185,24 +147,8 @@ function DataTraceability() {
             }
             ctx.restore();
 
-            // Draw triangle overlay for AI node when connection status is 'connected'.
-            if (node.isAI && connectionStatus === 'connected') {
-              const triangleSize = nodeSize * 0.7; // Adjust size as needed.
-              const triangleHeight = triangleSize * Math.sqrt(3) / 2; // Equilateral triangle height.
-              ctx.beginPath();
-              ctx.moveTo(node.x, node.y - triangleSize / 2);
-              ctx.lineTo(node.x - triangleSize / 2, node.y + triangleHeight / 2);
-              ctx.lineTo(node.x + triangleSize / 2, node.y + triangleHeight / 2);
-              ctx.closePath();
-              ctx.fillStyle = '#800000'; // Deep Ruby for connection
-              ctx.fill();
-            }
-
-            // Draw the label.
             ctx.fillStyle = 'white';
             ctx.fillText(label, node.x, node.y + fontSize * 1.5);
-
-            // Set tooltip content for the node.
             node.dataTipContent = getNodeTooltip(node);
             node.__rd3t_tooltip = node.dataTipContent;
           }}
@@ -210,23 +156,21 @@ function DataTraceability() {
             console.log("Node clicked:", node);
           }}
           onLinkHover={(link) => {
-            // Display tooltip for edges.
-            fgRef.current.linkVisibility(l => l === link);
-            if (link) {
-              fgRef.current.tooltipContent(getEdgeTooltip(link));
+            if (fgRef.current) {
+              fgRef.current.linkVisibility(l => l === link);
+              if (link) {
+                fgRef.current.tooltipContent(getEdgeTooltip(link));
+              }
             }
           }}
         />
-        <ReactTooltip
+        <Tooltip 
           anchorSelect=".data-traceability-graph canvas"
           getContent={(dataTip) => dataTip}
           place="top"
         />
       </div>
-      <div className="connection-status">
-        <button onClick={checkConnectionStatus}>
-          Check Connection Status
-        </button>
+      <div className={`connection-status ${connectionStatus}`}>
         <p>Status: {connectionStatus}</p>
       </div>
     </div>

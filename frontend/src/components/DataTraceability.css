@@ -1,12 +1,104 @@
 .data-traceability {
-    background-color: #000000; /* Black background */
+    background-color: #121212; /* Slightly lighter than pure black for better contrast */
     padding: 20px;
-    border: 1px solid #666666; /* Medium gray border */
-    border-radius: 5px;
-    color: #CCCCCC; /* Light gray text */
+    border: 1px solid #333333; /* Darker border */
+    border-radius: 8px;
+    color: #FFFFFF; /* White text for better readability */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+.data-traceability h2 {
+    color: #FFC300; /* Amber/Yellow heading */
+    margin-top: 0;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .data-traceability-graph {
-    /* Make sure the graph has a defined height! */
-    height: 500px;  /* Adjust as needed */
+    height: 600px; /* Taller for better visualization */
+    background-color: #1E1E1E; /* Dark gray background */
+    border: 1px solid #444444;
+    border-radius: 5px;
+    margin: 15px 0;
+    overflow: hidden; /* Ensure content doesn't overflow */
+    position: relative;
 }
+
+/* Style for tooltip */
+.react-tooltip {
+    background-color: #232323 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #444 !important;
+    padding: 8px !important;
+    border-radius: 4px !important;
+    max-width: 250px !important;
+}
+
+.connection-status {
+    background-color: #1E1E1E;
+    border: 1px solid #333333;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.connection-status p {
+    margin: 0;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Status indicator dot */
+.connection-status p::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Different colors for different statuses */
+.connection-status.disconnected p::before {
+    background-color: #F86B03; /* Deep Orange */
+}
+
+.connection-status.connecting p::before {
+    background-color: #FFC300; /* Amber/Yellow */
+    box-shadow: 0 0 5px #FFC300;
+    animation: pulse 1.5s infinite;
+}
+
+.connection-status.connected p::before {
+    background-color: #00A36C; /* Green */
+    box-shadow: 0 0 5px #00A36C;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+/* Make pre tags readable (for the JSON display) */
+.data-traceability pre {
+    background-color: #232323;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    color: #CCCCCC;
+    font-size: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #444;
+}
+
+/* The force graph canvas */
+.data-traceability-graph canvas {
+    cursor: pointer;
+}
+
