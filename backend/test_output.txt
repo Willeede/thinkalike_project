@@ -1,0 +1,38 @@
+This is a test file
+Current directory: C:\Users\w_eed\Documents\thinkalike_project_fresh\backend
+File location: C:\Users\w_eed\Documents\thinkalike_project_fresh\backend\test_output.txt
+
+Files in current directory:
+- .env
+- .env.example
+- agents
+- app
+- backend_utils
+- check_schema.py
+- database
+- database_debug.py
+- db
+- db_connect_test.py
+- debug_file.py
+- direct_file_test.py
+- docker
+- favicon.ico
+- file_output_test.py
+- minimal_test.py
+- ml_models
+- old_requirements.txt
+- pyproject.toml
+- README.md
+- requirements.txt
+- setup_database.py
+- simple_db_fix.py
+- simple_test.py
+- simple_test_file.py
+- super_simple.py
+- super_simple.txt
+- test_db.py
+- test_db_connection.py
+- test_output.txt
+- update_db.py
+- venv
+- __init__.py

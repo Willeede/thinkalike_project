@@ -1,0 +1,2 @@
+Test file created successfully
+Current directory: C:\Users\w_eed\Documents\thinkalike_project_fresh\backend

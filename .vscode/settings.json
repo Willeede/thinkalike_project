@@ -1,3 +1,15 @@
 {
-    "terminal.integrated.cwd": "/workspaces/thinkalike_project"
+    "terminal.integrated.cwd": "C:\\Users\\w_eed\\Documents\\thinkalike_project_fresh",
+    "terminal.integrated.profiles.windows": {
+        "Command Prompt": {
+            "path": "cmd.exe",
+            "icon": "terminal-cmd"
+        },
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "python.defaultInterpreterPath": "C:\\Users\\w_eed\\Documents\\thinkalike_project_fresh\\backend\\venv\\Scripts\\python.exe"
 }

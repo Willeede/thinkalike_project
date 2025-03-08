@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
 
 # Distribution / packaging
 .Python
@@ -27,6 +28,7 @@ Pipfile.lock
 wheelhouse/
 *.manifest
 *.spec
+.installed.cfg
 
 # Environments
 .venv/
@@ -69,3 +71,45 @@ profile_html/
 profile.out
 coverage.xml
 frontend/node_modules/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Build files
+/build
+/dist
+*.pyo
+*.pyd
+*.so
+
+# Database
+*.sqlite3
+*.db
+
+# Logs
+*.log
+logs/

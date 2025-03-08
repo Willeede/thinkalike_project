@@ -20,15 +20,23 @@ function App() {
         const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
         console.log("API_BASE_URL:", API_BASE_URL);
 
-        // Use the test endpoint that returns sample data
-        fetch(`${API_BASE_URL}/api/v1/graph/test`)
+        // Use the main endpoint that fetches from database
+        fetch(`${API_BASE_URL}/api/v1/graph`)
           .then(response => {
             console.log("Response status:", response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             return response.json();
           })
           .then(data => {
             console.log("Received API data:", data);
-            setDataFlow(data);
+            if (data.nodes && data.edges) {
+                setDataFlow(data);
+            } else {
+                console.error("Invalid data format received:", data);
+                throw new Error("Invalid data format");
+            }
             setLoading(false);
           })
           .catch(err => {
@@ -52,15 +60,15 @@ function App() {
 
     const handleSearch = (searchTerm) => {
         if (!searchTerm) return;
-        
+
         // Filter nodes by label and value (case insensitive)
-        const filteredNodes = dataFlow.nodes.filter(node => 
-            node.label.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        const filteredNodes = dataFlow.nodes.filter(node =>
+            node.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
             node.value.toLowerCase().includes(searchTerm.toLowerCase())
         );
         // Filter edges connected to filtered nodes
         const filteredNodeIds = new Set(filteredNodes.map(node => node.id));
-        const filteredEdges = dataFlow.edges.filter(edge => 
+        const filteredEdges = dataFlow.edges.filter(edge =>
             filteredNodeIds.has(edge.from) || filteredNodeIds.has(edge.to)
         );
         setDataFlow({
