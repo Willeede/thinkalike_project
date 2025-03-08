@@ -20,6 +20,7 @@ function App() {
         const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
         console.log("API_BASE_URL:", API_BASE_URL);
 
+        // Use the test endpoint that returns sample data
         fetch(`${API_BASE_URL}/api/v1/graph/test`)
           .then(response => {
             console.log("Response status:", response.status);
@@ -50,27 +51,18 @@ function App() {
     };
 
     const handleSearch = (searchTerm) => {
-        if (!searchTerm) {
-            // If search is empty, reset to the original data
-            setDataFlow(dataFlow);
-            return;
-        }
+        if (!searchTerm) return;
         
-        // Filter nodes that match the search term (case insensitive)
+        // Filter nodes by label and value (case insensitive)
         const filteredNodes = dataFlow.nodes.filter(node => 
             node.label.toLowerCase().includes(searchTerm.toLowerCase()) || 
             node.value.toLowerCase().includes(searchTerm.toLowerCase())
         );
-        
-        // Get IDs of filtered nodes
+        // Filter edges connected to filtered nodes
         const filteredNodeIds = new Set(filteredNodes.map(node => node.id));
-        
-        // Filter edges that connect filtered nodes
         const filteredEdges = dataFlow.edges.filter(edge => 
             filteredNodeIds.has(edge.from) || filteredNodeIds.has(edge.to)
         );
-        
-        // Update the graph with filtered data
         setDataFlow({
             nodes: filteredNodes,
             edges: filteredEdges
@@ -84,8 +76,6 @@ function App() {
     if (error) {
         return <div>Error: {error}</div>;
     }
-
-    console.log("Rendering main App component content");
 
     return (
         <Router>

@@ -8,19 +8,12 @@ from .api.api_v1_graph import router as graph_router
 from .api.api_v1_connection_status import router as connection_status_router
 from .api.index import router as index_router
 
-app = FastAPI(title="ThinkAlike")
+app = FastAPI(title="ThinkAlike API")
 
-origins = [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:3001",
-    "https://thinkalike-frontend.onrender.com",
-]
-
+# Enable CORS so that your frontend (port 3000) can access your API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],  # In production, restrict to specific origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,10 +21,10 @@ app.add_middleware(
 
 @app.get("/favicon.ico")
 async def favicon():
-    # Serve favicon from the provided absolute path
+    # Serve favicon from the absolute path
     return FileResponse("C:/Users/w_eed/Documents/thinkalike_project_fresh/backend/favicon.ico")
 
-# Define a test endpoint for graph data that avoids conflict with the router's path.
+# Test endpoint that returns sample data
 @app.get("/api/v1/graph/test")
 async def get_graph_data():
     sample_data = {
@@ -45,7 +38,11 @@ async def get_graph_data():
     }
     return JSONResponse(content=sample_data)
 
-# Include your routers below. Ensure that none of these conflict with the test endpoint.
+@app.get("/")
+async def root():
+    return {"message": "ThinkAlike API Root."}
+
+# Include additional routers (you already have these in your project)
 app.include_router(agent_router, prefix="/agent")
 app.include_router(feedback_router, prefix="/feedback")
 app.include_router(graph_router, prefix="/api/v1/graph")
