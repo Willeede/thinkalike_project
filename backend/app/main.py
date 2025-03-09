@@ -3,11 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 import logging
 
-from .api.agent import router as agent_router
-from .api.feedback import router as feedback_router
-from .api.api_v1_graph import router as graph_router
-from .api.api_v1_connection_status import router as connection_status_router
-from .api.index import router as index_router
+# Update imports to use absolute paths
+from app.api.agent import router as agent_router
+from app.api.feedback import router as feedback_router
+from app.api.api_v1_graph import router as graph_router
+from app.api.api_v1_connection_status import router as connection_status_router
+from app.api.index import router as index_router
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
