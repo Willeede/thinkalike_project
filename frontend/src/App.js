@@ -25,19 +25,18 @@ function App() {
         fetch(`${API_BASE_URL}/api/v1/graph/graph`, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
             },
-            mode: 'cors'  // Add CORS mode explicitly
+            mode: 'cors'
         })
         .then(response => {
-            console.log("Response status:", response.status);
+            console.log("Response received:", response.status);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
         })
         .then(data => {
-            console.log("Received API data:", data);
+            console.log("Data received:", data);
             if (data.nodes && data.edges) {
                 setDataFlow(data);
                 setGraphData({
@@ -48,15 +47,14 @@ function App() {
                         value: edge.value
                     }))
                 });
-            } else {
-                console.error("Invalid data format received:", data);
-                throw new Error("Invalid data format");
+                setConnectionStatus('connected');
             }
             setLoading(false);
         })
-        .catch(err => {
-            console.error("Error fetching graph data:", err);
-            setError(err.message);
+        .catch(error => {
+            console.error("Error fetching graph data:", error);
+            setError(error.message);
+            setConnectionStatus('disconnected');
             setLoading(false);
         });
     }, []);
