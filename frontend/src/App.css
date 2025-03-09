@@ -55,5 +55,151 @@ h1, h2, h3, h4, h5, h6 {
   height: 500px;  /* Adjust as needed */
 }
 
+/* --- Graph Visualization Styles --- */
+.graph-container {
+    width: 100%;
+    height: 600px;
+    border: 1px solid var(--color-neutral-medium-gray);
+    border-radius: 4px;
+    margin: 20px 0;
+    background-color: var(--color-neutral-black);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px var(--color-ruby-shadow);
+    transition: box-shadow 0.3s ease;
+    transform-origin: center;
+}
+
+.graph-container:hover {
+    box-shadow: 0 0 30px var(--color-primary-amber);
+}
+
+.graph-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Node Animation Effects */
+@keyframes nodeHover {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Loading Animation */
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* Graph Node Tooltips */
+.react-tooltip {
+    background-color: var(--color-neutral-dark-gray) !important;
+    border: 1px solid var(--color-primary-amber) !important;
+    color: var(--color-neutral-white) !important;
+    padding: 12px 16px !important;
+    border-radius: 6px !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 14px !important;
+    z-index: 1000 !important;
+    box-shadow: 0 4px 12px var(--color-ruby-shadow) !important;
+    backdrop-filter: blur(8px) !important;
+    max-width: 300px !important;
+    white-space: pre-wrap !important;
+}
+
+/* Graph Loading State */
+.graph-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-primary-amber);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2em;
+    animation: pulse 1.5s infinite;
+}
+
+/* Graph Error State */
+.graph-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-primary-ruby);
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+.connection-status {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.connection-status.connected {
+    background-color: var(--color-primary-amber);
+    color: var(--color-neutral-black);
+}
+
+.connection-status.disconnected {
+    background-color: var(--color-primary-ruby);
+    color: var(--color-neutral-white);
+}
+
+/* Node-specific styles */
+.node-type-query {
+    fill: var(--color-primary-amber) !important;
+    stroke: var(--color-primary-neon-orange) !important;
+    stroke-width: 2px !important;
+}
+
+.node-type-ai {
+    fill: var(--color-accent-blue) !important;
+    filter: drop-shadow(0 0 8px var(--color-accent-blue));
+    animation: aiPulse 2s infinite ease-in-out;
+}
+
+.node-type-result {
+    fill: var(--color-primary-deep-orange) !important;
+    stroke: var(--color-primary-ruby) !important;
+    stroke-width: 2px !important;
+}
+
+/* AI Node Animation */
+@keyframes aiPulse {
+    0% { filter: drop-shadow(0 0 5px var(--color-accent-blue)); }
+    50% { filter: drop-shadow(0 0 15px var(--color-accent-blue)); }
+    100% { filter: drop-shadow(0 0 5px var(--color-accent-blue)); }
+}
+
+/* Edge Animation */
+@keyframes flowAnimation {
+    from { stroke-dashoffset: 24; }
+    to { stroke-dashoffset: 0; }
+}
+
+.edge {
+    stroke: var(--color-neutral-light-gray) !important;
+    stroke-width: 2 !important;
+    stroke-dasharray: 8, 4 !important;
+    animation: flowAnimation 1s linear infinite;
+}
+
+.edge-label {
+    fill: var(--color-neutral-light-gray) !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 12px !important;
+}
+
 /* --- Add more component-specific styles here as needed --- */
 
