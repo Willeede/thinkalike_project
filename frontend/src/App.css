@@ -32,13 +32,26 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* --- App Component Styles --- */
+.App {
+    text-align: center;
+    background-color: #1a1a1a;
+    min-height: 100vh;
+    color: white;
+}
+
 .App-header {
-  padding: 20px;
-  text-align: center;
+    background-color: #282c34;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .content {
-  padding: 20px;
+    padding: 20px;
 }
 
 /* --- DataTraceability Component Styles --- */
@@ -137,23 +150,36 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .connection-status {
+    font-size: 14px;
     padding: 8px 16px;
     border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    margin: 10px;
-    font-family: 'Montserrat', sans-serif;
-    transition: all 0.3s ease;
+    margin-top: 10px;
 }
 
 .connection-status.connected {
-    background-color: var(--color-primary-amber);
-    color: var(--color-neutral-black);
+    background-color: #4CAF50;
 }
 
 .connection-status.disconnected {
-    background-color: var(--color-primary-ruby);
-    color: var(--color-neutral-white);
+    background-color: #f44336;
+}
+
+.connection-status.connecting {
+    background-color: #ff9800;
+}
+
+.loading, .error {
+    padding: 20px;
+    margin: 20px;
+    border-radius: 4px;
+}
+
+.loading {
+    background-color: #2196F3;
+}
+
+.error {
+    background-color: #f44336;
 }
 
 /* Node-specific styles */

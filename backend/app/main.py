@@ -3,12 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 import logging
 
-# Update imports to use absolute paths
-from app.api.agent import router as agent_router
-from app.api.feedback import router as feedback_router
-from app.api.api_v1_graph import router as graph_router
-from app.api.api_v1_connection_status import router as connection_status_router
-from app.api.index import router as index_router
+# Local imports
+from .api.agent import router as agent_router
+from .api.feedback import router as feedback_router
+from .api.api_v1_graph import router as graph_router
+from .api.api_v1_connection_status import router as connection_status_router
+from .api.index import router as index_router
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="ThinkAlike")
 
+# Configure CORS
 origins = [
     "http://localhost:3000",
     "http://localhost:3001",
-    "https://thinkalike-frontend.onrender.com",  # Your Render frontend URL
+    "https://thinkalike-frontend.onrender.com",
 ]
 
-# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -30,6 +30,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def log_requests(request, call_next):
+    logger.info(f"Incoming request: {request.method} {request.url.path}")
+    logger.info(f"Headers: {request.headers}")
+    response = await call_next(request)
+    logger.info(f"Response status: {response.status_code}")
+    return response
 
 @app.get("/favicon.ico")
 async def favicon():
@@ -40,10 +48,10 @@ async def root():
     logger.info("Root endpoint called")
     return {"message": "ThinkAlike API Root. Access /api/v1/graph for graph data."}
 
-# Include routers
+# Register routers
 logger.info("Registering routers...")
 app.include_router(agent_router, prefix="/agent")
 app.include_router(feedback_router, prefix="/feedback")
 app.include_router(graph_router, prefix="/api/v1/graph", tags=["graph"])
 app.include_router(connection_status_router, prefix="/api/v1/connection")
-app.include_router(index_router)
+app.include_router(index_router)  # NO PREFIX

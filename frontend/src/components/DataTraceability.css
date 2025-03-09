@@ -1,26 +1,28 @@
 .data-traceability {
-    background-color: #121212; /* Slightly lighter than pure black for better contrast */
     padding: 20px;
-    border: 1px solid #333333; /* Darker border */
+    background: #2a2a2a;
     border-radius: 8px;
-    color: #FFFFFF; /* White text for better readability */
+    color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
     margin-bottom: 20px;
+    height: 100vh;
 }
 
 .data-traceability h2 {
-    color: #FFC300; /* Amber/Yellow heading */
+    color: white;
+    margin-bottom: 20px;
     margin-top: 0;
     border-bottom: 1px solid #333;
     padding-bottom: 10px;
-    margin-bottom: 20px;
+    text-align: center;
 }
 
 .data-traceability-graph {
-    height: 600px; /* Taller for better visualization */
-    background-color: #1E1E1E; /* Dark gray background */
-    border: 1px solid #444444;
-    border-radius: 5px;
+    width: 100%;
+    height: 600px;
+    background-color: #000;
+    border-radius: 4px;
+    border: 1px solid #444;
     margin: 15px 0;
     overflow: hidden; /* Ensure content doesn't overflow */
     position: relative;
@@ -100,5 +102,25 @@
 /* The force graph canvas */
 .data-traceability-graph canvas {
     cursor: pointer;
+}
+
+.graph-container {
+    width: 100%;
+    height: 600px;
+    background: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.error-message, .no-data-message {
+    color: #ff6b6b;
+    padding: 20px;
+    text-align: center;
+}
+
+.no-data {
+    color: #ff6b6b;
+    padding: 20px;
+    text-align: center;
 }
 
