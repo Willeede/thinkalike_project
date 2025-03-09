@@ -13,12 +13,18 @@ from .api.index import router as index_router
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="ThinkAlike API")
+app = FastAPI(title="ThinkAlike")
+
+origins = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://thinkalike-frontend.onrender.com",  # Your Render frontend URL
+]
 
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
