@@ -14,7 +14,7 @@ function App() {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const API_BASE_URL = 'http://localhost:8000'; // Hardcoded for local
+                const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
                 console.log("Fetching from:", API_BASE_URL);
 
                 const response = await fetch(`${API_BASE_URL}/api/v1/graph/graph`);
