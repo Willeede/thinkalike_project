@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ForceGraph2D from 'react-force-graph-2d';
 import './App.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -14,36 +15,50 @@ function App() {
     const [dataFlow, setDataFlow] = useState({ nodes: [], edges: [] });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [graphData, setGraphData] = useState({ nodes: [], links: [] });
+    const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
     useEffect(() => {
         setLoading(true);
-        const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
         console.log("API_BASE_URL:", API_BASE_URL);
 
-        // Use the main endpoint that fetches from database
-        fetch(`${API_BASE_URL}/api/v1/graph`)
-          .then(response => {
+        fetch(`${API_BASE_URL}/api/v1/graph/graph`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'  // Add CORS mode explicitly
+        })
+        .then(response => {
             console.log("Response status:", response.status);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
-          })
-          .then(data => {
+        })
+        .then(data => {
             console.log("Received API data:", data);
             if (data.nodes && data.edges) {
                 setDataFlow(data);
+                setGraphData({
+                    nodes: data.nodes,
+                    links: data.edges.map(edge => ({
+                        source: edge.from,
+                        target: edge.to,
+                        value: edge.value
+                    }))
+                });
             } else {
                 console.error("Invalid data format received:", data);
                 throw new Error("Invalid data format");
             }
             setLoading(false);
-          })
-          .catch(err => {
+        })
+        .catch(err => {
             console.error("Error fetching graph data:", err);
             setError(err.message);
             setLoading(false);
-          });
+        });
     }, []);
 
     const toggleConnectionStatus = () => {
@@ -104,6 +119,11 @@ function App() {
                         <Route path="/graph" element={<Graph />} />
                         <Route path="*" element={<div>404 Not Found</div>} />
                     </Routes>
+                    <ForceGraph2D
+                        graphData={graphData}
+                        nodeLabel="label"
+                        nodeAutoColorBy="group"
+                    />
                 </section>
             </div>
         </Router>
