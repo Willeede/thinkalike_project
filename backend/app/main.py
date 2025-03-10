@@ -16,11 +16,12 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="ThinkAlike")
 
-# Configure CORS
+# Updated CORS configuration
 origins = [
     "http://localhost:3000",
     "http://localhost:3001",
     "https://thinkalike-frontend.onrender.com",
+    "*"  # Temporarily allow all origins for testing
 ]
 
 app.add_middleware(
