@@ -14,9 +14,8 @@ function App() {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-                // Trim any whitespace from the URL
-                const API_BASE_URL = baseUrl.trim();
+                // Temporarily hardcode the URL for testing
+                const API_BASE_URL = "https://thinkalike-api.onrender.com";
                 console.log("Fetching from:", API_BASE_URL);
 
                 const response = await fetch(`${API_BASE_URL}/api/v1/graph/graph`, {
