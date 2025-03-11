@@ -14,29 +14,10 @@ function App() {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                // Temporarily hardcode the URL for testing
-                const API_BASE_URL = "https://thinkalike-api.onrender.com";
+                const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
                 console.log("Fetching from:", API_BASE_URL);
 
-                // Add timeout logic
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => {
-                    controller.abort();
-                    console.log("Request timed out after 10 seconds");
-                }, 10000); // 10 second timeout
-
-                const response = await fetch(`${API_BASE_URL}/api/v1/graph/graph`, {
-                    method: 'GET',
-                    signal: controller.signal,
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                // Clear the timeout since request completed
-                clearTimeout(timeoutId);
-
+                const response = await fetch(`${API_BASE_URL}/api/v1/graph/graph`);
                 console.log("Response status:", response.status);
 
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
@@ -47,7 +28,7 @@ function App() {
                 setDataFlow(data);
                 setConnectionStatus('connected');
             } catch (error) {
-                console.error("Fetch error details:", error);
+                console.error("Fetch error:", error);
                 setError(error.message);
                 setConnectionStatus('disconnected');
             } finally {
@@ -58,8 +39,8 @@ function App() {
         fetchData();
     }, []);
 
-    if (loading) return <div className="loading">Loading...</div>;
-    if (error) return <div className="error">Error: {error}</div>;
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <Router>
@@ -82,3 +63,4 @@ function App() {
 }
 
 export default App;
+
