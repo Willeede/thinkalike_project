@@ -41,7 +41,7 @@ const getEdgeTooltip = (edge) => {
 };
 
 const DataTraceability = ({ dataFlow, connectionStatus }) => {
-    const fgRef = useRef();
+    const fgRef = useRef(null); // Initialize with null
     const [animationTime, setAnimationTime] = useState(0);
 
     useEffect(() => {
