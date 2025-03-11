@@ -43,6 +43,7 @@ const getEdgeTooltip = (edge) => {
 const DataTraceability = ({ dataFlow, connectionStatus }) => {
     const fgRef = useRef(null);
     const [animationTime, setAnimationTime] = useState(0);
+    const [isMounted, setIsMounted] = useState(false); // Track if ForceGraph2D is mounted
 
     const handleLinkHover = useCallback((link) => {
         if (fgRef.current && typeof fgRef.current.linkVisibility === 'function') {
@@ -72,12 +73,13 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
             animationFrameId = requestAnimationFrame(animate);
         };
 
-        if (dataFlow && dataFlow.nodes && dataFlow.nodes.length > 0) {
+        // Start animation only after the component is mounted and data is available
+        if (isMounted && dataFlow && dataFlow.nodes && dataFlow.nodes.length > 0) {
             animationFrameId = requestAnimationFrame(animate);
         }
 
         return () => cancelAnimationFrame(animationFrameId);
-    }, [dataFlow, connectionStatus]);
+    }, [dataFlow, connectionStatus, isMounted]);
 
     if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
         return (
@@ -157,6 +159,11 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
                         console.log("Node clicked:", node);
                     }}
                     onLinkHover={handleLinkHover}
+                    onRenderFrame={() => { // Set isMounted to true after the first frame is rendered
+                        if (!isMounted) {
+                            setIsMounted(true);
+                        }
+                    }}
                 />
                 <ReactTooltip
                     anchorSelect=".data-traceability-graph canvas"
