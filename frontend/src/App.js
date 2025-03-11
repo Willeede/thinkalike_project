@@ -52,22 +52,13 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        // Remove any spaces from the API URL
-        const API_BASE_URL = (process.env.REACT_APP_API_URL || 'http://localhost:3002').trim();
-        console.log("Fetching from:", API_BASE_URL);
+        // Use local backend for testing
+        const response = await fetch('http://localhost:3002/api/v1/graph/graph');
 
-        const response = await fetch(`${API_BASE_URL}/api/v1/graph/graph`);
-        console.log("Response status:", response.status);
-
-        if (!response.ok) {
-          throw new Error(`Network error: ${response.status}`);
-        }
-
-        const json = await response.json();
-        console.log("Data received:", json);
-        setData(json);
+        if (!response.ok) throw new Error(`Error: ${response.status}`);
+        const result = await response.json();
+        setData(result);
       } catch (err) {
-        console.error("Fetch error:", err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -84,29 +75,7 @@ function App() {
   return (
     <div style={{ padding: '20px' }}>
       <h1>ThinkAlike</h1>
-      <h2>Graph Data</h2>
-      {data.nodes && data.edges ? (
-        <div>
-          <h3>Nodes:</h3>
-          <ul>
-            {data.nodes.map(node => (
-              <li key={node.id}>
-                {node.label} (Group: {node.group}) - {node.isAI ? "AI Component" : ""}
-              </li>
-            ))}
-          </ul>
-          <h3>Edges:</h3>
-          <ul>
-            {data.edges.map((edge, index) => (
-              <li key={index}>
-                {edge.source} → {edge.target}: {edge.value}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <p>Invalid data format</p>
-      )}
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }
