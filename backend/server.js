@@ -14,7 +14,7 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: 'https://thinkalike-frontend.onrender.com',
+  origin: '*', // During development, allow all origins
   optionsSuccessStatus: 200
 }));
 
