@@ -13,7 +13,7 @@ const nodeColors = {
 
 const getNodeColor = (node) => {
     if (node.isAI) {
-        return '#F86B03'; // Base color for AI nodes; pulsation will override this fillStyle.
+        return '#F86B03';
     }
     return nodeColors[node.group] || '#CCCCCC';
 };
@@ -43,18 +43,12 @@ const getEdgeTooltip = (edge) => {
 const DataTraceability = ({ dataFlow, connectionStatus }) => {
     const fgRef = useRef(null);
     const [animationTime, setAnimationTime] = useState(0);
-    const [isMounted, setIsMounted] = useState(false); // Track if ForceGraph2D is mounted
+    const [isMounted, setIsMounted] = useState(false);
 
     const handleLinkHover = useCallback((link) => {
         if (fgRef.current && typeof fgRef.current.linkVisibility === 'function') {
             fgRef.current.linkVisibility(l => l === link);
-            if (link) {
-                fgRef.current.linkVisibility(l => l === link);
-                fgRef.current.tooltipContent(getEdgeTooltip(link));
-            } else {
-                fgRef.current.linkVisibility(() => true); // Reset visibility when no link is hovered
-                fgRef.current.tooltipContent(null);
-            }
+            fgRef.current.tooltipContent(link ? getEdgeTooltip(link) : null);
         } else {
             console.warn("fgRef.current is not yet available or doesn't have linkVisibility");
         }
@@ -63,25 +57,22 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
     useEffect(() => {
         let animationFrameId;
         const animate = () => {
-            setAnimationTime(prevTime => prevTime + 1);
+            setAnimationTime(prev => prev + 1);
             if (fgRef.current && typeof fgRef.current.refresh === 'function') {
                 fgRef.current.refresh();
             } else {
-                // Optionally log a warning if refresh() is unavailable.
                 console.warn("refresh() method is not available on fgRef.current");
             }
             animationFrameId = requestAnimationFrame(animate);
         };
 
-        // Start animation only after the component is mounted and data is available
-        if (isMounted && dataFlow && dataFlow.nodes && dataFlow.nodes.length > 0) {
+        if (isMounted && dataFlow?.nodes?.length) {
             animationFrameId = requestAnimationFrame(animate);
         }
-
         return () => cancelAnimationFrame(animationFrameId);
     }, [dataFlow, connectionStatus, isMounted]);
 
-    if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
+    if (!dataFlow?.nodes || !dataFlow?.edges) {
         return (
             <div className="data-traceability">
                 <p>No data flow to display.</p>
@@ -89,7 +80,6 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
         );
     }
 
-    // Transform the API data to the structure expected by ForceGraph2D
     const graphData = { nodes: dataFlow.nodes, links: dataFlow.edges };
 
     return (
@@ -112,46 +102,40 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
 
-                        let nodeSize = (node.isAI ? 12 : 8) / globalScale;
-
-                        // Apply pulsating effect for AI nodes
+                        let nodeSize = node.isAI ? 12 / globalScale : 8 / globalScale;
                         if (node.isAI) {
-                            const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5; // oscillates between 0 and 1
-                            nodeSize += pulsate * 4 / globalScale; // increase size based on pulsation
-
-                            // Interpolate between two colors for the pulsation effect
+                            const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5;
+                            nodeSize += (pulsate * 4) / globalScale;
                             const baseAIColor = '#F86B03';
                             const alternateColor = '#FFC300';
                             const r = Math.floor(
-                                (parseInt(baseAIColor.slice(1, 3), 16) * pulsate) +
-                                (parseInt(alternateColor.slice(1, 3), 16) * (1 - pulsate))
+                                parseInt(baseAIColor.slice(1, 3), 16) * pulsate +
+                                parseInt(alternateColor.slice(1, 3), 16) * (1 - pulsate)
                             );
                             const g = Math.floor(
-                                (parseInt(baseAIColor.slice(3, 5), 16) * pulsate) +
-                                (parseInt(alternateColor.slice(3, 5), 16) * (1 - pulsate))
+                                parseInt(baseAIColor.slice(3, 5), 16) * pulsate +
+                                parseInt(alternateColor.slice(3, 5), 16) * (1 - pulsate)
                             );
                             const b = Math.floor(
-                                (parseInt(baseAIColor.slice(5, 7), 16) * pulsate) +
-                                (parseInt(alternateColor.slice(5, 7), 16) * (1 - pulsate))
+                                parseInt(baseAIColor.slice(5, 7), 16) * pulsate +
+                                parseInt(alternateColor.slice(5, 7), 16) * (1 - pulsate)
                             );
                             ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
                         } else {
                             ctx.fillStyle = getNodeColor(node);
                         }
 
-                        // Draw node circle
                         ctx.beginPath();
                         ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
                         ctx.fill();
+
                         ctx.save();
                         ctx.clip();
                         ctx.restore();
 
-                        // Draw the label below the node
                         ctx.fillStyle = 'white';
                         ctx.fillText(label, node.x, node.y + fontSize * 1.5);
 
-                        // Set tooltip content for react-tooltip
                         node.dataTipContent = getNodeTooltip(node);
                         node.__rd3t_tooltip = node.dataTipContent;
                     }}
@@ -159,7 +143,7 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
                         console.log("Node clicked:", node);
                     }}
                     onLinkHover={handleLinkHover}
-                    onRenderFrame={() => { // Set isMounted to true after the first frame is rendered
+                    onRenderFrame={() => {
                         if (!isMounted) {
                             setIsMounted(true);
                         }

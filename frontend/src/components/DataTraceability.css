@@ -1,6 +1,6 @@
 .data-traceability {
     padding: 20px;
-    background: #2a2a2a;
+    background: #f5f5f5;
     border-radius: 8px;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
@@ -36,6 +36,8 @@
     padding: 8px !important;
     border-radius: 4px !important;
     max-width: 250px !important;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
 }
 
 .connection-status {
@@ -122,5 +124,25 @@
     color: #ff6b6b;
     padding: 20px;
     text-align: center;
+}
+
+/* Safari prefix for user-select */
+.force-graph-container canvas {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Reordered cursor rules */
+.force-graph-container .grabbable {
+    cursor: move;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: grab;
+}
+
+.force-graph-container .grabbable:active {
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+    cursor: grabbing;
 }
 
