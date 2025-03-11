@@ -13,28 +13,28 @@ const nodeColors = {
 
 const getNodeColor = (node) => {
     if (node.isAI) {
-        return '#F86B03'; // Base color for AI nodes; pulsating will override fillStyle dynamically.
+        return '#F86B03'; // Base color for AI nodes; pulsation will override this fillStyle.
     }
     return nodeColors[node.group] || '#CCCCCC';
 };
 
 const getNodeTooltip = (node) => {
     return `
-      <div>
-        <b>${node.label}</b><br/>
+      <div style="text-align: center;">
+        <strong>${node.label}</strong><br/>
         Group: ${node.group}<br/>
-        ${node.isAI ? "<b>AI Agent</b><br/>" : ""}
+        ${node.isAI ? "<span style='color: red;'>AI Agent</span><br/>" : ""}
         Value: ${node.value || 'N/A'}<br/>
       </div>
     `;
 };
 
 const getEdgeTooltip = (edge) => {
-    // Update: use edge.source and edge.target directly, since they are strings.
     return `
-      <div>
-        Source: ${edge.source}<br/>
-        Target: ${edge.target}<br/>
+      <div style="text-align: center;">
+        <strong>Edge Info</strong><br/>
+        From: ${edge.source}<br/>
+        To: ${edge.target}<br/>
         Value: ${edge.value || 'N/A'}
       </div>
     `;
@@ -46,11 +46,13 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
 
     useEffect(() => {
         let animationFrameId;
-
         const animate = () => {
             setAnimationTime(prevTime => prevTime + 1);
-            if (fgRef.current) {
+            if (fgRef.current && typeof fgRef.current.refresh === 'function') {
                 fgRef.current.refresh();
+            } else {
+                // Optionally log a warning if refresh() is unavailable.
+                console.warn("refresh() method is not available on fgRef.current");
             }
             animationFrameId = requestAnimationFrame(animate);
         };
@@ -62,7 +64,6 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
         return () => cancelAnimationFrame(animationFrameId);
     }, [dataFlow, connectionStatus]);
 
-    // Guard to make sure we have valid data for the graph
     if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
         return (
             <div className="data-traceability">
@@ -71,11 +72,8 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
         );
     }
 
-    // Transform API data to the structure expected by the force graph: { nodes, links }
-    const graphData = {
-        nodes: dataFlow.nodes,
-        links: dataFlow.edges
-    };
+    // Transform the API data to the structure expected by ForceGraph2D
+    const graphData = { nodes: dataFlow.nodes, links: dataFlow.edges };
 
     return (
         <div className="data-traceability">
@@ -96,41 +94,43 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
                         ctx.font = `${fontSize}px Montserrat`;
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
-                        ctx.fillStyle = 'white';
 
                         let nodeSize = (node.isAI ? 12 : 8) / globalScale;
 
-                        // Pulsating effect for AI node:
+                        // Apply pulsating effect for AI nodes
                         if (node.isAI) {
                             const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5; // oscillates between 0 and 1
-                            nodeSize += pulsate * 4 / globalScale; // adjust pulsation amplitude
+                            nodeSize += pulsate * 4 / globalScale; // increase size based on pulsation
 
-                            // Color interpolation for pulsating effect between two shades
+                            // Interpolate between two colors for the pulsation effect
+                            const baseAIColor = '#F86B03';
+                            const alternateColor = '#FFC300';
                             const r = Math.floor(
-                                (parseInt('#F86B03'.slice(1, 3), 16) * pulsate) +
-                                (parseInt('#FFC300'.slice(1, 3), 16) * (1 - pulsate))
+                                (parseInt(baseAIColor.slice(1, 3), 16) * pulsate) +
+                                (parseInt(alternateColor.slice(1, 3), 16) * (1 - pulsate))
                             );
                             const g = Math.floor(
-                                (parseInt('#F86B03'.slice(3, 5), 16) * pulsate) +
-                                (parseInt('#FFC300'.slice(3, 5), 16) * (1 - pulsate))
+                                (parseInt(baseAIColor.slice(3, 5), 16) * pulsate) +
+                                (parseInt(alternateColor.slice(3, 5), 16) * (1 - pulsate))
                             );
                             const b = Math.floor(
-                                (parseInt('#F86B03'.slice(5, 7), 16) * pulsate) +
-                                (parseInt('#FFC300'.slice(5, 7), 16) * (1 - pulsate))
+                                (parseInt(baseAIColor.slice(5, 7), 16) * pulsate) +
+                                (parseInt(alternateColor.slice(5, 7), 16) * (1 - pulsate))
                             );
                             ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                        } else {
+                            ctx.fillStyle = getNodeColor(node);
                         }
 
                         // Draw node circle
                         ctx.beginPath();
                         ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
-                        ctx.fillStyle = getNodeColor(node);
                         ctx.fill();
                         ctx.save();
                         ctx.clip();
                         ctx.restore();
 
-                        // Draw label beneath the node
+                        // Draw the label below the node
                         ctx.fillStyle = 'white';
                         ctx.fillText(label, node.x, node.y + fontSize * 1.5);
 
