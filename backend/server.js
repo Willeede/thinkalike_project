@@ -1,33 +1,8 @@
 const express = require('express');
-const helmet = require('helmet');
 const cors = require('cors');
 
 const app = express();
-
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      "default-src": ["'self'"],
-      "script-src": ["'self'"]
-    }
-  }
-}));
-
-app.use(cors({
-  origin: '*', // During development, allow all origins
-  optionsSuccessStatus: 200
-}));
-
-app.use((req, res, next) => {
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  next();
-});
-
-// Simple test endpoint
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'API is working!' });
-});
+app.use(cors());
 
 app.get('/api/v1/graph/graph', (req, res) => {
   res.json({
@@ -43,7 +18,5 @@ app.get('/api/v1/graph/graph', (req, res) => {
   });
 });
 
-const port = process.env.PORT || 3002;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+const port = 3002;
+app.listen(port, () => console.log(`Server running on port ${port}`));
