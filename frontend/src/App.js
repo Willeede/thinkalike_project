@@ -1,7 +1,8 @@
 ﻿import React, { useState, useEffect } from "react";
+import ForceGraph2D from "react-force-graph-2d";
 
 function App() {
-  const [data, setData] = useState(null);
+  const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -9,7 +10,16 @@ function App() {
     fetch("http://localhost:3002/api/v1/graph/graph")
       .then(response => response.json())
       .then(data => {
-        setData(data);
+        // Transform data for force graph
+        const formattedData = {
+          nodes: data.nodes,
+          links: data.edges.map(edge => ({
+            source: edge.source,
+            target: edge.target,
+            value: edge.value
+          }))
+        };
+        setGraphData(formattedData);
         setLoading(false);
       })
       .catch(err => {
@@ -22,9 +32,17 @@ function App() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
-      <h1>ThinkAlike</h1>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+    <div style={{ fontFamily: "Arial, sans-serif" }}>
+      <h1 style={{ textAlign: "center" }}>ThinkAlike</h1>
+      <div style={{ height: "600px", border: "1px solid #ddd" }}>
+        <ForceGraph2D
+          graphData={graphData}
+          nodeLabel={node => `${node.label}: ${node.value}`}
+          nodeColor={node => node.isAI ? "#ff6b6b" : "#4dabf7"}
+          linkDirectionalArrowLength={6}
+          linkDirectionalArrowRelPos={1}
+        />
+      </div>
     </div>
   );
 }
