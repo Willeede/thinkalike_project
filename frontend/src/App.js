@@ -1,82 +1,130 @@
-﻿import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import ForceGraph2D from "react-force-graph-2d";
 
 function App() {
   const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [highlightNodes, setHighlightNodes] = useState(new Set());
-  const [highlightLinks, setHighlightLinks] = useState(new Set());
+  const [backendStatus, setBackendStatus] = useState("unknown");
+  const fgRef = useRef();
+
+  // Color scheme
+  const colors = {
+    user: "#FDCB6E",    // Yellow for user nodes
+    ai: "#81ECEC",      // Cyan for AI nodes
+    result: "#FF7675",  // Red for result nodes
+    links: "#2D3436",   // Dark gray for links
+  };
+
+  // Static data as fallback
+  const staticData = {
+    nodes: [
+      { id: "3", label: "User Query", group: 1, value: "Initial input", isAI: false },
+      { id: "4", label: "AI Processing", group: 2, value: "Analysis step", isAI: true },
+      { id: "5", label: "Results", group: 3, value: "Final output", isAI: false }
+    ],
+    edges: [
+      { source: "3", target: "4", value: "Process" },
+      { source: "4", target: "5", value: "Output" }
+    ]
+  };
+
+  const loadStaticData = () => {
+    console.log("Loading static fallback data");
+    
+    // Process static data
+    const nodes = staticData.nodes.map(node => ({
+      ...node,
+      color: node.label.includes("User") 
+        ? colors.user 
+        : node.isAI 
+          ? colors.ai 
+          : node.label.includes("Result") 
+            ? colors.result 
+            : colors.user
+    }));
+    
+    const links = staticData.edges.map(edge => ({
+      source: edge.source,
+      target: edge.target,
+      value: edge.value,
+      color: colors.links
+    }));
+    
+    setGraphData({ nodes, links });
+    setLoading(false);
+    
+    // Center the graph after a short delay
+    setTimeout(() => {
+      if (fgRef.current) {
+        fgRef.current.zoomToFit(400);
+      }
+    }, 500);
+  };
 
   useEffect(() => {
-    fetch("http://localhost:3002/api/v1/graph/graph")
-      .then(response => response.json())
+    console.log("Checking backend status...");
+    
+    // First try to connect to the backend
+    fetch("http://localhost:3002/test")
+      .then(response => {
+        if (!response.ok) throw new Error(`Status: ${response.status}`);
+        return response.json();
+      })
       .then(data => {
-        // Transform for ForceGraph with enhanced properties
-        const graphData = {
-          nodes: data.nodes.map(node => ({
-            ...node,
-            // Add display properties
-            size: node.isAI ? 12 : 8,
-            color: node.isAI ? "#FF6B6B" : "#4DABF7",
-            fontSize: 14
-          })),
-          links: data.edges.map(edge => ({
-            source: edge.source,
-            target: edge.target,
-            value: edge.value,
-            color: "#66728E"
-          }))
-        };
+        console.log("Backend is running:", data);
+        setBackendStatus("running");
         
-        setGraphData(graphData);
+        // Now fetch the graph data
+        return fetch("http://localhost:3002/api/v1/graph/graph");
+      })
+      .then(response => {
+        if (!response.ok) throw new Error(`Graph data status: ${response.status}`);
+        return response.json();
+      })
+      .then(data => {
+        console.log("Graph data received:", data);
+        
+        // Process the data for visualization
+        const nodes = data.nodes.map(node => ({
+          ...node,
+          color: node.label.includes("User") 
+            ? colors.user 
+            : node.isAI 
+              ? colors.ai 
+              : node.label.includes("Result") 
+                ? colors.result 
+                : colors.user
+        }));
+        
+        const links = data.edges.map(edge => ({
+          source: edge.source,
+          target: edge.target,
+          value: edge.value,
+          color: colors.links
+        }));
+        
+        setGraphData({ nodes, links });
         setLoading(false);
+        
+        // Center the graph after a short delay
+        setTimeout(() => {
+          if (fgRef.current) {
+            fgRef.current.zoomToFit(400);
+          }
+        }, 500);
       })
       .catch(err => {
         console.error("Error:", err);
-        setError(err.message);
-        setLoading(false);
+        setBackendStatus("error");
+        setError(`${err.message}. Make sure the backend server is running on port 3002.`);
+        
+        // Use static data as fallback
+        loadStaticData();
       });
   }, []);
 
-  // Handle node highlighting on hover
-  const handleNodeHover = node => {
-    const newHighlightNodes = new Set();
-    const newHighlightLinks = new Set();
-    
-    if (node) {
-      newHighlightNodes.add(node);
-      
-      // Get connected nodes and links
-      graphData.links.forEach(link => {
-        if (link.source.id === node.id || link.target.id === node.id) {
-          newHighlightLinks.add(link);
-          if (link.source.id !== node.id) newHighlightNodes.add(link.source);
-          if (link.target.id !== node.id) newHighlightNodes.add(link.target);
-        }
-      });
-    }
-    
-    setHighlightNodes(newHighlightNodes);
-    setHighlightLinks(newHighlightLinks);
-  };
-
-  // Generate node color based on highlight status
-  const getNodeColor = node => {
-    if (highlightNodes.size === 0) {
-      return node.isAI ? "#FF6B6B" : "#4DABF7";
-    }
-    
-    return highlightNodes.has(node) 
-      ? (node.isAI ? "#FF0000" : "#007BFF") 
-      : "#AAAAAA";
-  };
-
-  // Generate link color based on highlight status
-  const getLinkColor = link => 
-    highlightLinks.has(link) ? "#333333" : "#DDDDDD";
-
-  if (loading) {
+  if (loading && backendStatus !== "error") {
     return (
       <div style={{ 
         display: "flex", 
@@ -86,12 +134,12 @@ function App() {
         fontFamily: "Arial, sans-serif"
       }}>
         <div style={{ textAlign: "center" }}>
-          <h2>Loading ThinkAlike Graph...</h2>
+          <h2>Loading ThinkAlike Graph</h2>
           <div style={{ 
-            width: "50px", 
-            height: "50px", 
-            border: "5px solid #f3f3f3",
-            borderTop: "5px solid #3498db",
+            width: "60px", 
+            height: "60px", 
+            border: "6px solid #f3f3f3",
+            borderTop: "6px solid #3498db",
             borderRadius: "50%",
             margin: "20px auto",
             animation: "spin 1s linear infinite"
@@ -107,36 +155,6 @@ function App() {
     );
   }
 
-  if (error) {
-    return (
-      <div style={{ 
-        padding: "20px", 
-        fontFamily: "Arial, sans-serif", 
-        color: "#721c24", 
-        backgroundColor: "#f8d7da", 
-        border: "1px solid #f5c6cb",
-        borderRadius: "5px",
-        margin: "20px"
-      }}>
-        <h2>Error Loading Graph</h2>
-        <p>{error}</p>
-        <button 
-          onClick={() => window.location.reload()} 
-          style={{
-            backgroundColor: "#dc3545",
-            color: "white",
-            border: "none",
-            padding: "10px 15px",
-            borderRadius: "4px",
-            cursor: "pointer"
-          }}
-        >
-          Try Again
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div style={{ 
       fontFamily: "Arial, sans-serif",
@@ -146,7 +164,7 @@ function App() {
     }}>
       <header style={{ 
         textAlign: "center", 
-        marginBottom: "30px",
+        marginBottom: "20px",
         borderBottom: "2px solid #eaeaea",
         paddingBottom: "20px"
       }}>
@@ -158,30 +176,43 @@ function App() {
           ThinkAlike
         </h1>
         <p style={{ color: "#666" }}>Interactive Knowledge Graph</p>
+        
+        {backendStatus === "error" && (
+          <div style={{ 
+            backgroundColor: "#fff3cd", 
+            color: "#856404", 
+            padding: "10px", 
+            borderRadius: "4px",
+            marginTop: "10px"
+          }}>
+            ⚠️ {error} Using static data.
+          </div>
+        )}
       </header>
 
       <div style={{ 
         border: "1px solid #ddd",
         borderRadius: "8px",
         overflow: "hidden",
-        boxShadow: "0 4px 8px rgba(0,0,0,0.05)"
+        boxShadow: "0 4px 8px rgba(0,0,0,0.05)",
+        backgroundColor: "#fafafa",
+        height: "600px"
       }}>
         <ForceGraph2D
+          ref={fgRef}
           graphData={graphData}
           nodeLabel={node => `${node.label}: ${node.value}`}
-          nodeColor={getNodeColor}
+          nodeColor={node => node.color}
           nodeRelSize={8}
-          linkColor={getLinkColor}
-          linkWidth={link => highlightLinks.has(link) ? 3 : 1}
+          linkColor={link => link.color}
+          linkWidth={2}
           linkDirectionalArrowLength={6}
           linkDirectionalArrowRelPos={1}
-          linkDirectionalParticles={link => highlightLinks.has(link) ? 4 : 0}
+          linkDirectionalParticles={2}
           linkDirectionalParticleSpeed={0.01}
+          linkCurvature={0.25}
           linkLabel={link => link.value}
-          onNodeHover={handleNodeHover}
           cooldownTime={2000}
-          height={600}
-          backgroundColor="#FAFAFA"
         />
       </div>
 
@@ -189,6 +220,7 @@ function App() {
         marginTop: "30px",
         display: "flex",
         justifyContent: "center",
+        flexWrap: "wrap",
         gap: "30px"
       }}>
         <div style={{
@@ -198,11 +230,11 @@ function App() {
           <div style={{
             width: "20px",
             height: "20px",
-            backgroundColor: "#4DABF7",
+            backgroundColor: colors.user,
             borderRadius: "50%",
             marginRight: "10px"
           }}></div>
-          <span>Human Component</span>
+          <span>User Component</span>
         </div>
 
         <div style={{
@@ -212,11 +244,25 @@ function App() {
           <div style={{
             width: "20px",
             height: "20px",
-            backgroundColor: "#FF6B6B",
+            backgroundColor: colors.ai,
             borderRadius: "50%",
             marginRight: "10px"
           }}></div>
           <span>AI Component</span>
+        </div>
+
+        <div style={{
+          display: "flex",
+          alignItems: "center"
+        }}>
+          <div style={{
+            width: "20px",
+            height: "20px",
+            backgroundColor: colors.result,
+            borderRadius: "50%",
+            marginRight: "10px"
+          }}></div>
+          <span>Result Component</span>
         </div>
       </div>
     </div>
