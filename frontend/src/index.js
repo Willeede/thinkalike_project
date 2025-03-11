@@ -1,12 +1,18 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
 import App from './App';
 
-// Get the root element
+// Using the modern React 18 API with proper error handling
 const container = document.getElementById('root');
 
-// Create a root
-const root = createRoot(container);
+if (!container) {
+  throw new Error('Failed to find the root element');
+}
 
-// Render the app
-root.render(<App />);
+const root = ReactDOM.createRoot(container);
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
