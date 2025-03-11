@@ -1,8 +1,12 @@
-const express = require('express');
+﻿const express = require('express');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+
+// Enable CORS for all origins
+app.use(cors({
+  origin: '*'
+}));
 
 app.get('/api/v1/graph/graph', (req, res) => {
   res.json({
