@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
@@ -41,8 +41,23 @@ const getEdgeTooltip = (edge) => {
 };
 
 const DataTraceability = ({ dataFlow, connectionStatus }) => {
-    const fgRef = useRef(null); // Initialize with null
+    const fgRef = useRef(null);
     const [animationTime, setAnimationTime] = useState(0);
+
+    const handleLinkHover = useCallback((link) => {
+        if (fgRef.current && typeof fgRef.current.linkVisibility === 'function') {
+            fgRef.current.linkVisibility(l => l === link);
+            if (link) {
+                fgRef.current.linkVisibility(l => l === link);
+                fgRef.current.tooltipContent(getEdgeTooltip(link));
+            } else {
+                fgRef.current.linkVisibility(() => true); // Reset visibility when no link is hovered
+                fgRef.current.tooltipContent(null);
+            }
+        } else {
+            console.warn("fgRef.current is not yet available or doesn't have linkVisibility");
+        }
+    }, []);
 
     useEffect(() => {
         let animationFrameId;
@@ -141,14 +156,7 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
                     onNodeClick={(node) => {
                         console.log("Node clicked:", node);
                     }}
-                    onLinkHover={(link) => {
-                        if (fgRef.current) {
-                            fgRef.current.linkVisibility(l => l === link);
-                            if (link) {
-                                fgRef.current.tooltipContent(getEdgeTooltip(link));
-                            }
-                        }
-                    }}
+                    onLinkHover={handleLinkHover}
                 />
                 <ReactTooltip
                     anchorSelect=".data-traceability-graph canvas"
