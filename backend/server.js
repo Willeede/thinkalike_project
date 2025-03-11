@@ -24,6 +24,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// Simple test endpoint
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API is working!' });
+});
+
 app.get('/api/v1/graph/graph', (req, res) => {
   res.json({
     nodes: [
@@ -40,5 +45,5 @@ app.get('/api/v1/graph/graph', (req, res) => {
 
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
-  console.log(`Backend server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
