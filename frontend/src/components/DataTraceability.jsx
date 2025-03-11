@@ -13,7 +13,7 @@ const nodeColors = {
 
 const getNodeColor = (node) => {
     if (node.isAI) {
-        return '#F86B03'; // Base color for AI nodes (will be overridden by pulsating effect)
+        return '#F86B03'; // Base color for AI nodes; pulsating will override fillStyle dynamically.
     }
     return nodeColors[node.group] || '#CCCCCC';
 };
@@ -30,10 +30,11 @@ const getNodeTooltip = (node) => {
 };
 
 const getEdgeTooltip = (edge) => {
+    // Update: use edge.source and edge.target directly, since they are strings.
     return `
       <div>
-        Source: ${edge.source.label}<br/>
-        Target: ${edge.target.label}<br/>
+        Source: ${edge.source}<br/>
+        Target: ${edge.target}<br/>
         Value: ${edge.value || 'N/A'}
       </div>
     `;
@@ -61,6 +62,7 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
         return () => cancelAnimationFrame(animationFrameId);
     }, [dataFlow, connectionStatus]);
 
+    // Guard to make sure we have valid data for the graph
     if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
         return (
             <div className="data-traceability">
@@ -69,13 +71,19 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
         );
     }
 
+    // Transform API data to the structure expected by the force graph: { nodes, links }
+    const graphData = {
+        nodes: dataFlow.nodes,
+        links: dataFlow.edges
+    };
+
     return (
         <div className="data-traceability">
             <h2>Data Traceability</h2>
             <div className="data-traceability-graph">
                 <ForceGraph2D
                     ref={fgRef}
-                    graphData={dataFlow}
+                    graphData={graphData}
                     nodeLabel="label"
                     nodeAutoColorBy="group"
                     linkDirectionalArrowLength={3.5}
@@ -92,12 +100,12 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
 
                         let nodeSize = (node.isAI ? 12 : 8) / globalScale;
 
-                        // Pulsating effect for AI nodes
+                        // Pulsating effect for AI node:
                         if (node.isAI) {
                             const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5; // oscillates between 0 and 1
-                            nodeSize += pulsate * 4 / globalScale; // adjust amplitude
+                            nodeSize += pulsate * 4 / globalScale; // adjust pulsation amplitude
 
-                            // Color interpolation for pulsating effect
+                            // Color interpolation for pulsating effect between two shades
                             const r = Math.floor(
                                 (parseInt('#F86B03'.slice(1, 3), 16) * pulsate) +
                                 (parseInt('#FFC300'.slice(1, 3), 16) * (1 - pulsate))
@@ -122,11 +130,11 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
                         ctx.clip();
                         ctx.restore();
 
-                        // Draw node label beneath the node
+                        // Draw label beneath the node
                         ctx.fillStyle = 'white';
                         ctx.fillText(label, node.x, node.y + fontSize * 1.5);
 
-                        // Set tooltip content
+                        // Set tooltip content for react-tooltip
                         node.dataTipContent = getNodeTooltip(node);
                         node.__rd3t_tooltip = node.dataTipContent;
                     }}
@@ -134,9 +142,11 @@ const DataTraceability = ({ dataFlow, connectionStatus }) => {
                         console.log("Node clicked:", node);
                     }}
                     onLinkHover={(link) => {
-                        fgRef.current.linkVisibility(l => l === link);
-                        if (link) {
-                            fgRef.current.tooltipContent(getEdgeTooltip(link));
+                        if (fgRef.current) {
+                            fgRef.current.linkVisibility(l => l === link);
+                            if (link) {
+                                fgRef.current.tooltipContent(getEdgeTooltip(link));
+                            }
                         }
                     }}
                 />
