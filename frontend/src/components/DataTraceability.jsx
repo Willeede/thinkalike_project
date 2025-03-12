@@ -4,26 +4,27 @@ import './DataTraceability.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
-function DataTraceability({ dataFlow, connectionStatus }) {
-    const fgRef = useRef();
+function DataTraceability({ dataFlow, connectionStatus }) { // Receive dataFlow as a prop
+  const fgRef = useRef();
     const [animationTime, setAnimationTime] = useState(0);
 
+
+    //useEffect for animation
     useEffect(() => {
-        let animationFrameId;
+    let animationFrameId;
 
-        const animate = () => {
-            setAnimationTime(prevTime => prevTime + 1);
-            fgRef.current && fgRef.current.refresh();
-            animationFrameId = requestAnimationFrame(animate);
-        };
+    const animate = () => {
+        setAnimationTime(prevTime => prevTime + 1); // Increment time for smooth animation
+        fgRef.current && fgRef.current.refresh();  // **CRUCIAL: Refresh the graph on each frame**
+        animationFrameId = requestAnimationFrame(animate); // Request next frame
+    };
 
-        if (dataFlow?.nodes?.length) {
-            animationFrameId = requestAnimationFrame(animate);
-        }
+    if(dataFlow?.nodes?.length) { //Simplified checking
+        animationFrameId = requestAnimationFrame(animate);
+    }
 
-        return () => cancelAnimationFrame(animationFrameId);
-    }, [dataFlow, connectionStatus]);
-
+    return () => cancelAnimationFrame(animationFrameId); // Cleanup animation on unmount
+    }, [dataFlow, connectionStatus]); // Re-run effect if dataFlow changes
 
   // Color mapping for node groups
   const nodeColors = {

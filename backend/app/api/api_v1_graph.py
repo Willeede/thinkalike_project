@@ -27,12 +27,12 @@ async def get_graph():
         logger.info("Database connection established")
 
         # --- Node Query (CORRECTED) ---
-        cur.execute("SELECT id, label, \"group\", value, \"isAI\" FROM nodes;")  # CORRECT
+        cur.execute('SELECT id, label, "group", value, "isAI" FROM nodes;')  # Correct query
         nodes = []
         for row in cur.fetchall():
             node_id, label, group, value, is_ai = row
             node = {
-                "id": str(node_id),
+                "id": str(node_id),  # Keep as string for consistency
                 "label": label,
                 "group": group,
                 "value": value,
@@ -42,13 +42,13 @@ async def get_graph():
         logger.info(f"Fetched {len(nodes)} nodes")
 
         # --- Edge Query (CORRECTED) ---
-        cur.execute("SELECT source, target, value FROM edges;")  # CORRECT
+        cur.execute("SELECT source, target, value FROM edges;")  # Correct query
         edges = []
         for row in cur.fetchall():
             source, target, value = row
             edge = {
-                "from": str(source),
-                "to": str(target),
+                "from": str(source),  # Keep as string for consistency with frontend.
+                "to": str(target),    # Keep as string for consistency with frontend.
                 "value": value,
             }
             edges.append(edge)
