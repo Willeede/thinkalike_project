@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import DataTraceability from './components/DataTraceability';
+import DataTraceability from './components/DataTraceability.jsx';
 import './App.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
