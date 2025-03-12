@@ -1,106 +1,71 @@
 from fastapi import APIRouter, HTTPException
 import logging
 import os
-import psycopg2
+import psycopg2  # Make sure you have psycopg2-binary installed
 from dotenv import load_dotenv
 
 load_dotenv()
+
 router = APIRouter()
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-def validate_db_url():
-    db_url = os.environ.get("DATABASE_URL")
-    if not db_url:
-        logger.error("DATABASE_URL environment variable not set")
-        raise HTTPException(status_code=500, detail="DATABASE_URL not set")
-
-    if "sslmode" not in db_url:
-        db_url += "?sslmode=require"
-        logger.info("Added SSL mode to database URL")
-
-    return db_url
 
 @router.get("/graph")
 async def get_graph():
-    """Fetch graph data from database"""
-    logger.info("Starting graph endpoint")
-    conn = None
-    cur = None
+    logger.info("Entering get_graph function")
     try:
+        # --- Database Connection ---
+        logger.info("Retrieving DATABASE_URL from environment")
         db_url = os.environ.get("DATABASE_URL")
         if not db_url:
+            logger.error("DATABASE_URL environment variable not set.")
             raise HTTPException(status_code=500, detail="DATABASE_URL not configured")
 
+        logger.info("Connecting to the database")  # Don't log the URL itself
         conn = psycopg2.connect(db_url)
         cur = conn.cursor()
+        logger.info("Database connection established")
 
-        # Fetch nodes
-        cur.execute("""
-            SELECT id, label, "group", value, "isAI"
-            FROM nodes
-            ORDER BY id;
-        """)
-
+        # --- Node Query  ---
+        cur.execute("SELECT id, label, \"group\", value, \"isAI\" FROM nodes;")  # Correct
         nodes = []
-        node_ids = set()
         for row in cur.fetchall():
-            node_id = str(row[0])
-            node_ids.add(node_id)
-            nodes.append({
-                "id": node_id,
-                "label": str(row[1]),
-                "group": int(row[2]) if row[2] is not None else 1,
-                "value": str(row[3]) if row[3] is not None else "",
-                "isAI": bool(row[4]) if row[4] is not None else False
-            })
+            node_id, label, group, value, is_ai = row
+            node = {
+                "id": str(node_id),
+                "label": label,
+                "group": group,
+                "value": value,
+                "isAI": bool(is_ai) if is_ai is not None else False,
+            }
+            nodes.append(node)
+        logger.info(f"Fetched {len(nodes)} nodes")
 
-        # Fetch edges with validation
-        cur.execute("""
-            SELECT source, target, value
-            FROM edges
-            ORDER BY source;
-        """)
-
+        # --- Edge Query (CORRECTED) ---
+        cur.execute("SELECT source, target, value FROM edges;")  # Corrected query
         edges = []
         for row in cur.fetchall():
-            source = str(row[0])
-            target = str(row[1])
-            if source in node_ids and target in node_ids:
-                edges.append({
-                    "source": source,
-                    "target": target,
-                    "value": str(row[2]) if row[2] is not None else ""
-                })
+            source, target, value = row
+            edge = {
+                "from": str(source),
+                "to": str(target),
+                "value": value,  # Keep value, remove label
+            }
+            edges.append(edge)
+        logger.info(f"Fetched {len(edges)} edges")
 
-        return {"nodes": nodes, "edges": edges}
+        # --- Close Connection ---
+        cur.close()
+        conn.close()
+        logger.info("Database connection closed")
 
+        data = {"nodes": nodes, "edges": edges}
+        logger.info(f"Returning graph data (first 3 nodes): {data['nodes'][:3]}...")  # Log a sample
+        return data
+
+    except psycopg2.Error as db_err:
+        logger.error(f"Database error: {db_err}")
+        raise HTTPException(status_code=500, detail=f"Database error: {db_err}")
     except Exception as e:
-        logger.error(f"Error: {str(e)}")
+        logger.error(f"Error in get_graph: {e}")
         raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        if cur:
-            cur.close()
-        if conn:
-            conn.close()
-
-@router.get("/test-connection")
-async def test_connection():
-    logger.info("Testing database connection")
-    conn = None
-    cur = None
-    try:
-        db_url = validate_db_url()
-        logger.info("Attempting connection...")
-        conn = psycopg2.connect(db_url)
-        cur = conn.cursor()
-        cur.execute("SELECT 1")
-        result = cur.fetchone()
-        return {"status": "success", "message": "Database connection successful"}
-    except Exception as e:
-        logger.error(f"Connection test failed: {str(e)}")
-        return {"status": "error", "message": str(e)}
-    finally:
-        if cur:
-            cur.close()
-        if conn:
-            conn.close()

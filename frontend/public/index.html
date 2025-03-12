@@ -1,18 +1,30 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <!-- Update the href to point to your backend’s favicon URL -->
-    <link rel="icon" href="http://localhost:8000/favicon.ico" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="ThinkAlike UI"
-    />
+    <meta name="description" content="ThinkAlike - Interactive Knowledge Graph" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>Your App Title</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:8000; script-src 'self' 'unsafe-eval';">
+    <title>ThinkAlike</title>
+    <!-- Add diagnostics script -->
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        console.log('ThinkAlike app initialized');
+
+        // Log node colors when rendered
+        const logNodeColors = setInterval(() => {
+          const nodes = document.querySelectorAll('[data-node-id]');
+          if (nodes.length) {
+            console.log(`Found ${nodes.length} nodes`);
+            clearInterval(logNodeColors);
+          }
+        }, 1000);
+      });
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
