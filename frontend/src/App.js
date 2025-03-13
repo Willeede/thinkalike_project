@@ -14,10 +14,17 @@ function App() {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-                console.log("Fetching from:", API_BASE_URL);
 
-                const response = await fetch(`${API_BASE_URL}/api/v1/graph/graph`);
+                // Create a URL object instead of a string
+                const baseUrl = new URL("https://thinkalike-api.onrender.com");
+                const endpoint = "/api/v1/graph/graph";
+                const apiUrl = new URL(endpoint, baseUrl).href;
+
+                console.log("URL object created:", apiUrl);
+
+                // Use the URL object's href property which cannot contain spaces
+                const response = await fetch(apiUrl);
+
                 console.log("Response status:", response.status);
 
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);

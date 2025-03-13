@@ -1,22 +1,28 @@
-﻿<!DOCTYPE html>
+﻿hinkalike_project_fresh\frontend\public\index.html -->
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <!-- Updated CSP to allow inline styles needed by visualization libraries -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:8000; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline';">
+    <!-- Updated CSP to allow both localhost and Render domains -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:8000 https://thinkalike-api.onrender.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src 'self' http://localhost:8000 https://thinkalike-api.onrender.com;">
     <meta
       name="description"
       content="ThinkAlike - Data Traceability Visualization"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>ThinkAlike</title>
+    <!-- Rest of your head content -->
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js');
+        });
+      }
+    </script>
   </body>
 </html>
