@@ -10,8 +10,13 @@ from .api.index import router as index_router
 
 app = FastAPI(title="ThinkAlike")
 
-# ALLOW *ANY* ORIGIN (FOR TESTING)
-origins = ["*"]
+# CORS configuration with specific origins
+origins = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002",
+    "https://thinkalike-frontend.onrender.com",
+]
 
 app.add_middleware(
     CORSMiddleware,
