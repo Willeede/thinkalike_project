@@ -11,5 +11,6 @@
         }
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
-    "python.defaultInterpreterPath": "C:\\Users\\w_eed\\Documents\\thinkalike_project_fresh\\backend\\venv\\Scripts\\python.exe"
+    "python.defaultInterpreterPath": "C:\\Users\\w_eed\\Documents\\thinkalike_project_fresh\\backend\\venv\\Scripts\\python.exe",
+    "workbench.colorTheme": "Solarized Dark"
 }

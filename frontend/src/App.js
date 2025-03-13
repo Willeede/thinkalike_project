@@ -35,7 +35,6 @@ function App() {
                 setLoading(false);
             }
         };
-
         fetchData();
     }, []);
 
@@ -47,13 +46,21 @@ function App() {
             <div className="App">
                 <header className="App-header">
                     <h1>ThinkAlike</h1>
-                     <button onClick={() => {}}>
+                    <button onClick={() => {}}>
                         Toggle Connection Status (Current: {connectionStatus})
                     </button>
                 </header>
                 <section className="content">
                     <Routes>
-                        <Route path="/" element={<DataTraceability dataFlow={dataFlow} connectionStatus={connectionStatus} />} />
+                        <Route
+                          path="/"
+                          element={
+                            <DataTraceability
+                              dataFlow={dataFlow}
+                              connectionStatus={connectionStatus}
+                            />
+                          }
+                        />
                         <Route path="*" element={<div>404 Not Found</div>} />
                     </Routes>
                 </section>

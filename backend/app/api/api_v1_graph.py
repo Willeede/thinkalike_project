@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 import logging
 import os
-import psycopg2
+import psycopg2  # Make sure you have psycopg2-binary installed
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -21,18 +21,18 @@ async def get_graph():
             logger.error("DATABASE_URL environment variable not set.")
             raise HTTPException(status_code=500, detail="DATABASE_URL not configured")
 
-        logger.info("Connecting to the database")
+        logger.info("Connecting to the database")  # Don't log the URL itself
         conn = psycopg2.connect(db_url)
         cur = conn.cursor()
         logger.info("Database connection established")
 
-        # --- Node Query (CORRECTED) ---
-        cur.execute('SELECT id, label, "group", value, "isAI" FROM nodes;')  # Correct query
+        # --- Node Query (REPLACE WITH YOUR ACTUAL QUERY) ---
+        cur.execute("SELECT id, label, \"group\", value, \"isAI\" FROM nodes;")  # Example - Replace!
         nodes = []
         for row in cur.fetchall():
             node_id, label, group, value, is_ai = row
             node = {
-                "id": str(node_id),  # Keep as string for consistency
+                "id": str(node_id),
                 "label": label,
                 "group": group,
                 "value": value,
@@ -41,14 +41,14 @@ async def get_graph():
             nodes.append(node)
         logger.info(f"Fetched {len(nodes)} nodes")
 
-        # --- Edge Query (CORRECTED) ---
-        cur.execute("SELECT source, target, value FROM edges;")  # Correct query
+        # --- Edge Query (REPLACE WITH YOUR ACTUAL QUERY) ---
+        cur.execute("SELECT source, target, value FROM edges;")  # Example - Replace!
         edges = []
         for row in cur.fetchall():
             source, target, value = row
             edge = {
-                "from": str(source),  # Keep as string for consistency with frontend.
-                "to": str(target),    # Keep as string for consistency with frontend.
+                "source": str(source),  # Corrected key: source
+                "target": str(target),  # Corrected key: target
                 "value": value,
             }
             edges.append(edge)
@@ -60,7 +60,7 @@ async def get_graph():
         logger.info("Database connection closed")
 
         data = {"nodes": nodes, "edges": edges}
-        logger.info(f"Returning graph data (first 3 nodes): {data['nodes'][:3]}...")
+        logger.info(f"Returning graph data (first 3 nodes): {data['nodes'][:3]}...")  # Log a sample
         return data
 
     except psycopg2.Error as db_err:
