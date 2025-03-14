@@ -76,7 +76,7 @@ frontend/node_modules/
 .env
 .env.*
 !.env.example
-
+backend/venv
 # Node
 node_modules/
 npm-debug.log*

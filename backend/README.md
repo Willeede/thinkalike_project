@@ -1,128 +1,126 @@
 # ThinkAlike Backend (FastAPI)
 
-This directory contains the backend API for the ThinkAlike data traceability application. It's built with Python and the FastAPI framework to provide graph data visualization support.
+## Description
 
-## Technologies Used
+This is the backend API for the ThinkAlike data traceability application.  It's built with Python and the FastAPI framework. The API provides a single endpoint (`/api/v1/graph/graph`) that returns graph data (nodes and edges) representing the flow of data, which is fetched from a PostgreSQL database hosted on Render.
 
-*   **Python 3.9+**
-*   **FastAPI:** Modern web framework for building APIs
-*   **Uvicorn:** ASGI server for running FastAPI in production
-*   **PostgreSQL:** Database (hosted on Render)
-*   **psycopg2-binary:** PostgreSQL database adapter
-*   **python-dotenv:** For loading environment variables (local development)
-*   **SQLAlchemy:** ORM for database operations
+## Technology Stack
+
+*   **Python:** 3.10.13 (Make sure this matches your Render configuration)
+*   **FastAPI:** Web framework for building APIs.
+*   **Uvicorn:** ASGI server for running FastAPI in production.
+*   **psycopg2-binary:** PostgreSQL database adapter.
+*   **python-dotenv:** For loading environment variables (local development).
+*   **PostgreSQL:** Database (hosted on Render).
+*   **Render:** Cloud platform for deployment.
 
 ## Project Structure
 
-```
 backend/
-├── app/                 <-- Main application code
-│   ├── api/             <-- API route definitions
-│   │   ├── __init__.py
-│   │   ├── agent.py     <-- Agent endpoint
-│   │   ├── api_v1_connection_status.py
-│   │   ├── api_v1_graph.py   <-- Graph data endpoint
-│   │   ├── feedback.py
-│   │   └── index.py     <-- Root endpoint
-│   ├── __init__.py
-│   └── main.py          <-- FastAPI app + CORS config
-├── requirements.txt     <-- Dependencies
-└── .env                 <-- Environment variables (not in repo)
-```
+├── app/             <-- Main application code
+│   ├── api/         <-- API route definitions
+│   │   ├── init.py
+│   │   ├── agent.py          <--  API route (example)
+│   │   ├── api_v1_connection_status.py   <--  API route (example)
+│   │   ├── api_v1_graph.py   <--  API route for graph data
+│   │   ├── feedback.py       <--  API route (example)
+│   │   └── index.py          <--  API route (example)
+│   ├── config/
+│   │   └── config.py
+│   ├── models/
+│   ├── services/
+│   ├── init.py
+│   ├── backend_utils/
+│   │   ├── init.py
+│   │   ├── agent_utils.py
+│   └── main.py      <-- FastAPI app + CORS
+├── requirements.txt  <-- FastAPI dependencies
+└── venv/             <-- Virtual environment (should be ignored by Git)
+
 
 ## Local Development Setup
 
-1.  **Clone the repository:**
+1.  **Clone the Repository:**
 
     ```bash
-    git clone https://github.com/Willeede/thinkalike_project.git
+    git clone [https://github.com/Willeede/thinkalike_project.git](https://github.com/Willeede/thinkalike_project.git)
     cd thinkalike_project_fresh/backend
     ```
+    *(Replace with your actual repository URL if it changes.)*
 
-2.  **Create and activate a virtual environment:**
+2.  **Create and Activate a Virtual Environment:**
 
     ```bash
     python -m venv venv
-
-    # Windows (PowerShell)
-    .\venv\Scripts\Activate.ps1
-
-    # Windows (Command Prompt)
-    .\venv\Scripts\activate.bat
-
-    # Mac/Linux
-    source venv/bin/activate
+    .\venv\Scripts\Activate.ps1  # Windows (PowerShell)
     ```
 
-3.  **Install dependencies:**
+3.  **Install Dependencies:**
 
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Create `.env` file:**
+4.  **Set Environment Variables:**
 
-    Create a file named `.env` in the `backend` directory with:
+    You need to set the `DATABASE_URL` environment variable to connect to your PostgreSQL database. You can use your *Render* PostgreSQL database for local development.  Get the *external* connection string from your Render dashboard (for the PostgreSQL database service, *not* the web service).
+
+    Create a file named `.env` in the `backend` directory and add the following, replacing the placeholders with your actual values:
 
     ```
     DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
+    SECRET_KEY=your_secret_key
     ```
 
-    Replace with your actual PostgreSQL connection string.
+    **Important:**  Do *not* commit the `.env` file to Git.  It should be in your `.gitignore`.
 
-5.  **Run the backend server:**
+5. **Create a `.env.example` file:**
+   Create a file named `.env.example`, inside the `backend` folder, to serve as example of environment variables:
+    ```
+    DEBUG=
+    SECRET_KEY=
+    DATABASE_URL=
+    AI_API_KEY=
+    ```
+
+6.  **Run the Backend Server:**
 
     ```bash
-    uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    uvicorn app.main:app --host 0.0.0.0 --port 8000
     ```
 
-6.  **Test the API:**
-    - Open `http://localhost:8000/api/v1/graph/graph` in your browser
-    - You should see JSON data with nodes and edges
-    - API documentation is available at `http://localhost:8000/docs`
+7.  **Test:** Open `http://localhost:8000/api/v1/graph/graph` in your browser to verify the API is working. You should see JSON data. You can also view the automatically generated API documentation at `http://localhost:8000/docs`.
 
 ## API Endpoints
 
-*   **`/api/v1/graph/graph`:** (GET) Returns graph data (nodes and edges) in JSON format
-*   **`/`:** (GET) Returns a welcome message
-*   **`/agent`:** Agent-related endpoints
-*   **`/feedback`:** Feedback collection endpoints
-*   **`/api/v1/connection/status`:** Connection status endpoint
+*   **`GET /api/v1/graph/graph`:** Retrieves the graph data (nodes and edges) in JSON format. This is the primary endpoint used by the frontend. The response has the following structure:
 
-## Database Schema
+    ```json
+    {
+      "nodes": [
+        { "id": "string", "label": "string", "group": number, "value": "string", "isAI": boolean },
+        ...
+      ],
+      "edges": [
+        { "source": "string", "target": "string", "value": "string" },
+        ...
+      ]
+    }
+    ```
 
-The PostgreSQL database contains two main tables:
-
-1. **nodes:**
-   - `id` (text): Node identifier
-   - `label` (text): Node display name
-   - `group` (integer): Group classification (determines color)
-   - `value` (text): Node description/value
-   - `isAI` (boolean): Whether the node represents an AI component
-
-2. **edges:**
-   - `source` (text): Source node ID
-   - `target` (text): Target node ID
-   - `value` (text): Edge description/value
+*   **`GET /`:** Returns a basic message. This is defined in `index.py`.
+* There are other routers in place for future developments, but for the graph, only the previous endpoint is used.
 
 ## Deployment (Render)
 
-*   **Root Directory:** `backend`
-*   **Build Command:** `pip install -r requirements.txt`
-*   **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+The backend is deployed to Render as a web service. Key settings:
+
+*   **Root Directory:** `backend/app`
+*   **Build Command:** `pip install -r ../requirements.txt`
+*   **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
 *   **Environment Variables:**
-    *   `DATABASE_URL`: PostgreSQL connection string
-    *   `PYTHON_VERSION`: 3.9.12 (or your preferred version)
+    *   `DATABASE_URL`: Set to your Render PostgreSQL connection string.
+    *   `PYTHON_VERSION`: Set to your Python version (e.g., `3.10.13`).
+    *   `SECRET_KEY`: Set to a strong, random value.
 
-## Environment Variables
-
-Create a `.env.example` file in the backend directory to document required variables:
-
-```
-# Database connection
-DATABASE_URL=
-
-# Optional variables
-PYTHON_VERSION=3.9.12
-```
-
+See the Render dashboard for detailed configuration. The deployed backend API is accessible at `https://thinkalike-api.onrender.com`.
