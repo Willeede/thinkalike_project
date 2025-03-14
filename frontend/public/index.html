@@ -12,7 +12,16 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://thinkalike-api.onrender.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src 'self' http://localhost:8000 https://thinkalike-api.onrender.com;">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        connect-src 'self' https://thinkalike-api.onrender.com;
+        style-src 'self' 'unsafe-inline';
+        script-src 'self' 'unsafe-eval' 'unsafe-inline';
+        object-src 'none';
+      "
+    />
 
     <title>ThinkAlike</title>
   </head>
