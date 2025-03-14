@@ -20,7 +20,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,3 +34,15 @@ app.include_router(connection_status_router, prefix="/api/v1/connection")
 app.include_router(index_router)  # NO PREFIX
 
 # NO ROOT ROUTE HERE - handled by index.py
+
+@app.get("/api/v1/graph/graph")
+def get_graph():
+    return {
+        "nodes": [
+            {"id": 1, "label": "Node 1", "group": 1, "isAI": False},
+            {"id": 2, "label": "Node 2", "group": 2, "isAI": True}
+        ],
+        "edges": [
+            {"source": 1, "target": 2, "value": "Connection"}
+        ]
+    }

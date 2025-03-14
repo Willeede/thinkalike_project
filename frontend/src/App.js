@@ -1,9 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import DataTraceability from './components/DataTraceability';
+import DataTraceability from './components/DataTraceability.jsx';
 import './App.css';
-import 'react-tooltip/dist/react-tooltip.css';
-
 function App() {
     const [connectionStatus, setConnectionStatus] = useState('disconnected');
     const [dataFlow, setDataFlow] = useState({ nodes: [], edges: [] });
@@ -16,20 +14,19 @@ function App() {
                 setLoading(true);
                 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
                 console.log("Fetching from:", API_BASE_URL);
-
-                // Clean URL construction
-                const baseUrl = new URL(API_BASE_URL.trim());
-                const endpoint = "/api/v1/graph/graph";
-                const apiUrl = new URL(endpoint, baseUrl).href;
-
-                const response = await fetch(apiUrl);
+                const response = await fetch(`${API_BASE_URL}/api/v1/graph/graph`);
                 console.log("Response status:", response.status);
-
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
                 const data = await response.json();
-                console.log("Data received:", data);
-
+                console.log("Data received from API:", data);
+                console.log("Data structure details:", {
+                    hasNodes: !!data.nodes,
+                    nodesLength: data.nodes?.length || 0,
+                    nodeIds: data.nodes?.map(n => n.id),
+                    hasEdges: !!data.edges,
+                    edgesLength: data.edges?.length || 0,
+                    firstEdge: data.edges?.[0]
+                });
                 setDataFlow(data);
                 setConnectionStatus('connected');
             } catch (error) {
@@ -40,7 +37,6 @@ function App() {
                 setLoading(false);
             }
         };
-
         fetchData();
     }, []);
 
