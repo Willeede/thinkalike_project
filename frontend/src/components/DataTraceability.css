@@ -1,51 +1,99 @@
-﻿.data-traceability {
+﻿/* Color Variables  */
+:root {
+  --color-primary-amber: #FFC300;   /* Amber/Honey Yellow (Neutral) */
+  --color-primary-deep-orange: #F86B03; /* Deep Orange (Active) */
+  --color-connection-ruby: #800000;    /* Deep Ruby (Connection) */
+  --color-ai-agent: #001F3F;          /* Dark Blue (AI) */
+  --color-background: #000000;        /* Black (Background) */
+  --color-text: #FFFFFF;              /* White (Text) */
+  --color-grey: #CCCCCC;              /* Light grey */
+}
+
+/* Ensure the document takes full viewport dimensions */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Main container */
+.data-traceability {
   display: flex;
   flex-direction: column;
   align-items: center; /* Center content horizontally */
   width: 100%; /* Ensure full width */
-  padding: 20px;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
   text-align: center; /* Center-align text within the container */
   background-color: black;
 }
 
+/* Graph container */
 .data-traceability-graph {
-  flex-grow: 1; /* Allow the graph to fill available space */
+  position: relative;
   width: 100%; /* Ensure the graph container takes full width */
+  height: calc(100% - 60px); /* Full height minus heading and padding */
+  min-height: 500px;
   background-color: black;
+  border-radius: 10px;
+}
+
+/* Headings */
+.data-traceability h2 {
+  color: var(--color-primary-amber);
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%;
+  text-align: center !important; /* Force center alignment */
+  margin: 0 auto 20px; /* Center with auto margins */
+  max-width: 100%; /* Ensure the title doesn't overflow */
+  padding: 0 15px; /* Add some padding on the sides */
+}
+
+/* Ensure the canvas fills its container with rounded corners */
+.data-traceability-graph canvas {
+  width: 100% !important;
+  height: 100% !important;
   border-radius: 10px;
 }
 
 /* Custom Tooltip Styles */
 .custom-tooltip {
-position: fixed; /* Use fixed positioning */
-left: 0; /* Initial position - will be updated */
-top: 0;  /* Initial position - will be updated */
-background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent black */
-color: white;
-padding: 8px;
-border-radius: 4px;
-font-family: sans-serif;
-max-width: 250px; /* Limit tooltip width */
-pointer-events: none; /*  Prevent the tooltip from capturing mouse events */
-z-index: 1000;     /*  Make sure the tooltip is on top */
-}
-.custom-tooltip h3{
-  color: #FFC300;
+  position: fixed; /* Use fixed positioning */
+  left: 0; /* Initial position - will be updated */
+  top: 0;  /* Initial position - will be updated */
+  background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent black */
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  font-family: sans-serif;
+  max-width: 250px; /* Limit tooltip width */
+  pointer-events: none; /*  Prevent the tooltip from capturing mouse events */
+  z-index: 1000;     /*  Make sure the tooltip is on top */
 }
 
-.custom-tooltip p b{
-  color: #F86B03;
+.custom-tooltip h3 {
+  color: var(--color-primary-amber);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
 }
-/* Color Variables  */
-:root {
---color-primary-amber: #FFC300;   /*  Amber/Honey Yellow (Neutral) */
---color-primary-deep-orange: #F86B03; /*  Deep Orange (Active) */
---color-connection-ruby: #800000;    /*  Deep Ruby (Connection)*/
---color-ai-agent: #001F3F;          /*  Dark Blue (AI) */
---color-background: #000000;        /*  Black (Background)*/
---color-text: #FFFFFF;                /*  White (Text) */
---color-grey: #CCCCCC;               /* Light grey */
+
+.custom-tooltip p b {
+  color: var(--color-primary-deep-orange);
 }
-h2 {
-color: var(--color-primary-amber);
+
+.data-traceability > h2 {
+  color: var(--color-primary-amber);
+  text-align: center !important;
+  width: 100% !important;
+  margin: 0 auto 20px !important;
+  max-width: 100%;
+  padding: 0;
+  position: relative;
+  display: block;
+  left: 0;
+  right: 0;
 }

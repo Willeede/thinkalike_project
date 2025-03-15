@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi import Request
 import logging
 
 # Configure logging
@@ -15,7 +17,7 @@ from .api.index import router as index_router
 
 app = FastAPI(title="ThinkAlike")
 
-# Ensure your frontend domain is in the origins list
+# Correct CORS configuration (SPECIFIC ORIGINS)
 origins = [
     "http://localhost:3000",  # Local development
     "http://localhost:3001",  # Allow React on port 3001 (if used)
@@ -25,11 +27,17 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Use specific origins instead of "*"
+    allow_origins=["*"],  # Changed from specific origins list to allow all
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def add_csp_header(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Content-Security-Policy"] = "connect-src * 'self'"
+    return response
 
 # Include your routers, using the correct relative imports
 logger.info("Registering routers...")

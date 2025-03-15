@@ -18,6 +18,14 @@
 }
 
 /* --- Global Styles --- */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  height: 100%;
+  background-color: #000000;
+}
+
 body {
   font-family: 'Open Sans', sans-serif; /* Use Open Sans for body text */
   background-color: var(--color-neutral-black); /* Black background */
@@ -33,25 +41,23 @@ h1, h2, h3, h4, h5, h6 {
 
 /* --- App Component Styles --- */
 .App {
-    text-align: center;
-    background-color: #1a1a1a;
-    min-height: 100vh;
-    color: white;
+  text-align: center;
 }
 
 .App-header {
-    background-color: #282c34;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+  background-color: #282c34;
+  min-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
 }
 
 .content {
-    padding: 20px;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* --- DataTraceability Component Styles --- */
