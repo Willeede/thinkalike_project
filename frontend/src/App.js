@@ -1,61 +1,56 @@
 ﻿import React, { useState, useEffect } from 'react';
-import DataTraceability from './components/DataTraceability.jsx';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import DataTraceability from './components/DataTraceability';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Import
 
-function App() {
-    const [connectionStatus, setConnectionStatus] = useState('disconnected');
-    const [dataFlow, setDataFlow] = useState({ nodes: [], edges: [] }); // Initialize with empty structure
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    function App() {
+      const [dataFlow, setDataFlow] = useState(null);
+      const [connectionStatus, setConnectionStatus] = useState('Waiting for connection...');
+      const [error, setError] = useState(null);
 
-    useEffect(() => {
+      useEffect(() => {
         const fetchData = async () => {
-            try {
-                setLoading(true);
-                const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-                console.log("Fetching from:", API_BASE_URL);
+          try {
+            setConnectionStatus('Connecting to the server...');
+            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+            console.log("Fetching from:", apiUrl);
+            const response = await fetch(`${apiUrl}/api/v1/graph/graph`);
 
-                const response = await fetch(`${API_BASE_URL}/api/v1/graph/graph`);
-                console.log("Response status:", response.status);
-
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-                const data = await response.json();
-                console.log("Data received in App.js:", data); // Keep this
-
-                setDataFlow(data);
-                setConnectionStatus('connected');
-            } catch (error) {
-                console.error("Fetch error:", error);
-                setError(error.message);
-                setConnectionStatus('disconnected');
-            } finally {
-                setLoading(false);
+            console.log("Response status:", response.status);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
             }
+            const data = await response.json();
+            console.log("Data received in App.js:", data);
+            setDataFlow(data);
+            setConnectionStatus('Successfully connected and data received!');
+            setError(null); // Clear any previous errors
+          } catch (error) {
+            console.error("Error fetching data:", error);
+            setConnectionStatus('Failed to connect to the server.');
+            setError(error.message);
+          }
         };
 
         fetchData();
-    }, []);
+      }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+      return (
 
-    return (
-        <Router>
-            <div className="App">
-                <header className="App-header">
-                    <h1>ThinkAlike</h1>
-                </header>
-                <section className="content">
-                    <Routes>
-                        <Route path="/" element={<DataTraceability dataFlow={dataFlow} connectionStatus={connectionStatus} />} />
-                        <Route path="*" element={<div>404 Not Found</div>} />
-                    </Routes>
-                </section>
-            </div>
-        </Router>
-    );
-}
+          <div className="App">
+            <header className="App-header">
+              <h1>ThinkAlike</h1>
+              <p>Connection Status: {connectionStatus}</p>
+              {error && <p>Error: {error}</p>}
+            </header>
+            <main>
+              <Routes> {/* Use Routes here */}
+                <Route path="/" element={<DataTraceability dataFlow={dataFlow} connectionStatus={connectionStatus} />} />
+              </Routes>
+            </main>
+          </div>
 
-export default App;
+      );
+    }
+
+    export default App;
