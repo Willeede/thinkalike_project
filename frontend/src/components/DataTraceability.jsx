@@ -3,35 +3,39 @@ import ForceGraph2D from 'react-force-graph-2d';
 import './DataTraceability.css';
 
 function DataTraceability({ dataFlow, connectionStatus }) {
-  const fgRef = useRef();
-  const containerRef = useRef(); // Ref for the container div, for tooltips
-  const [animationTime, setAnimationTime] = useState(0);
-  const [tooltipContent, setTooltipContent] = useState('');
-  const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+    const fgRef = useRef();
+    const containerRef = useRef(); // Ref for the container div, for tooltips
+
+    // Use a ref for animationTime, NOT state
+    const animationTime = useRef(0);
+
+    const [tooltipContent, setTooltipContent] = useState('');
+    const [tooltipVisible, setTooltipVisible] = useState(false);
+    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
   // Animation loop using d3ReheatSimulation
   useEffect(() => {
     let animationFrameId;
     const animate = () => {
-      setAnimationTime(prevTime => prevTime + 1);
-      if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
-        fgRef.current.d3ReheatSimulation();
-      }
-      animationFrameId = requestAnimationFrame(animate);
+        // Increment animationTime.current, NOT using setAnimationTime
+        animationTime.current += 1;
+        fgRef.current && fgRef.current.d3ReheatSimulation();
+        animationFrameId = requestAnimationFrame(animate);
     };
+
     if (dataFlow?.nodes?.length) {
       animationFrameId = requestAnimationFrame(animate);
     }
+
     return () => cancelAnimationFrame(animationFrameId);
-  }, [dataFlow, connectionStatus]);
+}, [dataFlow, connectionStatus]); // Keep dataFlow and connectionStatus
 
   // Node color mapping
   const nodeColors = {
-    1: '#FFC300', // User Query
-    2: '#F86B03', // AI Processing
-    3: '#800000', // Results
-    4: '#001F3F', // Other AI
+    1: '#FFC300',   // User Query
+    2: '#F86B03',   // AI Processing
+    3: '#800000',   // Results
+    4: '#001F3F',   // Other AI
   };
 
   const getNodeColor = (node) =>
@@ -47,7 +51,7 @@ function DataTraceability({ dataFlow, connectionStatus }) {
     </div>
   `;
 
-  const getEdgeTooltip = (edge) => {
+const getEdgeTooltip = (edge) => {
     const sourceNode = dataFlow.nodes.find(n => n.id === edge.source);
     const targetNode = dataFlow.nodes.find(n => n.id === edge.target);
     return `
@@ -57,7 +61,7 @@ function DataTraceability({ dataFlow, connectionStatus }) {
             Value: ${edge.value || 'N/A'}
         </div>
     `;
-  };
+};
 
   const handleNodeHover = (node) => {
     if (node) {
@@ -68,14 +72,14 @@ function DataTraceability({ dataFlow, connectionStatus }) {
     }
   };
 
-  const handleLinkHover = (link) => {
+const handleLinkHover = (link) => {
     if (link) {
-      setTooltipContent(getEdgeTooltip(link));
-      setTooltipVisible(true);
+        setTooltipContent(getEdgeTooltip(link));
+        setTooltipVisible(true);
     } else {
-      setTooltipVisible(false);
+        setTooltipVisible(false);
     }
-  };
+};
 
   // Update tooltip position based on mouse movement in the container
   useEffect(() => {
@@ -97,8 +101,9 @@ function DataTraceability({ dataFlow, connectionStatus }) {
     };
   }, [tooltipVisible]);
 
+
   if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
-    console.log("DataTraceability: No data flow to display. dataFlow:", dataFlow)
+
     return (
       <div className="data-traceability">
         <p>No data flow to display.</p>
@@ -109,7 +114,7 @@ function DataTraceability({ dataFlow, connectionStatus }) {
   return (
     <div className="data-traceability">
       <h2>Data Traceability</h2>
-      <div className="data-traceability-graph" ref={containerRef}>
+      <div className="data-traceability-graph" ref={containerRef} style={{ position: 'relative', width: '800px', height: '600px' }}>
         <ForceGraph2D
           ref={fgRef}
           graphData={{ nodes: dataFlow.nodes, links: dataFlow.edges }}
@@ -126,11 +131,12 @@ function DataTraceability({ dataFlow, connectionStatus }) {
             ctx.font = `${fontSize}px Montserrat`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
+            ctx.fillStyle = 'white';
 
             let nodeSize = (node.isAI ? 12 : 8) / globalScale;
-            let fillStyle = getNodeColor(node);
+
             if (node.isAI) {
-              const pulsate = Math.sin(animationTime * 0.05) * 0.5 + 0.5;
+              const pulsate = Math.sin(animationTime.current * 0.05) * 0.5 + 0.5;
               nodeSize *= pulsate;
               const r = Math.floor(
                 parseInt('#F86B03'.slice(1, 3), 16) * pulsate +
@@ -144,28 +150,40 @@ function DataTraceability({ dataFlow, connectionStatus }) {
                 parseInt('#F86B03'.slice(5, 7), 16) * pulsate +
                   parseInt('#FFC300'.slice(5, 7), 16) * (1 - pulsate)
               );
-              fillStyle = `rgb(${r}, ${g}, ${b})`;
+              ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
             }
 
-            ctx.fillStyle = fillStyle;
             ctx.beginPath();
             ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
+            ctx.fillStyle = getNodeColor(node);
             ctx.fill();
 
             ctx.fillStyle = 'white';
-            ctx.fillText(label, node.x, node.y + nodeSize + 2); // Position text below node
+            ctx.fillText(label, node.x, node.y + fontSize * 1.5);
           }}
           onNodeHover={handleNodeHover}
           onLinkHover={handleLinkHover}
         />
+
+        {/* Custom Tooltip */}
         {tooltipVisible && (
-            <div className='custom-tooltip'
-                style={{
-                    left: `${tooltipPosition.x}px`,
-                    top: `${tooltipPosition.y}px`,
-                }}
-                dangerouslySetInnerHTML={{ __html: tooltipContent }}
-            />
+          <div
+            className="custom-tooltip"
+            style={{
+              position: 'fixed',
+              left: `${tooltipPosition.x}px`,
+              top: `${tooltipPosition.y}px`,
+              backgroundColor: 'rgba(0, 0, 0, 0.85)',
+              color: '#fff',
+              padding: '8px',
+              borderRadius: '4px',
+              fontFamily: 'sans-serif',
+              maxWidth: '250px',
+              pointerEvents: 'none',
+              zIndex: 1000,
+            }}
+            dangerouslySetInnerHTML={{ __html: tooltipContent }}
+          />
         )}
       </div>
     </div>
