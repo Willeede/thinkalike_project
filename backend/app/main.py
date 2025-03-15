@@ -15,7 +15,7 @@ from .api.index import router as index_router
 
 app = FastAPI(title="ThinkAlike")
 
-# Correct CORS configuration (SPECIFIC ORIGINS)
+# Ensure your frontend domain is in the origins list
 origins = [
     "http://localhost:3000",  # Local development
     "http://localhost:3001",  # Allow React on port 3001 (if used)
@@ -37,7 +37,4 @@ app.include_router(agent_router, prefix="/agent")
 app.include_router(feedback_router, prefix="/feedback")
 app.include_router(graph_router, prefix="/api/v1/graph")
 app.include_router(connection_status_router, prefix="/api/v1/connection")
-app.include_router(index_router)  # NO PREFIX
-
-
-# NO ROOT ROUTE HERE - handled by index.py
+app.include_router(index_router)  # No prefix here

@@ -53,6 +53,7 @@ const getEdgeTooltip = (edge) => {
 };
 
   if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
+    console.log("DataTraceability: No data flow to display. dataFlow:", dataFlow);
     return (
       <div className="data-traceability">
         <p>No data flow to display.</p>
