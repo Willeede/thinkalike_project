@@ -3,24 +3,20 @@ import ForceGraph2D from 'react-force-graph-2d';
 import './DataTraceability.css';
 
 function DataTraceability({ dataFlow, connectionStatus }) {
-    const fgRef = useRef();
-    const containerRef = useRef(); // Ref for the container div, for tooltips
-
-    // Use a ref for animationTime, NOT state
-    const animationTime = useRef(0);
-
-    const [tooltipContent, setTooltipContent] = useState('');
-    const [tooltipVisible, setTooltipVisible] = useState(false);
-    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const fgRef = useRef();
+  const containerRef = useRef(); // Ref for the container div, for tooltips
+  const animationTime = useRef(0);  // Use useRef for animation time
+  const [tooltipContent, setTooltipContent] = useState('');
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
   // Animation loop using d3ReheatSimulation
   useEffect(() => {
     let animationFrameId;
     const animate = () => {
-        // Increment animationTime.current, NOT using setAnimationTime
-        animationTime.current += 1;
-        fgRef.current && fgRef.current.d3ReheatSimulation();
-        animationFrameId = requestAnimationFrame(animate);
+      animationTime.current += 1; // Increment time using .current
+      fgRef.current && fgRef.current.d3ReheatSimulation(); // Correct animation method
+      animationFrameId = requestAnimationFrame(animate);
     };
 
     if (dataFlow?.nodes?.length) {
@@ -28,7 +24,7 @@ function DataTraceability({ dataFlow, connectionStatus }) {
     }
 
     return () => cancelAnimationFrame(animationFrameId);
-}, [dataFlow, connectionStatus]); // Keep dataFlow and connectionStatus
+  }, [dataFlow, connectionStatus]);  // Correct dependencies
 
   // Node color mapping
   const nodeColors = {
@@ -38,7 +34,7 @@ function DataTraceability({ dataFlow, connectionStatus }) {
     4: '#001F3F',   // Other AI
   };
 
-  const getNodeColor = (node) =>
+ const getNodeColor = (node) =>
     node.isAI ? 'orange' : nodeColors[node.group] || '#CCCCCC';
 
   // Tooltip content for nodes
@@ -85,7 +81,12 @@ const handleLinkHover = (link) => {
   useEffect(() => {
     const handleMouseMove = (event) => {
       if (tooltipVisible) {
-        setTooltipPosition({ x: event.clientX + 15, y: event.clientY - 10 });
+        // Calculate position *relative to the container*
+        const rect = containerRef.current.getBoundingClientRect();
+        setTooltipPosition({
+            x: event.clientX - rect.left + 15, // Add some offset
+            y: event.clientY - rect.top - 10    // Add some offset
+        });
       }
     };
 
@@ -103,7 +104,6 @@ const handleLinkHover = (link) => {
 
 
   if (!dataFlow || !dataFlow.nodes || !dataFlow.edges) {
-
     return (
       <div className="data-traceability">
         <p>No data flow to display.</p>
@@ -170,7 +170,7 @@ const handleLinkHover = (link) => {
           <div
             className="custom-tooltip"
             style={{
-              position: 'fixed',
+              position: 'absolute',
               left: `${tooltipPosition.x}px`,
               top: `${tooltipPosition.y}px`,
               backgroundColor: 'rgba(0, 0, 0, 0.85)',

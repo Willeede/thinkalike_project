@@ -1,0 +1,368 @@
+{
+  "description": "API schema for the ThinkAlike platform, with a focus on data transparency, user control, and ethical AI integration. This file serves as a starting point and should be replaced with a complete OpenAPI specification as the API develops.",
+  "version": "0.1.0",
+  "baseUrl": "/api/v1",
+  "endpoints": [
+    {
+      "endpoint": "/users",
+      "method": "GET",
+      "description": "Retrieves a list of users. Supports pagination and searching.",
+      "parameters": [
+        {
+          "name": "page",
+          "type": "integer",
+          "description": "Page number for pagination (starts at 1).",
+          "required": false,
+          "default": 1
+        },
+        {
+          "name": "pageSize",
+          "type": "integer",
+          "description": "Number of users per page.",
+          "required": false,
+          "default": 20
+        },
+        {
+          "name": "search",
+          "type": "string",
+          "description": "Search term (matches username, email, or full name).",
+          "required": false
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful response - returns an array of user objects.",
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "integer",
+                  "description": "Unique user ID.",
+                  "example": 123
+                },
+                "username": {
+                  "type": "string",
+                  "description": "User's chosen username.",
+                  "minLength": 3,
+                  "maxLength": 30,
+                  "example": "johndoe"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "description": "User's email address.",
+                  "example": "john.doe@example.com"
+                },
+                "full_name": {
+                  "type": "string",
+                  "description": "User's full name (optional).",
+                  "maxLength": 100,
+                  "required": false,
+                  "example": "John Doe"
+                },
+                "profile_picture_url": {
+                  "type": "string",
+                  "format": "url",
+                  "description": "URL of the user's profile picture (optional).",
+                  "required": false,
+                  "example": "/images/users/123.jpg"
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Date and time the user account was created.",
+                  "example": "2024-02-29T14:30:00Z"
+                },
+                "is_active": {
+                  "type": "boolean",
+                  "description": "Indicates if the user account is active.",
+                  "example": true
+                },
+                "bio": {
+                  "type": "string",
+                  "description": "User's biography text (optional).",
+                  "maxLength": 500,
+                  "required": false,
+                  "example": "Software developer passionate about ethical AI."
+                },
+                "privacy_settings": {
+                  "type": "object",
+                  "description": "User's privacy settings.",
+                  "properties": {
+                    "profile_visibility": {
+                      "type": "string",
+                      "enum": [
+                        "public",
+                        "private",
+                        "connections_only"
+                      ],
+                      "description": "Who can view the user's profile.",
+                      "example": "connections_only"
+                    }
+                  },
+                  "required": [
+                    "profile_visibility"
+                  ]
+                }
+              },
+              "required": [
+                "user_id",
+                "username",
+                "email",
+                "created_at",
+                "is_active"
+              ]
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request - Invalid input parameters.",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Invalid page number."
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "An unexpected error occurred."
+              }
+            }
+          }
+        }
+      },
+      "security": {
+        "authentication": "JWT",
+        "authorization": "Bearer Auth",
+        "dataEncryption": "HTTPS + User Data Encryption (AES-256)",
+        "dataHandling": "All user data is handled according to ThinkAlike's ethical guidelines and privacy policy."
+      },
+      "testingWorkflow": {
+        "dataFlowValidation": "UI parameters to track data flow during a test: Data is sent to the /users endpoint via a GET request. Response data is displayed in a Data Table component. Users can inspect the raw JSON response. Search and pagination parameters can be adjusted via UI controls.",
+        "codeValidation": "UI components show the code being executed: A button triggers the API call. Console logs show the request and response. A code editor component displays the relevant backend code (e.g., the route handler in `main.py`).",
+        "performanceValidation": "UI components track system performance: Response time is measured and displayed. Data table rendering time is measured. A graph shows response times over time.",
+        "ethicalValidation": "UI parameters to check ethical code workflow: A checkbox confirms that data minimization principles are followed. A tooltip explains the data encryption methods. Users can adjust pagination settings to test data loading performance."
+      }
+    },
+    {
+      "endpoint": "/users",
+      "method": "POST",
+      "description": "Creates a new user account.",
+      "parameters": [],
+      "requestBody": {
+        "description": "User data for registration.",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string",
+              "description": "Desired username.",
+              "minLength": 3,
+              "maxLength": 30,
+              "example": "johndoe"
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "User's email address.",
+              "example": "john.doe@example.com"
+            },
+            "password": {
+              "type": "string",
+              "description": "User's password (will be hashed).",
+              "minLength": 8,
+              "example": "secure_password"
+            },
+            "full_name": {
+              "type": "string",
+              "description": "User's full name (optional).",
+              "maxLength": 100,
+              "required": false,
+              "example": "John Doe"
+            }
+          },
+          "required": [
+            "username",
+            "email",
+            "password"
+          ]
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "User successfully created. Returns the new user's ID.",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "user_id": {
+                "type": "integer",
+                "description": "Unique user ID.",
+                "example": 124
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request - Invalid input data (e.g., username already exists, email format invalid, password too short).",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Username already taken."
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "An unexpected error occurred."
+              }
+            }
+          }
+        }
+      },
+      "security": {
+        "authentication": "Not required for registration",
+        "authorization": "N/A",
+        "dataEncryption": "HTTPS + Password Hashing (e.g., bcrypt)",
+        "dataHandling": "User data is handled according to ThinkAlike's ethical guidelines and privacy policy. Passwords are never stored in plain text."
+      },
+      "testingWorkflow": {
+        "dataFlowValidation": "UI parameters to track data flow during registration: Input fields for username, email, password, and optional full name. Data is sent to the /users endpoint via a POST request. A success message or error messages are displayed.",
+        "codeValidation": "UI components show the code being executed: A button triggers the API call. Console logs show the request and response. A code editor component displays the relevant backend code (e.g., the route handler in `main.py`).",
+        "performanceValidation": "UI components to track system performance: Response time is measured and displayed. Form validation performance is measured.",
+        "ethicalValidation": "UI parameters to check ethical code workflow: Checkboxes confirm agreement with terms of service and privacy policy. Tooltips explain password hashing. Error messages clearly explain validation failures."
+      }
+    },
+    {
+      "endpoint": "/users/{user_id}",
+      "method": "GET",
+      "description": "Gets information about a user.",
+      "parameters": [
+        {
+          "name": "user_id",
+          "type": "integer",
+          "description": "ID of the user.",
+          "required": true
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful response.",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "user_id": {
+                "type": "integer",
+                "description": "Unique user ID.",
+                "example": 123
+              },
+              "username": {
+                "type": "string",
+                "description": "User's chosen username.",
+                "example": "johndoe"
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "description": "User's email address.",
+                "example": "john.doe@example.com"
+              },
+              "full_name": {
+                "type": "string",
+                "description": "User's full name (optional).",
+                "example": "John Doe"
+              },
+              "profile_picture_url": {
+                "type": "string",
+                "format": "url",
+                "description": "URL of the user's profile picture (optional).",
+                "example": "/images/users/123.jpg"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Date and time the user account was created.",
+                "example": "2024-02-29T14:30:00Z"
+              },
+              "is_active": {
+                "type": "boolean",
+                "description": "Indicates if the user account is active.",
+                "example": true
+              },
+              "bio": {
+                "type": "string",
+                "description": "User's biography text (optional).",
+                "example": "Software developer passionate about ethical AI."
+              },
+              "privacy_settings": {
+                "type": "object",
+                "properties": {
+                  "profile_visibility": {
+                    "type": "string",
+                    "enum": [
+                      "public",
+                      "private",
+                      "connections_only"
+                    ],
+                    "description": "Who can view the user's profile.",
+                    "example": "connections_only"
+                  }
+                }
+              }
+            },
+            "required": [
+              "user_id",
+              "username",
+              "email",
+              "created_at",
+              "is_active"
+            ]
+          }
+        },
+        "404": {
+          "description": "User not found error message.",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "User not found."
+              }
+            }
+          }
+        }
+      },
+      "security": {
+        "authentication": "JWT",
+        "authorization": "Bearer Auth",
+        "dataEncryption": "HTTPS + User Data Encryption (AES-256)"
+      },
+      "testingWorkflow": {
+        "dataFlowValidation": "UI parameters to track data flow during a test: Data is sent to the /users/{user_id} endpoint via a GET request. Response data is displayed in a Data Table component. Users can inspect the raw JSON response.",
+        "codeValidation": "UI components show the code being executed: A button triggers the API call. Console logs show the request and response. A code editor component displays the relevant backend code (e.g., the route handler in `main.py`).",
+        "performanceValidation": "UI components track system performance: Response time is measured and displayed. Data table rendering time is measured. A graph shows response times over time.",
+        "ethicalValidation": "UI parameters to check ethical code workflow: A checkbox confirms that data minimization principles are followed. A tooltip explains the data encryption methods."
+      }
+    }
+  ]
+}
