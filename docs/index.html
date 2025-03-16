@@ -32,9 +32,9 @@
             padding: 20px;
             overflow-y: auto;
             border-right: 1px solid #444;
-            height: 100vh; /* Make sidebar full height */
-            position: sticky; /* Keep sidebar in view during scroll */
-            top: 0; /* Stick to the top */
+            height: 100vh;
+            position: sticky;
+            top: 0;
         }
         #content {
             flex: 1;
@@ -123,7 +123,7 @@
         function generateNavLinks() {
             const navLinks = files.map(item => `
                 <li class="nav-item">
-                    <a class="nav-link" data-file="${item.file}" href="#">
+                    <a class="nav-link" data-file="${item.file}" href="#${item.file}">
                         ${item.title}
                     </a>
                 </li>
@@ -186,7 +186,7 @@
                             mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
                         }, 300);
                     }
-                    setActiveLink(file); // Set active link after loading content
+                    setActiveLink(file);
                 },
                 error: function(xhr) {
                     console.error(`Error loading ${file}:`, xhr.status, xhr.statusText);
@@ -196,7 +196,24 @@
         }
 
         generateNavLinks();
-        loadContent('onboarding_guide.md');
+
+        // Function to set active link on initial load and hash change
+        function updateActiveLink() {
+            const hash = window.location.hash.substring(1);
+            setActiveLink(hash);
+            if (hash) {
+                loadContent(hash);
+            } else {
+                loadContent('onboarding_guide.md'); // Default content
+                setActiveLink('onboarding_guide.md');
+            }
+        }
+
+        // Listen for hash changes
+        $(window).on('hashchange', updateActiveLink);
+
+        // Initial load
+        updateActiveLink();
         hljs.highlightAll();
     });
 </script>
