@@ -32,6 +32,9 @@
             padding: 20px;
             overflow-y: auto;
             border-right: 1px solid #444;
+            height: 100vh; /* Make sidebar full height */
+            position: sticky; /* Keep sidebar in view during scroll */
+            top: 0; /* Stick to the top */
         }
         #content {
             flex: 1;
@@ -95,7 +98,6 @@
             smartypants: false
         });
 
-        // Each entry has the actual filename and the display title
         const files = [
             { file: "onboarding_guide.md", title: "Onboarding" },
             { file: "quickstart_guide.md", title: "Quickstart" },
@@ -142,7 +144,6 @@
             $(`.nav-link[data-file="${file}"]`).addClass('active');
         }
 
-        // Verify if a file exists before loading
         function fileExists(file) {
             try {
                 let request = new XMLHttpRequest();
@@ -167,7 +168,6 @@
                 success: function(data) {
                     console.log(`Loading file: ${file}`);
                     if (file.endsWith('.json')) {
-                        // JSON
                         try {
                             const jsonData = JSON.parse(data);
                             const formattedJSON = JSON.stringify(jsonData, null, 2);
@@ -178,16 +178,15 @@
                             $('#content').html(`<p>Error parsing JSON: ${file}</p>`);
                         }
                     } else if (file.endsWith('.html')) {
-                        // HTML
                         $('#content').html(data);
                     } else {
-                        // Markdown
                         const htmlContent = marked.parse(data);
                         $('#content').html(htmlContent);
                         setTimeout(() => {
                             mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
                         }, 300);
                     }
+                    setActiveLink(file); // Set active link after loading content
                 },
                 error: function(xhr) {
                     console.error(`Error loading ${file}:`, xhr.status, xhr.statusText);
@@ -198,7 +197,6 @@
 
         generateNavLinks();
         loadContent('onboarding_guide.md');
-        setActiveLink('onboarding_guide.md');
         hljs.highlightAll();
     });
 </script>
