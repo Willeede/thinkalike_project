@@ -1,36 +1,66 @@
 body {
-    font-family: sans-serif;
-    padding: 20px;
-    background-color: #000; /* Black background */
-    color: #ccc; /* Light gray text */
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    display: flex;
+    min-height: 100vh;
+    background-color: #000;
+    color: #eee;
 }
-.container {
-    max-width: 800px; /* Limit width for readability */
-    margin: 0 auto;     /* Center the content */
-}
-h1 {
-    color: #FFC300; /* Amber/Honey Yellow heading */
-    text-align: center;
-    margin-bottom: 30px;
-}
-p {
-    margin-bottom: 20px;
-    line-height: 1.6;
-}
-ul {
-    list-style: none; /* Remove default bullet points */
-    padding: 0;
-}
-li {
-    margin-bottom: 10px;
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #FFC300;
 }
 a {
-    color: #FF5733; /* Deep Orange links */
-    text-decoration: none; /* Remove underlines */
-    transition: color 0.2s ease-in-out; /* Smooth color transition on hover */
+    color: #F86B03;
+    text-decoration: none;
 }
 a:hover {
-    color: #FF8C00; /* Neon Orange on hover */
-    text-decoration: underline; /* Add underline on hover */
+    text-decoration: underline;
+    color: #FF8C00;
 }
-/* ... (rest of your CSS rules) ... */
+#sidebar {
+    width: 250px;
+    background-color: #212121;
+    padding: 20px;
+    overflow-y: auto;
+    border-right: 1px solid #444;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+#content {
+    flex: 1;
+    padding: 20px;
+    overflow: auto; /* Added this line */
+}
+.nav-link {
+    cursor: pointer;
+    padding: .5rem 1rem;
+    color: #F86B03;
+    display: block;
+    text-decoration: none;
+}
+.nav-link:hover {
+    background-color: #333;
+    color: #FF8C00;
+}
+.nav-link.active {
+    background-color: #F86B03;
+    color: white;
+}
+pre {
+    background-color: #333;
+    color: #eee;
+    padding: 10px;
+    border: 1px solid #666;
+    border-radius: 4px;
+    overflow-x: auto;
+    max-width: 100%; /* Added this line */
+}
+code {
+    font-family: 'Courier New', Courier, monospace;
+}
+.mermaid {
+    overflow: auto;
+}

@@ -1,3 +1,7 @@
+# ThinkAlike Troubleshooting Guide
+
+## Frontend Troubleshooting
+
 # ThinkAlike Frontend Troubleshooting Guide
 
 This guide provides an overview of the expected behavior for the React frontend (which uses react-force-graph-2d) and detailed troubleshooting steps if the graph visualization isn't working as expected.
@@ -107,8 +111,146 @@ This guide provides an overview of the expected behavior for the React frontend 
 
 ---
 
-By following these steps, you can isolate and correct issues with the graph visualization. This guide serves as both a diagnostic tool and a reference for ensuring our frontend renders while supplying dynamic interactivity.
+## Backend Troubleshooting
+
+### **1. FastAPI Server Issues**
+
+#### Server Won't Start
+- **Check Python Environment**: Ensure you're using the correct virtual environment
+  ```bash
+  # Activate virtual environment
+  cd backend
+  .\venv\Scripts\activate  # Windows
+  source venv/bin/activate  # macOS/Linux
+  ```
+- **Check Dependencies**: Verify all requirements are installed
+  ```bash
+  pip install -r requirements.txt
+  ```
+- **Check Port Availability**: Make sure port 8000 is not in use
+  ```bash
+  # Windows
+  netstat -ano | findstr :8000
+
+  # Linux/macOS
+  lsof -i :8000
+  ```
+- **Check Logs**: Look for detailed error messages in the console output
+
+#### API Endpoints Return 500 Errors
+- **Enable Debug Mode**: Set `debug=True` in your FastAPI app
+- **Check Database Connection**: Verify PostgreSQL connection string
+- **Review Error Logs**: Check for exceptions in the server logs
+- **Test With Simplified Endpoint**: Create a basic endpoint to isolate issues
+
+### **2. Database Connection Issues**
+
+#### Cannot Connect to PostgreSQL
+- **Verify Environment Variables**:
+  ```bash
+  echo %DATABASE_URL%  # Windows
+  echo $DATABASE_URL   # macOS/Linux
+  ```
+- **Check PostgreSQL Service**:
+  ```bash
+  # Windows
+  sc query postgresql
+
+  # Linux
+  systemctl status postgresql
+
+  # macOS
+  brew services list | grep postgresql
+  ```
+- **Test Direct Connection**:
+  ```bash
+  psql "postgresql://username:password@localhost:5432/thinkalike"
+  ```
+- **Check Network Access**: Ensure firewall allows connections to PostgreSQL port
+
+#### Database Schema Issues
+- **Run Migration Scripts**: Apply any pending database migrations
+- **Check Schema**: Verify table structure matches expected schema
+  ```sql
+  \d nodes
+  \d edges
+  ```
+- **Reset Test Database**: Consider resetting to a known good state
+  ```bash
+  python backend/scripts/setup_database.py
+  ```
+
+### **3. Environment Setup Problems**
+
+#### Missing Environment Variables
+- **Create/Update .env File**: Ensure it contains all required variables
+  ```
+  DATABASE_URL=postgresql://username:password@localhost:5432/thinkalike
+  SECRET_KEY=your_secret_key
+  DEBUG=True
+  ```
+- **Verify .env Loading**: Check that `load_dotenv()` is called early in application startup
+
+#### SSL Certificate Issues
+- **Development**: Disable SSL verification in development only
+- **Production**: Ensure valid SSL certificates are configured
+
+### **4. API Data Issues**
+
+#### Graph Data Not Returned Correctly
+- **Check Data Format**: Verify data format matches expected schema
+- **Query Database Directly**: Compare direct query results with API response
+  ```sql
+  SELECT * FROM nodes LIMIT 10;
+  SELECT * FROM edges LIMIT 10;
+  ```
+- **Add Detailed Logging**: Include additional log statements in your API handlers
+- **Simplify Query**: Try retrieving a smaller subset of data
 
 ---
 
-Feel free to update this guide as needed.
+## Deployment Issues
+
+### **1. Render Deployment**
+
+#### Build Failures
+- Check build logs for specific error messages
+- Ensure buildpacks or Dockerfiles are configured correctly
+- Verify that all dependencies are in requirements.txt or package.json
+
+#### Runtime Errors
+- Review application logs in the Render dashboard
+- Check environment variables are set correctly
+- Verify database connection strings for production
+
+### **2. Cross-Origin (CORS) Issues**
+
+#### API Requests Blocked by CORS
+- Ensure CORS middleware is properly configured:
+  ```python
+  from fastapi.middleware.cors import CORSMiddleware
+
+  app.add_middleware(
+      CORSMiddleware,
+      allow_origins=["https://your-frontend-url.com", "http://localhost:3000"],
+      allow_credentials=True,
+      allow_methods=["*"],
+      allow_headers=["*"],
+  )
+  ```
+- Check browser console for specific CORS error messages
+- Verify that the request origin matches the allowed origins list
+
+---
+
+## General Troubleshooting Tips
+
+1. **Clear Cache**: Clear browser cache or try incognito mode
+2. **Latest Code**: Ensure you have the latest code (`git pull`)
+3. **Restart Services**: Sometimes restarting services solves unexplained issues
+4. **Check Logs**: Always check application logs for clues
+5. **Isolate Components**: Test frontend and backend separately to isolate issues
+
+---
+
+Feel free to update this guide as new issues and solutions are discovered.

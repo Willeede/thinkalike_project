@@ -39,6 +39,7 @@
         #content {
             flex: 1;
             padding: 20px;
+            overflow: auto;
         }
         .nav-link {
             cursor: pointer;
@@ -62,6 +63,7 @@
             border: 1px solid #666;
             border-radius: 4px;
             overflow-x: auto;
+            max-width: 100%;
         }
         code {
             font-family: 'Courier New', Courier, monospace;
@@ -116,14 +118,13 @@
             { file: "code_documentation_template.md", title: "Code Documentation Template" },
             { file: "API_schema.json", title: "API Schema" },
             { file: "DEPLOYMENT_RENDER.md", title: "Deployment to Render" },
-            { file: "TROUBLESHOOTING.md", title: "Troubleshooting" },
-            { file: "thinkalike_notebook.html", title: "Project Notebook" }
+            { file: "TROUBLESHOOTING.md", title: "Troubleshooting" }
         ];
 
         function generateNavLinks() {
             const navLinks = files.map(item => `
                 <li class="nav-item">
-                    <a class="nav-link" data-file="${item.file}" href="#${item.file}">
+                    <a class="nav-link" data-file="${item.file}" href="#">
                         ${item.title}
                     </a>
                 </li>
@@ -163,7 +164,7 @@
                 return;
             }
             $.ajax({
-                url: file,
+                url: file, // Attempting to load directly by filename
                 dataType: 'text',
                 success: function(data) {
                     console.log(`Loading file: ${file}`);
@@ -195,25 +196,26 @@
             });
         }
 
-        generateNavLinks();
+        function loadDefaultContent() {
+            loadContent('onboarding_guide.md');
+            setActiveLink('onboarding_guide.md');
+        }
 
-        // Function to set active link on initial load and hash change
+        generateNavLinks();
+        loadDefaultContent(); // Load default content on page load
+
+        // Function to set active link on initial load and hash change (modified)
         function updateActiveLink() {
             const hash = window.location.hash.substring(1);
             setActiveLink(hash);
             if (hash) {
                 loadContent(hash);
-            } else {
-                loadContent('onboarding_guide.md'); // Default content
-                setActiveLink('onboarding_guide.md');
             }
         }
 
         // Listen for hash changes
         $(window).on('hashchange', updateActiveLink);
 
-        // Initial load
-        updateActiveLink();
         hljs.highlightAll();
     });
 </script>
