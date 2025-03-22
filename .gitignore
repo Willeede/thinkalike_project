@@ -70,6 +70,10 @@ cover/
 profile_html/
 profile.out
 coverage.xml
+
+# Node modules - at any level
+node_modules/
+**/node_modules/
 frontend/node_modules/
 
 # Environment variables
@@ -77,16 +81,10 @@ frontend/node_modules/
 .env.*
 !.env.example
 
-# Node
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
 # IDEs and editors
 .idea/
 .vscode/
+!.vscode/settings.json
 *.swp
 *.swo
 .DS_Store
@@ -106,10 +104,15 @@ htmlcov/
 *.pyd
 *.so
 
-# Database
+# Database and data files
 *.sqlite3
 *.db
+backend/db.json
+backend/db-*.json
+backend/routes.json
 
 # Logs
 *.log
+logfile
+backend/logfile
 logs/
